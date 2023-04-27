@@ -21,4 +21,12 @@ public class StudentController {
         Student createdStudent = studentService.createStudent(student);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
+    @GetMapping("/students")
+    public ResponseEntity<List<Student>> getAllStudents(){
+        List<Student> students = studentService.getAllStudents();
+        if (students.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
