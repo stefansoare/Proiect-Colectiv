@@ -15,8 +15,7 @@ public class Student {
     @Column
     private int leader;
     public Student() {}
-    public Student(long id, String name, String email, int leader) {
-        this.id = id;
+    public Student(String name, String email, int leader) {
         this.name = name;
         this.email = email;
         this.leader = leader;
