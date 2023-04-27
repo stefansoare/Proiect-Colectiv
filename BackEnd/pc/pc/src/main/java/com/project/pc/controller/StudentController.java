@@ -27,6 +27,6 @@ public class StudentController {
         if (students.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(students, HttpStatus.OK);
     }
 }
