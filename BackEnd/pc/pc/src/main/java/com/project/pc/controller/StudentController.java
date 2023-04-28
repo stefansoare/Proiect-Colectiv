@@ -1,7 +1,6 @@
 package com.project.pc.controller;
 
 import com.project.pc.model.Student;
-import com.project.pc.repository.StudentRepository;
 import com.project.pc.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +15,8 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentService studentService;
+    private Long id;
+
     @PostMapping("/createStudent")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         Student createdStudent = studentService.createStudent(student);
@@ -29,4 +30,11 @@ public class StudentController {
         }
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
+
+    @GetMapping("/student/{studID}")
+    public Student getStudent(@PathVariable("studId") Long id) {
+        return studentService.getStudentById(id);
+    }
+
+
 }
