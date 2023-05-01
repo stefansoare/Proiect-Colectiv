@@ -28,4 +28,5 @@ public class StudentService {
         Optional<Student> studentOptional =  studentRepository.findById(id);
         return studentOptional.orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"There is no student with id : " + id));
     }
+
 }
