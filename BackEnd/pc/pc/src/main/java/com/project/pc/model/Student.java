@@ -20,6 +20,13 @@ public class Student {
         this.email = email;
         this.leader = leader;
     }
+
+    public Student(long id,String name, String email, int leader) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.leader = leader;
+    }
     public long getId() {
         return id;
     }

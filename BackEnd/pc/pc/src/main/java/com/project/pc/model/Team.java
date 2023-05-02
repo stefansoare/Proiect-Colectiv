@@ -11,6 +11,10 @@ public class Team {
     @Column
     private String teamLeader;
     public Team() {}
+
+    public Team(String teamLeader) {
+        this.teamLeader = teamLeader;
+    }
     public Team(long id, String teamLeader) {
         this.id = id;
         this.teamLeader = teamLeader;
