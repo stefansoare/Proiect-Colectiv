@@ -3,18 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+
+import { StudentsComponent } from './students/students.component';
+import { FormsModule } from '@angular/forms';
+
 
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StudentsComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatSlideToggleModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
