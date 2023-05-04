@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { StudentsComponent } from './students/students.component';
 import { FormsModule } from '@angular/forms';
+import { StudentDetailComponent } from './student-detail/student-detail.component';
 
 
 
@@ -13,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    StudentsComponent
+    StudentsComponent,
+    StudentDetailComponent
   ],
   imports: [
     BrowserModule,
