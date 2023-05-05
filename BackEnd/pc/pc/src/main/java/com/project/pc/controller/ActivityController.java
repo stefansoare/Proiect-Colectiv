@@ -41,7 +41,7 @@ public class ActivityController {
         return activityService.getActivityById(id);
     }
 
-        @PutMapping("/activity/{activityID}")
+    @PutMapping("/activity/{activityID}")
     public ResponseEntity<Activity> updateActivity(@PathVariable("activityID") Long activityID, @RequestBody Activity activity){
         Activity activity1 = activityService.updateActivity(activityID, activity);
         if (activity1 == null){

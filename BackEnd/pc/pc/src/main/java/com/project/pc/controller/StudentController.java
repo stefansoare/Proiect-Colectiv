@@ -1,6 +1,8 @@
 package com.project.pc.controller;
 
+import com.project.pc.model.Activity;
 import com.project.pc.model.Student;
+import com.project.pc.repository.StudentRepository;
 import com.project.pc.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +17,8 @@ import java.util.List;
 public class StudentController {
     @Autowired
     private StudentService studentService;
+    @Autowired
+    private StudentRepository studentRepository;
     private Long id;
 
     @PostMapping("/createStudent")
@@ -36,5 +40,20 @@ public class StudentController {
         return studentService.getStudentById(id);
     }
 
-
+    @PutMapping("/student/{studId}")
+    public ResponseEntity<Student> updateStudent(@PathVariable("studId") Long studId, @RequestBody Student newStudent){
+        Student student = studentService.updateStudent(studId, newStudent);
+        if (student == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(studentRepository.save(student), HttpStatus.OK);
+    }
+    @DeleteMapping("/students")
+    public ResponseEntity<HttpStatus> deleteteAllStudents(){
+        return new ResponseEntity<>(studentService.deleteAllStudents());
+    }
+    @DeleteMapping("/student/{studId}")
+    public ResponseEntity<HttpStatus> deleteStudentById(@PathVariable("studId") Long studId){
+        return new ResponseEntity<>(studentService.deleteStudentById(studId));
+    }
 }
