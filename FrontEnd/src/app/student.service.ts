@@ -16,4 +16,10 @@ export class StudentService {
 
   constructor(private messageService: MessageService) { }
 
+  getStudent(id: number): Observable<Student>{
+    const student = STUDENTS.find(h => h.id === id)!;
+    this.messageService.add('StudentService: fetched stundet id=${id}');
+    return of(student);
+  }
+
 }
