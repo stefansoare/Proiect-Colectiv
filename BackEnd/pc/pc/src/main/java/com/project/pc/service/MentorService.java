@@ -1,6 +1,7 @@
 package com.project.pc.service;
 
 import com.project.pc.exception.CustomException;
+import com.project.pc.model.Activity;
 import com.project.pc.model.Mentor;
 import com.project.pc.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,27 @@ public class MentorService {
     public Mentor getMentorById (Long id) {
         Optional<Mentor> optionalMentor = mentorRepository.findById(id);
         return optionalMentor.orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"There is no mentor with id : " + id));
+    }
+    public Mentor updateMentor(Long id, Mentor newMentor){
+        Mentor mentor = mentorRepository.findById(id).orElse(null);
+        if (mentor== null){
+            return null;
+        }
+        mentor.setName(newMentor.getName());
+        mentor.setEmail(newMentor.getEmail());
+        return mentor;
+    }
+    public HttpStatus deleteAllMentors(){
+        mentorRepository.deleteAll();
+        return HttpStatus.OK;
+    }
+    public HttpStatus deleteMentorById(long id){
+        Optional<Mentor> mentor = mentorRepository.findById(id);
+        if (mentor.isPresent()){
+            mentorRepository.deleteById(id);
+            return HttpStatus.OK;
+        }else {
+            return HttpStatus.NOT_FOUND;
+        }
     }
 }
