@@ -9,6 +9,10 @@ import { StudentDetailComponent } from './student-detail/student-detail.componen
 import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './in-memory-data.service';
+import { StudentSearchComponent } from './student-search/student-search.component';
 
 
 
@@ -19,12 +23,16 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     StudentsComponent,
     StudentDetailComponent,
     MessagesComponent,
-    DashboardComponent
+    DashboardComponent,
+    StudentSearchComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(
+      InMemoryDataService, { dataEncapsulation: false })
   ],
   providers: [],
   bootstrap: [AppComponent]
