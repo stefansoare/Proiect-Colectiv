@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { Student } from '../Student.1';
 import { StudentService } from '../student.service';
 
+
 @Component({
   selector: 'app-student-detail',
   templateUrl: './student-detail.component.html',

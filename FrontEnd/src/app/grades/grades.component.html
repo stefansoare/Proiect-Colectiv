@@ -1,0 +1,9 @@
+<h2>My Grades and attendances</h2>
+<ul class="students">
+  <li *ngFor="let student of students">
+      <span class="badge">{{student.date}}</span>
+      <span class="grade">{{student.grade}}</span>
+      <span class="attendance">{{student.attendance}}</span>
+  </li>
+</ul>
+<button type="button" (click)="goBack()">go back</button>
