@@ -1,6 +1,5 @@
 package com.project.pc.controller;
 
-import com.project.pc.model.Activity;
 import com.project.pc.model.Mentor;
 import com.project.pc.repository.MentorRepository;
 import com.project.pc.service.MentorService;

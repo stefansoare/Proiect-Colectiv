@@ -50,7 +50,7 @@ public class ActivityController {
         return new ResponseEntity<>(activityRepository.save(activity1), HttpStatus.OK);
     }
     @DeleteMapping("/activity")
-    public ResponseEntity<HttpStatus> deleteteAllActivities(){
+    public ResponseEntity<HttpStatus> deleteAllActivities(){
         return new ResponseEntity<>(activityService.deleteAllActivities());
     }
     @DeleteMapping("/activity/{activityId}")

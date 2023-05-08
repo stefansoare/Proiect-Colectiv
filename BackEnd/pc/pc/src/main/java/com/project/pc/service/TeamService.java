@@ -30,4 +30,30 @@ public class TeamService {
         return teamOptional.orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,
                 "There is no team with the id : " + id));
     }
+
+    public Team updateTeam(Long id, Team newTeam) {
+        Team team = teamRepository.findById(id).orElse(null);
+        if (team == null) {
+            return null;
+        }
+        team.setTeamLeader(newTeam.getTeamLeader());
+        return team;
+    }
+
+    public HttpStatus deleteAllTeams() {
+        teamRepository.deleteAll();
+        return HttpStatus.OK;
+    }
+
+    public HttpStatus deleteTeamById (long id) {
+        Optional<Team> team = teamRepository.findById(id);
+        if (team.isPresent()) {
+            teamRepository.deleteById(id);
+            return HttpStatus.OK;
+        } else {
+            return HttpStatus.NOT_FOUND;
+        }
+    }
+
+
 }

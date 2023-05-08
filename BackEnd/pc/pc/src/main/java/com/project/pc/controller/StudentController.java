@@ -49,7 +49,7 @@ public class StudentController {
         return new ResponseEntity<>(studentRepository.save(student), HttpStatus.OK);
     }
     @DeleteMapping("/students")
-    public ResponseEntity<HttpStatus> deleteteAllStudents(){
+    public ResponseEntity<HttpStatus> deleteAllStudents(){
         return new ResponseEntity<>(studentService.deleteAllStudents());
     }
     @DeleteMapping("/student/{studId}")
