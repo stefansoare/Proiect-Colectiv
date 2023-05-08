@@ -18,7 +18,7 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatMenuModule} from '@angular/material/menu';
 import { MentorPageComponent } from './mentor-page/mentor-page.component';
 import {MatTabsModule} from '@angular/material/tabs';
-
+import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 
 
 
@@ -42,8 +42,10 @@ import {MatTabsModule} from '@angular/material/tabs';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    MatCheckboxModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false })
+    
   ],
   providers: [],
   bootstrap: [AppComponent]
