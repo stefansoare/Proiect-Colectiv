@@ -1,7 +1,22 @@
 <h1>{{title}}</h1>
+
+<div class="container">
+  <button class="menu-button" mat-button [matMenuTriggerFor]="menu">Menu</button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="navigateToComponent('mentor-page')">Mentor</button>
+    <button mat-menu-item (click)="navigateToComponent('students')">Team Leader</button>
+    <button mat-menu-item (click)="navigateToComponent('dashboard')">Student</button>
+  </mat-menu>
+</div>
+<router-outlet></router-outlet>
+<app-messages></app-messages>
+
+<!--
 <nav>
   <a routerLink="/dashboard">Dashboard</a>
   <a routerLink="/students">Students</a>
 </nav>
 <router-outlet></router-outlet>
 <app-messages></app-messages>
+-->
+

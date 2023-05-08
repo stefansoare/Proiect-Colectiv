@@ -14,6 +14,11 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 import { StudentSearchComponent } from './student-search/student-search.component';
 import { GradesComponent } from './grades/grades.component';
+import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatMenuModule} from '@angular/material/menu';
+import { MentorPageComponent } from './mentor-page/mentor-page.component';
+import {MatTabsModule} from '@angular/material/tabs';
+
 
 
 
@@ -26,10 +31,14 @@ import { GradesComponent } from './grades/grades.component';
     MessagesComponent,
     DashboardComponent,
     StudentSearchComponent,
-    GradesComponent
+    GradesComponent,
+    MentorPageComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
+    MatMenuModule,
+    MatTabsModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
