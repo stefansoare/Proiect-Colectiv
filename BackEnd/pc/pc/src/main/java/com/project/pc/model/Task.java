@@ -17,8 +17,7 @@ public class Task {
     @Column
     private int attendance;
     public Task(){}
-    public Task(long id, int grade, String description, String deadline, int attendance) {
-        this.id = id;
+    public Task(int grade, String description, String deadline, int attendance) {
         this.grade = grade;
         this.description = description;
         this.deadline = deadline;
