@@ -1,0 +1,18 @@
+.name-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .name-list li {
+    margin-bottom: 10px;
+  }
+  
+  .name-checkbox {
+    margin-right: 5px;
+    width: 20px;
+    height: 20px;
+    background-color: #fd00e8;
+    border-radius: 3px;
+    border: 1px solid #df11f177;
+  }
+    

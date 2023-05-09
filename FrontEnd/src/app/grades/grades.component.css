@@ -1,0 +1,46 @@
+.students {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+  }
+  
+  .students .mat-list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .students .badge {
+    background-color: #ff9800;
+    color: #ffffff;
+    padding: 5px 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+  }
+  
+  .students .grade {
+    font-weight: bold;
+  }
+  
+  .students .attendance {
+    margin-left: auto;
+  }
+  
+  .students .mat-divider {
+    margin: 10px 0;
+    border-color: #ccc;
+  }
+  .students .attendance {
+    margin-left: auto;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+  
+  .students .attendance.true {
+    background-color: green;
+  }
+  
+  .students .attendance.false {
+    background-color: red;
+  }

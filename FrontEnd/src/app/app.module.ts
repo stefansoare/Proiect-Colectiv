@@ -18,10 +18,10 @@ import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatMenuModule} from '@angular/material/menu';
 import { MentorPageComponent } from './mentor-page/mentor-page.component';
 import {MatTabsModule} from '@angular/material/tabs';
-
-
-
-
+import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
+import {MatIconModule} from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -42,8 +42,13 @@ import {MatTabsModule} from '@angular/material/tabs';
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    MatCheckboxModule,
+    MatDividerModule,
+    MatListModule,
+    MatIconModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false })
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

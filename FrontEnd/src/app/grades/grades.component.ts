@@ -19,5 +19,5 @@ export class GradesComponent {
     goBack(): void {
       this.location.back();
     }
-
+    names: string[] = ['John', 'Jane', 'Alice', 'Bob'];
 }
