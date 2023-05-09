@@ -1,6 +1,6 @@
 <h2>My Team</h2>
 
-<div>
+<div class="add-student-section">
   <label for="new-student">Student name: </label>
   <input id="new-student" #studentName />
 
@@ -11,10 +11,11 @@
 
 <ul class="students">
   <li *ngFor="let student of students">
-    <a routerLink="/detail/{{student.id}}">
-      <span class="badge">{{student.id}}</span> {{student.name}}
-    </a>
-    <button type="button" class="delete" title="delete student"
-      (click)="delete(student)">x</button>
+    <div class="student-wrapper">
+      <button type="button" class="student-button" routerLink="/detail/{{student.id}}">
+        <span class="badge">{{student.id}}</span> {{student.name}}
+      </button>
+      <button type="button" class="delete-button" title="Delete student" (click)="delete(student)">x</button>
+    </div>
   </li>
 </ul>

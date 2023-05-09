@@ -1,66 +1,82 @@
+h2 {
+  color: #333;
+}
+
+.add-student-section {
+  margin-bottom: 20px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input[type="text"] {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.add-button {
+  background-color: #c5c5c5;
+  color: #000000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.add-button:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
 
 .students {
-    margin: 0 0 2em 0;
-    list-style-type: none;
-    padding: 0;
-    width: 15em;
-  }
-  
-  .students li {
-    display: flex;
-  }
-  
-  .students button {
-    flex: 1;
-    cursor: pointer;
-    position: relative;
-    left: 0;
-    background-color: #EEE;
-    margin: .5em;
-    padding: 0;
-    border-radius: 4px;
-    display: flex;
-    align-items: stretch;
-    height: 1.8em;
-  }
-  
-  .students button:hover {
-    color: #2c3a41;
-    background-color: #e6e6e6;
-    left: .1em;
-  }
-  
-  .students button:active {
-    background-color: #525252;
-    color: #fafafa;
-  }
-  
-  .students button.selected {
-    background-color: black;
-    color: white;
-  }
-  
-  .students button.selected:hover {
-    background-color: #505050;
-    color: white;
-  }
-  
-  .students button.selected:active {
-    background-color: black;
-    color: white;
-  }
-  
-  .students .badge {
-    display: inline-block;
-    font-size: small;
-    color: white;
-    padding: 0.8em 0.7em 0 0.7em;
-    background-color: #405061;
-    line-height: 1em;
-    margin-right: .8em;
-    border-radius: 4px 0 0 4px;
-  }
-  
-  .students .name {
-    align-self: center;
-  }
+  list-style: none;
+  padding: 0;
+}
+
+.student-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.student-button {
+  background-color: #c5c5c5;
+  color: #000000;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.student-button:hover {
+  background-color: #000000;
+  color: #ffffff;
+}
+
+.student-button .badge {
+  background-color: #fff;
+  color: #000000;
+  border: 2px solid #000000;
+  padding: 4px 8px;
+  margin-right: 10px;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}

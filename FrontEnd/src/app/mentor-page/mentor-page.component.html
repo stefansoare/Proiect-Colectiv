@@ -2,7 +2,6 @@
 <mat-tab-group>
   <mat-tab label="View teams">
     <div>
-      <p>This is the view teams and offer grades tab.</p>
       <ul class="Team">
         <li *ngFor="let team of  teams">
           <button [class.selected]="team === selectedTeam" type="button" (click)="onSelect(team)">
@@ -24,7 +23,6 @@
   <mat-tab label="Give grades">
     <app-student-search></app-student-search>
     <div class="attendance-grades-tab">
-      <p>This is the attendance grades tab.</p>
       <ul class="name-list">
         <li *ngFor="let name of names">
           <div class="name-container">
@@ -40,7 +38,7 @@
               </div>
               <div class="attendance-checkbox">
                 <input id="{{ selectedName }}-checkbox" type="checkbox" class="name-checkbox" />
-                <label for="{{ selectedName }}-checkbox">{{ selectedName }}'s Attendance</label>
+                <label for="{{ selectedName }}-checkbox">{{ selectedName }}'s Attendance for today</label>
               </div>
               <button class="assign-button">Assign Grade</button>
             </div>
