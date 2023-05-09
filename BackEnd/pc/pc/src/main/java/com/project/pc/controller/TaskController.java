@@ -1,5 +1,6 @@
 package com.project.pc.controller;
 
+import com.project.pc.model.Activity;
 import com.project.pc.model.Task;
 import com.project.pc.repository.TaskRepository;
 import com.project.pc.service.TaskService;
@@ -15,8 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class TaskController {
-    @Autowired
-    private TaskRepository taskRepository;
     @Autowired
     private TaskService taskService;
     @PostMapping("/createTask")
@@ -35,5 +34,17 @@ public class TaskController {
     @GetMapping("/tasks/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id){
         return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.FOUND);
+    }
+    @PutMapping("/tasks/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody Task task){
+        return new ResponseEntity<>(taskService.updateTask(id, task));
+    }
+    @DeleteMapping("/tasks")
+    public ResponseEntity<HttpStatus> deleteAllTasks(){
+        return new ResponseEntity<>(taskService.deleteAllTasks());
+    }
+    @DeleteMapping("/tasks/{id}")
+    public ResponseEntity<HttpStatus> deleteTaskById(@PathVariable("id") Long id){
+        return new ResponseEntity<>(taskService.deleteTaskById(id));
     }
 }
