@@ -22,13 +22,32 @@
     </div>
   </mat-tab>
   <mat-tab label="Give grades">
-    <div>
+    <app-student-search></app-student-search>
+    <div class="attendance-grades-tab">
       <p>This is the attendance grades tab.</p>
       <ul class="name-list">
         <li *ngFor="let name of names">
-          <input type="checkbox" class="name-checkbox" /> {{ name }}
+          <div class="name-container">
+            <label class="checkbox-button">
+              <button [class.selected]="name === selectedName" type="button" (click)="onSelect1(name)">
+                <span class="name">{{ name }}</span>
+              </button>
+            </label>
+            <div *ngIf="name === selectedName" class="grading-area">
+              <div class="grade-input">
+                <label for="{{ selectedName }}-grade">{{ selectedName }}'s grade: </label>
+                <input id="{{ selectedName }}-grade" placeholder="Enter grade (1-10)">
+              </div>
+              <div class="attendance-checkbox">
+                <input id="{{ selectedName }}-checkbox" type="checkbox" class="name-checkbox" />
+                <label for="{{ selectedName }}-checkbox">{{ selectedName }}'s Attendance</label>
+              </div>
+              <button class="assign-button">Assign Grade</button>
+            </div>
+          </div>
         </li>
       </ul>
     </div>
   </mat-tab>
+  
 </mat-tab-group>

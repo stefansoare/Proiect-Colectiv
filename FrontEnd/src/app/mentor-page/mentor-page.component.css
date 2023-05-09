@@ -1,18 +1,48 @@
+.attendance-grades-tab {
+  padding: 20px;
+}
+
 .name-list {
-    list-style-type: none;
-    padding: 0;
-  }
-  
-  .name-list li {
-    margin-bottom: 10px;
-  }
-  
-  .name-checkbox {
-    margin-right: 5px;
-    width: 20px;
-    height: 20px;
-    background-color: #fd00e8;
-    border-radius: 3px;
-    border: 1px solid #df11f177;
-  }
-    
+  list-style: none;
+  padding: 0;
+}
+
+.name-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.checkbox-button {
+  margin-right: 10px;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.grading-area {
+  display: flex;
+  align-items: center;
+}
+
+.grade-input {
+  margin-right: 20px;
+}
+
+.attendance-checkbox {
+  margin-right: 20px;
+}
+
+.assign-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.assign-button:hover {
+  background-color: #0069d9;
+}
