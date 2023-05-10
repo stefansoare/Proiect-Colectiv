@@ -6,8 +6,8 @@ import {
    debounceTime, distinctUntilChanged, switchMap
  } from 'rxjs/operators';
 
-import { Student } from '../Student.1';
-import { StudentService } from '../student.service';
+import { Student } from '../Classes/Student';
+import { StudentService } from '../Services/student.service';
 
 @Component({
   selector: 'app-student-search',

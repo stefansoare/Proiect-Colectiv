@@ -1,5 +1,5 @@
-import { Grade } from "./grades1";
-import {Team} from './team';
+import { Grade } from "./Classes/Grade";
+import {Team} from './Classes/Team';
 
 export const GRADES: Grade[] = [
     {date: "23.01.2023", grade: 10, attendance: true},

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Student } from './Student.1';
-import { GRADES } from './mock-students';
+import { Student } from '../Classes/Student';
+import { GRADES } from '../mock-students';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

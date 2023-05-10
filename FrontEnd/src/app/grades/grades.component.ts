@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { GRADES } from '../mock-students';
-import { Student } from '../Student.1'
+import { Student } from '../Classes/Student'
 import { Location } from '@angular/common';
 
 @Component({

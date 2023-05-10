@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import {Team} from '../team';
+import {Team} from '../Classes/Team';
 import { TEAMS } from '../mock-students';
-import { Student } from '../Student.1'
-import { StudentDetailComponent } from '../student-detail/student-detail.component';
+import { Student } from '../Classes/Student'
+import { StudentDetailComponent } from '../Student-detail/student-detail.component';
 @Component({
   selector: 'app-mentor-page',
   templateUrl: './mentor-page.component.html',

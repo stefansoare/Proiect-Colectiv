@@ -1,4 +1,4 @@
-import { Grade } from "./grades1";
+import { Grade } from "./Grade";
 
 export interface Team {
     id: number;
