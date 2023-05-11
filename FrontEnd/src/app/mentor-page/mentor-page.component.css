@@ -67,3 +67,19 @@ button:disabled {
   color: #aaa;
   cursor: auto;
 }
+/* Remove bullet points from ul and ol lists */
+ul.team-list,
+ul.student-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Indent student list and group by team */
+ul.student-list {
+  margin-left: 40px;
+}
+
+li.team-container {
+  margin-bottom: 10px;
+}

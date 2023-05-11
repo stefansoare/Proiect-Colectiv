@@ -1,51 +1,44 @@
-<h1>Mentor page</h1>
-<mat-tab-group>
-  <mat-tab label="View teams">
-    <div>
-      <ul class="Team">
-        <li *ngFor="let team of  teams">
-          <button [class.selected]="team === selectedTeam" type="button" (click)="onSelect(team)">
-            <span class="name">Team{{team.id}}</span>
-          </button>
-        </li>
-      </ul>
-      <div *ngIf="selectedTeam">
-        <h2>Team{{selectedTeam.id}} Grade</h2>
-        <div>
-          <label for="team-grade">Team grade: </label>
-          <input id="team-grade"  placeholder="grade from 1-10">
-          <button>Assign</button>
+<h1>Mentor Page</h1>
+
+<div>
+  <ul class="team-list">
+    <li *ngFor="let team of teams">
+      <div class="team-container">
+        <button [class.selected]="team === selectedTeam" type="button" (click)="onSelect(team)">
+          <span class="team-name">Team {{team.id}}</span>
+        </button>
+        <div *ngIf="team === selectedTeam" class="grading-area">
+          <div class="grade-input">
+            <label for="team-grade">Team Grade: </label>
+            <input id="team-grade" placeholder="Enter grade (1-10)">
+          </div>
+          <button class="assign-button">Assign Grade</button>
         </div>
       </div>
       
-    </div>
-  </mat-tab>
-  <mat-tab label="Give grades">
-    <app-student-search></app-student-search>
-    <div class="attendance-grades-tab">
-      <ul class="name-list">
-        <li *ngFor="let name of names">
-          <div class="name-container">
+      <ul class="student-list">
+        <li *ngFor="let student of team.students">
+          <div class="student-container">
             <label class="checkbox-button">
-              <button [class.selected]="name === selectedName" type="button" (click)="onSelect1(name)">
-                <span class="name">{{ name }}</span>
+              <button [class.selected]="student === selectedStudent" type="button" (click)="onSelectStudent(student)">
+                <span class="student-name">{{ student }}</span>
               </button>
             </label>
-            <div *ngIf="name === selectedName" class="grading-area">
+            <div *ngIf="student === selectedStudent" class="grading-area">
               <div class="grade-input">
-                <label for="{{ selectedName }}-grade">{{ selectedName }}'s grade: </label>
-                <input id="{{ selectedName }}-grade" placeholder="Enter grade (1-10)">
+                <label for="{{ student }}-grade">{{ student }}'s Grade: </label>
+                <input id="{{ student }}-grade" placeholder="Enter grade (1-10)">
               </div>
               <div class="attendance-checkbox">
-                <input id="{{ selectedName }}-checkbox" type="checkbox" class="name-checkbox" />
-                <label for="{{ selectedName }}-checkbox">{{ selectedName }}'s Attendance for today</label>
+                <input id="{{ student }}-checkbox" type="checkbox" class="student-checkbox" />
+                <label for="{{ student }}-checkbox">{{ student }}'s Attendance for Today</label>
               </div>
               <button class="assign-button">Assign Grade</button>
             </div>
           </div>
         </li>
       </ul>
-    </div>
-  </mat-tab>
-  
-</mat-tab-group>
+      
+    </li>
+  </ul>
+</div>
