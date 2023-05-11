@@ -1,66 +1,70 @@
 package com.project.pc.service;
 
-import com.project.pc.exception.CustomException;
-import com.project.pc.model.Student;
 import com.project.pc.model.Task;
 import com.project.pc.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
-    public Task createTask(Task newTask){
-        return taskRepository.save(new Task(newTask.getGrade(), newTask.getDescription(), newTask.getDeadline(), newTask.getAttendance()));
+    public Task createTask(Task task){
+        return taskRepository.save(new Task(task.getGrade(), task.getDescription(), task.getDeadline(), task.getAttendance()));
     }
     public List<Task> getAllTasks(){
-        List<Task> allTasks = new ArrayList<>();
-        taskRepository.findAll().forEach(allTasks::add);
-        return allTasks;
+        return taskRepository.findAll();
     }
     public Task getTaskById(Long id){
-        Optional<Task> task = taskRepository.findById(id);
-        return task.orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"There is no task with id : " + id));
+        return taskRepository.findById(id).orElse(null);
     }
-    public HttpStatus updateTask(Long id, Task task){
-        Task task1 = taskRepository.findById(id).orElse(null);
-        if (task1 == null){
-            return HttpStatus.NOT_FOUND;
+    public Task updateTask(Long id, Task task){
+        Task update = taskRepository.findById(id).orElse(null);
+        if (update == null){
+            return null;
         }
-        if (Objects.nonNull(task.getGrade())) {
-            task1.setGrade(task.getGrade());
+        update.setGrade(task.getGrade());
+        update.setDeadline(task.getDeadline());
+        update.setDescription(task.getDescription());
+        update.setAttendance(task.getAttendance());
+        taskRepository.save(update);
+        return update;
+    }
+    public Task patchTask(long id, Task task) {
+        Task update = taskRepository.findById(id).orElse(null);
+        if (update == null){
+            return null;
         }
-        if (Objects.nonNull(task.getDescription())) {
-            task1.setDescription(task.getDescription());
+        if (task.getAttendance() != 0) {
+            update.setAttendance(task.getAttendance());
         }
-        if (Objects.nonNull(task.getDeadline())) {
-            task1.setDeadline(task.getDeadline());
+        if (task.getDescription() != null) {
+            update.setDescription(task.getDescription());
         }
-        if (Objects.nonNull(task.getAttendance())) {
-            task1.setAttendance(task.getAttendance());
+        if (task.getGrade() != 0){
+            update.setGrade(task.getGrade());
         }
-
-        taskRepository.save(task1);
-        return HttpStatus.OK;
+        if (task.getDeadline() != null){
+            update.setDeadline(task.getDeadline());
+        }
+        taskRepository.save(update);
+        return update;
     }
     public HttpStatus deleteAllTasks(){
         taskRepository.deleteAll();
         return HttpStatus.OK;
     }
-    public HttpStatus deleteTaskById(long id){
+    public HttpStatus deleteTaskById(Long id){
         Optional<Task> task = taskRepository.findById(id);
         if (task.isPresent()){
             taskRepository.deleteById(id);
             return HttpStatus.OK;
         }else {
-            return HttpStatus.NOT_FOUND;
+            return HttpStatus.BAD_REQUEST;
         }
     }
 }

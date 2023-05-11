@@ -1,49 +1,57 @@
 package com.project.pc.controller;
 
-import com.project.pc.model.Activity;
 import com.project.pc.model.Task;
-import com.project.pc.repository.TaskRepository;
 import com.project.pc.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin("http://localhost:8080")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/tasks")
 public class TaskController {
     @Autowired
     private TaskService taskService;
-    @PostMapping("/createTask")
-    public ResponseEntity<Task> createTask(@RequestBody Task newTask){
-        Task createdTask = taskService.createTask(newTask);
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<Task> createTask(@RequestBody Task task){
+        return new ResponseEntity<>(taskService.createTask(task), HttpStatus.CREATED);
     }
-    @GetMapping("/tasks")
+    @GetMapping
     public ResponseEntity<List<Task>> getAllTasks(){
-        List<Task> tasks = taskService.getAllTasks();
-        if (tasks.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(tasks, HttpStatus.FOUND);
+        return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
-    @GetMapping("/tasks/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id){
-        return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.FOUND);
+        Task task = taskService.getTaskById(id);
+        if (task == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
-    @PutMapping("/tasks/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody Task task){
-        return new ResponseEntity<>(taskService.updateTask(id, task));
+        Task update = taskService.updateTask(id, task);
+        if (update == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(update, HttpStatus.OK);
     }
-    @DeleteMapping("/tasks")
+    @PatchMapping("/{id}")
+    public ResponseEntity<Task> patchTask(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTask(id, task);
+        if (updated == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllTasks(){
         return new ResponseEntity<>(taskService.deleteAllTasks());
     }
-    @DeleteMapping("/tasks/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteTaskById(@PathVariable("id") Long id){
         return new ResponseEntity<>(taskService.deleteTaskById(id));
     }
