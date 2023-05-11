@@ -24,6 +24,14 @@ public class TeamController {
         return new ResponseEntity<>(teamService.getAllTeams(), HttpStatus.OK);
     }
     @GetMapping("{id}")
+    public ResponseEntity<Team> getTeamByTeamLeader(@PathVariable("id") Long id){
+        Team team = teamService.getTeamByTeamLeader(id);
+        if (team == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(team, HttpStatus.OK);
+    }
+    @GetMapping("{id}")
     public ResponseEntity<Team> getTeamById(@PathVariable("id") Long id){
         Team team = teamService.getTeamById(id);
         if (team == null){

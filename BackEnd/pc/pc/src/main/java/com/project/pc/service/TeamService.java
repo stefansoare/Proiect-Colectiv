@@ -20,7 +20,10 @@ public class TeamService {
         return teamRepository.findAll();
     }
     public Team getTeamById(Long id){
-        return teamRepository.findById(id).orElse(null);
+        return teamRepository.findTeamById(id).orElse(null);
+    }
+    public Team getTeamByTeamLeader(Long id){
+        return teamRepository.findByTeamLeader(id).orElse(null);
     }
     public Team updateTeam(Long id, Team team){
         Team update = teamRepository.findById(id).orElse(null);
