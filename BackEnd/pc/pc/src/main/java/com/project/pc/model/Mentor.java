@@ -12,20 +12,11 @@ public class Mentor {
     private String name;
     @Column
     private String email;
-
-    public Mentor() {}
-
-    public Mentor(String name, String email){
+    public Mentor(){}
+    public Mentor(String name, String email) {
         this.name = name;
         this.email = email;
     }
-
-    public Mentor(long id, String name, String email) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-    }
-
     public long getId() {
         return id;
     }
