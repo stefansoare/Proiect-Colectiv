@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin("http://localhost:8080")
 @RestController
-@RequestMapping("/api/teams")
+@RequestMapping("/api/teams/")
 public class TeamController {
     @Autowired
     private TeamService teamService;
@@ -23,7 +23,7 @@ public class TeamController {
     public ResponseEntity<List<Team>> getAllTeams(){
         return new ResponseEntity<>(teamService.getAllTeams(), HttpStatus.OK);
     }
-    @GetMapping("{id}")
+    @GetMapping("leader/{id}")
     public ResponseEntity<Team> getTeamByTeamLeader(@PathVariable("id") Long id){
         Team team = teamService.getTeamByTeamLeader(id);
         if (team == null){
