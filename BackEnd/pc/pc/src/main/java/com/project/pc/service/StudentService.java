@@ -58,4 +58,10 @@ public class StudentService {
             return HttpStatus.BAD_REQUEST;
         }
     }
+    public List<Student> getStudentByName(String name){
+        return studentRepository.findStudentByName(name);
+    }
+    public Student getStudentByEmail(String email){
+        return studentRepository.findStudentByEmail(email).orElse(null);
+    }
 }

@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api/students/")
 public class StudentController {
     @Autowired
     private StudentService studentService;
@@ -24,7 +24,7 @@ public class StudentController {
         List<Student> students = studentService.getAllStudents();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
-    @GetMapping("/{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id) {
         Student student = studentService.getStudentById(id);
         if (student == null){
@@ -32,7 +32,20 @@ public class StudentController {
         }
         return new ResponseEntity<>(student, HttpStatus.FOUND);
     }
-    @PutMapping("/{id}")
+    @GetMapping("name/{name}")
+    public ResponseEntity<List<Student>> getStudentByName(@PathVariable("name") String name){
+        List<Student> students = studentService.getStudentByName(name);
+        return new ResponseEntity<>(students, HttpStatus.FOUND);
+    }
+    @GetMapping("email/{email}")
+    public ResponseEntity<Student> getStudentByEmail(@PathVariable("email") String email){
+        Student student = studentService.getStudentByEmail(email);
+        if (student == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(student, HttpStatus.OK);
+    }
+    @PutMapping("{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student student){
         Student update = studentService.updateStudent(id, student);
         if (update == null){
@@ -40,7 +53,7 @@ public class StudentController {
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
-    @PatchMapping("/{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<Student> patchStudent(@PathVariable("id") Long id, @RequestBody Student student) {
         Student updated = studentService.patchStudent(id, student);
         if (updated == null){
@@ -52,7 +65,7 @@ public class StudentController {
     public ResponseEntity<HttpStatus> deleteAllStudents(){
         return new ResponseEntity<>(studentService.deleteAllStudents());
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteStudentById(@PathVariable("id") Long id){
         return new ResponseEntity<>(studentService.deleteStudentById(id));
     }
