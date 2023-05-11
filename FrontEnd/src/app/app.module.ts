@@ -22,6 +22,8 @@ import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
+import { NavigationComponent } from './Navigation/navigation.component';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -33,6 +35,7 @@ import {MatIconModule} from '@angular/material/icon';
     StudentSearchComponent,
     GradesComponent,
     MentorPageComponent,
+    NavigationComponent,
   ],
   imports: [
     BrowserModule,
@@ -45,6 +48,7 @@ import {MatIconModule} from '@angular/material/icon';
     MatCheckboxModule,
     MatDividerModule,
     MatListModule,
+    MatToolbarModule,
     MatIconModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false })

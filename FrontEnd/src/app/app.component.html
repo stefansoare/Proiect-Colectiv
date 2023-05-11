@@ -1,12 +1,21 @@
-<h1>{{title}}</h1>
-
+<h1></h1>
+<p>
+  <mat-toolbar color="primary">
+        <span><h1>{{title}}</h1></span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" [matMenuTriggerFor]="menu">
+          <mat-icon>menu</mat-icon>
+          <mat-menu #menu="matMenu">
+            <button class="white-button" mat-menu-item (click)="navigateToComponent('mentor-page')">Mentor</button>
+            <button class="white-button" mat-menu-item (click)="navigateToComponent('students')">Team Leader</button>
+            <button class="white-button" mat-menu-item (click)="navigateToComponent('dashboard')">Student</button>
+          </mat-menu>
+   
+  </button>
+</mat-toolbar>
+</p>
 <div class="container">
-  <button class="right-top-corner" mat-button [matMenuTriggerFor]="menu">Menu</button>
-  <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="navigateToComponent('mentor-page')">Mentor</button>
-    <button mat-menu-item (click)="navigateToComponent('students')">Team Leader</button>
-    <button mat-menu-item (click)="navigateToComponent('dashboard')">Student</button>
-  </mat-menu>
+  
 </div>
 <router-outlet></router-outlet>
 
