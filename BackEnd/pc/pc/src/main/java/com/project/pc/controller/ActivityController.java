@@ -24,13 +24,18 @@ public class ActivityController {
         List<Activity> activities = activityService.getAllActivities();
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Activity> getActivityById(@PathVariable("id") Long id) {
         Activity activity = activityService.getActivityById(id);
         if (activity == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
+    }
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<Activity>> getActivityByName(@PathVariable("name") String name) {
+        List<Activity> activities = activityService.getActivityByName(name);
+        return new ResponseEntity<>(activities, HttpStatus.FOUND);
     }
     @PutMapping("/{id}")
     public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
