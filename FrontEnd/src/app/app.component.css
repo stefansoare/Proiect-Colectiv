@@ -1,57 +1,98 @@
+.h1 {
+  margin-bottom: 0;
+  text-align: center;
+  color: #e8e8e8;
+}
+
+nav a {
+  padding: 1rem;
+  text-decoration: none;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #42545c;
+  color: #3d3d3d;
+  border-radius: 4px;
+}
+
+nav a:hover {
+  background: #3f51b5;
+  color: white;
+}
+
+nav a:active {
+  background-color: black;
+}
+
+.example-icon {
+  font-size: 24px;
+}
+
+.nav-label {
+  font-size: 12px;
+  margin-top: 4px;
+  color: white;
+}
+
+.right-top-corner {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+button {
+  background: #3f51b5;
+  color: white;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
+button:disabled {
+  background-color: #eee;
+  color: #aaa;
+  cursor: auto;
+}
+
+.white-button {
+  color: black;
+  background-color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.white-button:hover {
+  color: white;
+  background-color: rgb(197, 197, 197);
+}
+
 h1 {
-    margin-bottom: 0;
-    text-align: center;
-    color: #e8e8e8;
-  }
-  
- 
-  nav a {
-    padding: 1rem;
-    text-decoration: none;
-    margin-top: 10px;
-    display: inline-block;
-    background-color: #42545c;
-    color: #3d3d3d;
-    border-radius: 4px;
-  }
-  
-  nav a:hover {
-    background: #3f51b5;
-    color: white;
-  }
-  nav a:active {
-    background-color: black;
-  }
-  .right-top-corner {
-    position: absolute;
-    top: 0;
-    right: 0;
-  }
-  .example-spacer {
-    flex: 1 1 auto;
-  }
-  button {
-    background: #3f51b5;
-    color: white;
-  }
-  button:hover {
-    background-color: black;
-    color: white;
-  }
-  button:disabled {
-    background-color: #eee;
-    color: #aaa;
-    cursor: auto;
-  }
-  .white-button {
-    color: black;
-    background-color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  .white-button:hover {
-    color: white;
-    background-color: rgb(197, 197, 197);
-  }
+  margin-bottom: 0;
+  text-align: center;
+  color: #e8e8e8;
+}
+
+mat-toolbar {
+  height: 100px; /* Adjust the height as needed */
+  background-color: #3f51b5; /* Change the toolbar background color */
+}
+
+.mat-toolbar-row {
+  justify-content: center;
+}
+
+.mat-toolbar-single-row {
+  align-items: center;
+}
+
+.mat-toolbar-title {
+  color: white; /* Change the title color to white */
+}
