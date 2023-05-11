@@ -1,56 +1,61 @@
 package com.project.pc.service;
 
-import com.project.pc.exception.CustomException;
-import com.project.pc.model.Activity;
 import com.project.pc.model.Mentor;
 import com.project.pc.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class MentorService {
     @Autowired
-    MentorRepository mentorRepository;
-
+    private MentorRepository mentorRepository;
     public Mentor createMentor(Mentor mentor){
         return mentorRepository.save(new Mentor(mentor.getName(), mentor.getEmail()));
     }
-
-    public List<Mentor> getAllMentors() {
-        List<Mentor> mentors = new ArrayList<>();
-        mentorRepository.findAll().forEach(mentors::add);
-        return mentors;
+    public List<Mentor> getAllMentors(){
+        return mentorRepository.findAll();
     }
-
-    public Mentor getMentorById (Long id) {
-        Optional<Mentor> optionalMentor = mentorRepository.findById(id);
-        return optionalMentor.orElseThrow(() -> new CustomException(HttpStatus.NOT_FOUND,"There is no mentor with id : " + id));
+    public Mentor getMentorById(Long id){
+        return mentorRepository.findMentorById(id).orElse(null);
     }
-    public Mentor updateMentor(Long id, Mentor newMentor){
-        Mentor mentor = mentorRepository.findById(id).orElse(null);
-        if (mentor== null){
+    public Mentor updateMentor(Long id, Mentor mentor){
+        Mentor update = mentorRepository.findMentorById(id).orElse(null);
+        if (update == null){
             return null;
         }
-        mentor.setName(newMentor.getName());
-        mentor.setEmail(newMentor.getEmail());
-        return mentor;
+        update.setName(mentor.getName());
+        update.setEmail(mentor.getEmail());
+        mentorRepository.save(update);
+        return update;
+    }
+    public Mentor patchMentor(Long id, Mentor mentor){
+        Mentor update = mentorRepository.findMentorById(id).orElse(null);
+        if (update == null){
+            return null;
+        }
+        if (mentor.getEmail() != null){
+            update.setEmail(mentor.getEmail());
+        }
+        if (mentor.getName() != null){
+            update.setName(mentor.getName());
+        }
+        mentorRepository.save(update);
+        return update;
     }
     public HttpStatus deleteAllMentors(){
         mentorRepository.deleteAll();
         return HttpStatus.OK;
     }
-    public HttpStatus deleteMentorById(long id){
-        Optional<Mentor> mentor = mentorRepository.findById(id);
+    public HttpStatus deleteMentorById(Long id){
+        Optional<Mentor> mentor = mentorRepository.findMentorById(id);
         if (mentor.isPresent()){
             mentorRepository.deleteById(id);
             return HttpStatus.OK;
-        }else {
-            return HttpStatus.NOT_FOUND;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 }
