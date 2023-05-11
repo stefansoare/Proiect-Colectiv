@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin("http://localhost:8080")
 @RestController
-@RequestMapping("/api/tasks")
+@RequestMapping("/api/tasks/")
 public class TaskController {
     @Autowired
     private TaskService taskService;
@@ -39,7 +39,7 @@ public class TaskController {
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
-    @PatchMapping("/{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<Task> patchTask(@PathVariable("id") Long id, @RequestBody Task task) {
         Task updated = taskService.patchTask(id, task);
         if (updated == null){
