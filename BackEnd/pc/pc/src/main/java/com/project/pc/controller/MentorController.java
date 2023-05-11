@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin("http://localhost:8080")
 @RestController
-@RequestMapping("/api/mentors")
+@RequestMapping("/api/mentors/")
 public class MentorController {
     @Autowired
     private MentorService mentorService;
@@ -32,12 +32,12 @@ public class MentorController {
         }
         return new ResponseEntity<>(mentor, HttpStatus.OK);
     }
-    @GetMapping("/name/{name}")
+    @GetMapping("name/{name}")
     public ResponseEntity<List<Mentor>> getMentorByName(@PathVariable("name") String name){
         List<Mentor> mentors = mentorService.getMentorByName(name);
         return new ResponseEntity<>(mentors, HttpStatus.FOUND);
     }
-    @GetMapping("/email/{email}")
+    @GetMapping("email/{email}")
     public ResponseEntity<Mentor> getMentorByEmail(@PathVariable("email") String email){
         Mentor mentor = mentorService.getMentorByEmail(email);
         if (mentor == null){

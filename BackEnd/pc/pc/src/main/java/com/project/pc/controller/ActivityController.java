@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
-@RequestMapping("/api/activities")
+@RequestMapping("/api/activities/")
 public class ActivityController {
     @Autowired
     private ActivityService activityService;
@@ -24,7 +24,7 @@ public class ActivityController {
         List<Activity> activities = activityService.getAllActivities();
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
-    @GetMapping("/id/{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<Activity> getActivityById(@PathVariable("id") Long id) {
         Activity activity = activityService.getActivityById(id);
         if (activity == null){
@@ -32,12 +32,12 @@ public class ActivityController {
         }
         return new ResponseEntity<>(activity, HttpStatus.FOUND);
     }
-    @GetMapping("/name/{name}")
+    @GetMapping("name/{name}")
     public ResponseEntity<List<Activity>> getActivityByName(@PathVariable("name") String name) {
         List<Activity> activities = activityService.getActivityByName(name);
         return new ResponseEntity<>(activities, HttpStatus.FOUND);
     }
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
         Activity updated = activityService.updateActivity(id, activity);
         if (updated == null){
@@ -45,7 +45,7 @@ public class ActivityController {
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
-    @PatchMapping("/{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<Activity> patchActivity(@PathVariable("id") Long id, @RequestBody Activity activity) {
         Activity updated = activityService.patchActivity(id, activity);
         if (updated == null){
@@ -57,7 +57,7 @@ public class ActivityController {
     public ResponseEntity<HttpStatus> deleteAllActivities(){
         return new ResponseEntity<>(activityService.deleteAllActivities());
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteActivityById(@PathVariable("id") Long id){
         return new ResponseEntity<>(activityService.deleteActivityById(id));
     }
