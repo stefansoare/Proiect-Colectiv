@@ -9,14 +9,9 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column
-    private String teamLeader;
+    private long teamLeader;
     public Team() {}
-
-    public Team(String teamLeader) {
-        this.teamLeader = teamLeader;
-    }
-    public Team(long id, String teamLeader) {
-        this.id = id;
+    public Team(long teamLeader) {
         this.teamLeader = teamLeader;
     }
     public long getId() {
@@ -25,10 +20,10 @@ public class Team {
     public void setId(long id) {
         this.id = id;
     }
-    public String getTeamLeader() {
+    public long getTeamLeader() {
         return teamLeader;
     }
-    public void setTeamLeader(String teamLeader) {
+    public void setTeamLeader(long teamLeader) {
         this.teamLeader = teamLeader;
     }
 }
