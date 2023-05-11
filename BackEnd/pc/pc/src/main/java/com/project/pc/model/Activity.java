@@ -13,13 +13,7 @@ public class Activity {
     @Column
     private String description;
     public Activity() {}
-
-    public  Activity(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-    public Activity(long id, String name, String description) {
-        this.id = id;
+    public Activity(String name, String description) {
         this.name = name;
         this.description = description;
     }
