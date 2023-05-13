@@ -9,7 +9,8 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column
-    private String teamLeader;
+    private String teamLeader; // Student leader
+    // List<Student>
     public Team() {}
 
     public Team(String teamLeader) {

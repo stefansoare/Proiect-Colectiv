@@ -20,13 +20,13 @@ public class TeamController {
     private TeamRepository teamRepository;
     private Long id;
 
-    @PostMapping("/createTeam")
+    @PostMapping("/team")
     public ResponseEntity<Team> createTeam(@RequestBody Team team) {
         Team createdTeam = teamService.createTeam(team);
         return new ResponseEntity<>(createdTeam, HttpStatus.CREATED);
     }
 
-    @GetMapping("/teams")
+    @GetMapping("/team")
     public ResponseEntity<List<Team>> getAllTeams() {
         List<Team> teams = teamService.getAllTeams();
         if(teams.isEmpty()) {
@@ -50,7 +50,7 @@ public class TeamController {
         return new ResponseEntity<>(teamRepository.save(team), HttpStatus.OK);
     }
 
-    @DeleteMapping("/teams")
+    @DeleteMapping("/team")
     public ResponseEntity<HttpStatus> deleteAllTeams() {
         return new ResponseEntity<>(teamService.deleteAllTeams());
     }

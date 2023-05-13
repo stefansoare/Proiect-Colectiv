@@ -21,13 +21,13 @@ public class MentorController {
 
     private Long id;
 
-    @PostMapping("/createMentor")
+    @PostMapping("/mentor")
     public ResponseEntity<Mentor> createMentor(@RequestBody Mentor mentor) {
         Mentor createMentor = mentorService.createMentor(mentor);
         return new ResponseEntity<>(createMentor, HttpStatus.CREATED);
     }
 
-    @GetMapping("/mentors")
+    @GetMapping("/mentor")
     public ResponseEntity<List<Mentor>> getAllMentors() {
         List<Mentor> mentors = mentorService.getAllMentors();
         if (mentors.isEmpty()) {
@@ -48,7 +48,7 @@ public class MentorController {
         }
         return new ResponseEntity<>(mentorRepository.save(mentor), HttpStatus.OK);
     }
-    @DeleteMapping("/mentors")
+    @DeleteMapping("/mentor")
     public ResponseEntity<HttpStatus> deleteAllMentor(){
         return new ResponseEntity<>(mentorService.deleteAllMentors());
     }

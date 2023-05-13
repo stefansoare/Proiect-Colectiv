@@ -1,11 +1,8 @@
 package com.project.pc.controller;
 
-import com.project.pc.model.Activity;
 import com.project.pc.model.Task;
-import com.project.pc.repository.TaskRepository;
 import com.project.pc.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +15,12 @@ import java.util.List;
 public class TaskController {
     @Autowired
     private TaskService taskService;
-    @PostMapping("/createTask")
+    @PostMapping("/task")
     public ResponseEntity<Task> createTask(@RequestBody Task newTask){
         Task createdTask = taskService.createTask(newTask);
         return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
     }
-    @GetMapping("/tasks")
+    @GetMapping("/task")
     public ResponseEntity<List<Task>> getAllTasks(){
         List<Task> tasks = taskService.getAllTasks();
         if (tasks.isEmpty()){
@@ -31,19 +28,19 @@ public class TaskController {
         }
         return new ResponseEntity<>(tasks, HttpStatus.FOUND);
     }
-    @GetMapping("/tasks/{id}")
+    @GetMapping("/task/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id){
         return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.FOUND);
     }
-    @PutMapping("/tasks/{id}")
+    @PutMapping("/task/{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody Task task){
         return new ResponseEntity<>(taskService.updateTask(id, task));
     }
-    @DeleteMapping("/tasks")
+    @DeleteMapping("/task")
     public ResponseEntity<HttpStatus> deleteAllTasks(){
         return new ResponseEntity<>(taskService.deleteAllTasks());
     }
-    @DeleteMapping("/tasks/{id}")
+    @DeleteMapping("/task/{id}")
     public ResponseEntity<HttpStatus> deleteTaskById(@PathVariable("id") Long id){
         return new ResponseEntity<>(taskService.deleteTaskById(id));
     }

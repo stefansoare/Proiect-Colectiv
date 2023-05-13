@@ -5,7 +5,6 @@ import com.project.pc.repository.ActivityRepository;
 import com.project.pc.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,13 +20,13 @@ public class ActivityController {
     private ActivityRepository activityRepository;
     private Long id;
 
-    @PostMapping("/createActivity")
+    @PostMapping("/activity")
     public ResponseEntity<Activity> createActivity(@RequestBody Activity activity) {
         Activity createdActivity = activityService.createActivity(activity);
         return new ResponseEntity<>(createdActivity, HttpStatus.CREATED);
     }
 
-    @GetMapping("/activities")
+    @GetMapping("/activity")
     public ResponseEntity<List<Activity>> getAllActivities() {
         List<Activity> activities = activityService.getAllActivities();
         if(activities.isEmpty()) {

@@ -1,6 +1,5 @@
 package com.project.pc.controller;
 
-import com.project.pc.model.Activity;
 import com.project.pc.model.Student;
 import com.project.pc.repository.StudentRepository;
 import com.project.pc.service.StudentService;
@@ -21,12 +20,12 @@ public class StudentController {
     private StudentRepository studentRepository;
     private Long id;
 
-    @PostMapping("/createStudent")
+    @PostMapping("/student")
     public ResponseEntity<Student> createStudent(@RequestBody Student student){
         Student createdStudent = studentService.createStudent(student);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
-    @GetMapping("/students")
+    @GetMapping("/student")
     public ResponseEntity<List<Student>> getAllStudents(){
         List<Student> students = studentService.getAllStudents();
         if (students.isEmpty()){
@@ -48,7 +47,7 @@ public class StudentController {
         }
         return new ResponseEntity<>(studentRepository.save(student), HttpStatus.OK);
     }
-    @DeleteMapping("/students")
+    @DeleteMapping("/student")
     public ResponseEntity<HttpStatus> deleteAllStudents(){
         return new ResponseEntity<>(studentService.deleteAllStudents());
     }
