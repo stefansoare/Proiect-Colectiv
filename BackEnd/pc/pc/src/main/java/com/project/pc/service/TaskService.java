@@ -1,6 +1,8 @@
 package com.project.pc.service;
 
+import com.project.pc.model.Activity;
 import com.project.pc.model.Task;
+import com.project.pc.repository.ActivityRepository;
 import com.project.pc.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,8 +15,20 @@ import java.util.Optional;
 public class TaskService {
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private ActivityRepository activityRepository;
     public Task createTask(Task task){
         return taskRepository.save(new Task(task.getGrade(), task.getDescription(), task.getDeadline(), task.getAttendance()));
+    }
+    public Task addToActivity(Long id, Long aId){
+        Task task = taskRepository.findById(id).orElse(null);
+        Activity activity = activityRepository.findById(aId).orElse(null);
+        if (task == null || activity == null){
+            return null;
+        }
+        task.setActivity(activity);
+        taskRepository.save(task);
+        return task;
     }
     public List<Task> getAllTasks(){
         return taskRepository.findAll();
