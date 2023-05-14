@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppComponent } from './app.component';
-
 import { StudentsComponent } from './Students-component/students.component';
 import { FormsModule } from '@angular/forms';
 import { StudentDetailComponent } from './Student-detail/student-detail.component';
@@ -24,6 +22,9 @@ import {MatListModule} from '@angular/material/list';
 import {MatIconModule} from '@angular/material/icon';
 import { NavigationComponent } from './Navigation/navigation.component';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatTableModule} from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
     MatListModule,
     MatToolbarModule,
     MatIconModule,
+    MatSidenavModule,
+    MatTableModule,
+    MatInputModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false })
     

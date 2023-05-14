@@ -30,10 +30,6 @@
   margin-right: 20px;
 }
 
-.attendance-checkbox {
-  margin-right: 20px;
-}
-
 .assign-button {
   background-color: #007bff;
   color: #fff;
@@ -46,6 +42,7 @@
 .assign-button:hover {
   background-color: #0069d9;
 }
+
 button {
   background-color: #eee;
   border: none;
@@ -58,16 +55,18 @@ button {
   margin-bottom: 1rem;
   margin-top: 1rem;
 }
+
 button:hover {
   background-color: black;
   color: white;
 }
+
 button:disabled {
   background-color: #eee;
   color: #aaa;
   cursor: auto;
 }
-/* Remove bullet points from ul and ol lists */
+
 ul.team-list,
 ul.student-list {
   list-style-type: none;
@@ -75,11 +74,59 @@ ul.student-list {
   margin: 0;
 }
 
-/* Indent student list and group by team */
 ul.student-list {
   margin-left: 40px;
 }
 
 li.team-container {
   margin-bottom: 10px;
+}
+
+.sidebar-wrapper {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-search .input-group {
+  margin-bottom: 20px;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.sidebar-menu a:hover {
+  background-color: #ccc;
+}
+
+.sidebar-menu .material-icons {
+  margin-right: 10px;
+}
+
+.page-container {
+  display: flex;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
 }

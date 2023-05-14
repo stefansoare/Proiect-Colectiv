@@ -96,3 +96,42 @@ mat-toolbar {
 .mat-toolbar-title {
   color: white; /* Change the title color to white */
 }
+.sidebar-wrapper {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-search .input-group {
+  margin-bottom: 20px;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.sidebar-menu a:hover {
+  background-color: #ccc;
+}
+
+.sidebar-menu .material-icons {
+  margin-right: 10px;
+}

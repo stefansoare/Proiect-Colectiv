@@ -12,11 +12,9 @@ export const GRADES: Grade[] = [
 
 ];
 export const TEAMS: Team[] = [
-    {id:1, leader: 'Antonio1', mentorID: 1, activityID: 2, grade1:0},
-    {id:3, leader: 'Antonio3', mentorID: 1, activityID: 2 ,grade1:0},
-    {id:4, leader: 'Antonio4', mentorID: 1, activityID: 2, grade1:0},
-    {id:2, leader: 'Antonio2', mentorID: 1, activityID: 2 ,grade1:0},
-
+    { id: 1, name: 'Team 1', students: ['Student 1', 'Student 2', 'Student 3'], leader:'Student 1', mentorID:1, activityID:2, grade1:2},
+    { id: 2, name: 'Team 2', students: ['Student 4', 'Student 5', 'Student 6'] , leader:'Student 1', mentorID:1, activityID:2, grade1:2},
+    { id: 3, name: 'Team 3', students: ['Student 7', 'Student 8', 'Student 9'], leader:'Student 1', mentorID:1, activityID:2, grade1:2 }
 
 
 
