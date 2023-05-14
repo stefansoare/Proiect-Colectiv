@@ -19,6 +19,14 @@ public class TaskController {
     public ResponseEntity<Task> createTask(@RequestBody Task task){
         return new ResponseEntity<>(taskService.createTask(task), HttpStatus.CREATED);
     }
+    @PostMapping("{id}/activities/{aId}")
+    public ResponseEntity<Task> addToActivity(@PathVariable("id") Long id, @PathVariable("aId") Long aId){
+        Task task = taskService.addToActivity(id, aId);
+        if (task == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks(){
         return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
