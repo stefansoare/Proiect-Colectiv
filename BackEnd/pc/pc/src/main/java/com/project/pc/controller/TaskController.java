@@ -72,6 +72,30 @@ public class TaskController {
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
+    @PatchMapping("{id}/attendance")
+    public ResponseEntity<Task> patchTaskAtendance(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTaskAttendance(id, task);
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @PatchMapping("{id}/grade")
+    public ResponseEntity<Task> patchTaskGrade(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTaskGrade(id, task);
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @PatchMapping("{id}/comment")
+    public ResponseEntity<Task> patchTaskComment(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTaskComment(id, task);
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllTasks(){
         return new ResponseEntity<>(taskService.deleteAllTasks());

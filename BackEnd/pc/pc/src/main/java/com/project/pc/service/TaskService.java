@@ -65,6 +65,38 @@ public class TaskService {
         if (task.getDeadline() != null){
             update.setDeadline(task.getDeadline());
         }
+        if (task.getComment() != null) {
+            update.setComment(task.getComment());
+        }
+        taskRepository.save(update);
+        return update;
+    }
+    public Task patchTaskAttendance(long id, Task task) {
+        Task update = taskRepository.findById(id).orElse(null);
+        if (update == null) {
+            return null;
+        }
+        update.setAttendance(task.getAttendance());
+        taskRepository.save(update);
+        return update;
+    }
+    public Task patchTaskGrade(long id, Task task) {
+        Task update = taskRepository.findById(id).orElse(null);
+        if (update == null) {
+            return null;
+        }
+        update.setGrade(task.getGrade());
+        taskRepository.save(update);
+        return update;
+    }
+    public Task patchTaskComment(long id, Task task) {
+        Task update = taskRepository.findById(id).orElse(null);
+        if (update == null) {
+            return null;
+        }
+        if (task.getComment() != null) {
+            update.setComment(task.getComment());
+        }
         taskRepository.save(update);
         return update;
     }
