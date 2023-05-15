@@ -35,6 +35,15 @@ public class StudentService {
     public Student getStudentById (Long id) {
         return studentRepository.findById(id).orElse(null);
     }
+    public List<Student> getStudentByName(String name){
+        return studentRepository.findStudentByName(name);
+    }
+    public Student getStudentByEmail(String email){
+        return studentRepository.findStudentByEmail(email).orElse(null);
+    }
+    public List<Student> getTeamMembers(Long tId){
+        return studentRepository.findByTeamId(tId);
+    }
     public Student updateStudent (Long id, Student student){
         Student update = studentRepository.findStudentById(id).orElse(null);
         if (update == null){
@@ -59,6 +68,15 @@ public class StudentService {
         studentRepository.save(update);
         return update;
     }
+    public HttpStatus deleteFromTeam(Long id, Long tId){
+        Student student = studentRepository.findStudentById(id).orElse(null);
+        if (student == null ||student.getTeam() == null || student.getTeam().getId() != tId){
+            return HttpStatus.BAD_REQUEST;
+        }
+        student.setTeam(null);
+        studentRepository.save(student);
+        return HttpStatus.OK;
+    }
     public HttpStatus deleteAllStudents(){
         studentRepository.deleteAll();
         return HttpStatus.OK;
@@ -71,11 +89,5 @@ public class StudentService {
         }else {
             return HttpStatus.BAD_REQUEST;
         }
-    }
-    public List<Student> getStudentByName(String name){
-        return studentRepository.findStudentByName(name);
-    }
-    public Student getStudentByEmail(String email){
-        return studentRepository.findStudentByEmail(email).orElse(null);
     }
 }

@@ -53,6 +53,10 @@ public class StudentController {
         }
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
+    @GetMapping("{tId}")
+    public ResponseEntity<List<Student>> getTeamMembers(@PathVariable("tId") Long tId){
+        return new ResponseEntity<>(studentService.getTeamMembers(tId), HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student student){
         Student update = studentService.updateStudent(id, student);
@@ -68,6 +72,10 @@ public class StudentController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @DeleteMapping("{id}/teams/{tId}")
+    public ResponseEntity<HttpStatus> deleteFromTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
+        return new ResponseEntity<>(studentService.deleteFromTeam(id, tId));
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllStudents(){
