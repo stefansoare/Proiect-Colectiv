@@ -20,6 +20,8 @@ public class Task {
     private String deadline;
     @Column
     private int attendance;
+    @Column
+    private String comment;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
@@ -27,11 +29,12 @@ public class Task {
     @Nullable
     private Activity activity;
     public Task(){}
-    public Task(int grade, String description, String deadline, int attendance) {
+    public Task(int grade, String description, String deadline, int attendance, String comment) {
         this.grade = grade;
         this.description = description;
         this.deadline = deadline;
         this.attendance = attendance;
+        this.comment = comment;
     }
     public long getId() {
         return id;
@@ -63,6 +66,15 @@ public class Task {
     public void setAttendance(int attendance) {
         this.attendance = attendance;
     }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
     public Activity getActivity(){return activity;}
     public void setActivity(Activity activity){this.activity = activity;}
 }

@@ -18,7 +18,7 @@ public class TaskService {
     @Autowired
     private ActivityRepository activityRepository;
     public Task createTask(Task task){
-        return taskRepository.save(new Task(task.getGrade(), task.getDescription(), task.getDeadline(), task.getAttendance()));
+        return taskRepository.save(new Task(task.getGrade(), task.getDescription(), task.getDeadline(), task.getAttendance(), task.getComment()));
     }
     public Task addToActivity(Long id, Long aId){
         Task task = taskRepository.findById(id).orElse(null);
