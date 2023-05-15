@@ -26,7 +26,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTableModule} from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { StatsComponent } from './stats/stats.component';
-
+import { NgChartsModule } from 'ng2-charts';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { StatsComponent } from './stats/stats.component';
     MentorPageComponent,
     NavigationComponent,
     StatsComponent,
+    PieChartComponent,
     
   ],
   imports: [
@@ -59,6 +61,7 @@ import { StatsComponent } from './stats/stats.component';
     MatSidenavModule,
     MatTableModule,
     MatInputModule,
+    NgChartsModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false })
     
