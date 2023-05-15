@@ -14,7 +14,7 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class MentorPageComponent {
   
-  displayedColumns: string[] = ['id', 'name', 'students', ];
+  displayedColumns: string[] = ['id', 'name', 'students', 'expandedDetail'];
 
   name = '';
   position = 0;

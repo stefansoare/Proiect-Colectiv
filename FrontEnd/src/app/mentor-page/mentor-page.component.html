@@ -75,7 +75,8 @@
 
       <!-- Expanded Detail Column -->
       <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let team" [attr.colspan]="displayedColumns.length">
+        <th mat-header-cell *matHeaderCellDef>Grading area</th>
+        <td mat-cell *matCellDef="let team" [attr.colspan]="displayedColumns.length - 1">
           <div class="expanded-detail" *ngIf="expandedElement === team">
             <div class="grade-input">
               <label for="team-grade">Team Grade:</label>

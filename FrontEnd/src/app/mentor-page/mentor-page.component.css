@@ -1,29 +1,17 @@
-.attendance-grades-tab {
-  padding: 20px;
+/* Add these styles to your existing CSS */
+table {
+  width: 100%;
 }
 
-.name-list {
-  list-style: none;
-  padding: 0;
+td.mat-cell,
+th.mat-header-cell {
+  text-align: left;
 }
 
-.name-container {
+.expanded-detail {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-}
-
-.checkbox-button {
-  margin-right: 10px;
-}
-
-.name {
-  font-weight: bold;
-}
-
-.grading-area {
-  display: flex;
-  align-items: center;
+  justify-content: space-between;
 }
 
 .grade-input {
@@ -53,7 +41,6 @@ button {
   padding: 1rem;
   margin-right: 1rem;
   margin-bottom: 1rem;
-  margin-top: 1rem;
 }
 
 button:hover {
