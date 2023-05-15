@@ -22,6 +22,84 @@ button:disabled {
   cursor: auto;
 }
 
+.sidebar-wrapper {
+  width: 250px;
+  background-color: #f0f0f0;
+  padding: 20px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-search .input-group {
+  margin-bottom: 20px;
+}
+
+.sidebar-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar-menu li {
+  margin-bottom: 10px;
+}
+
+.sidebar-menu a {
+  display: flex;
+  align-items: center;
+  color: #333;
+  text-decoration: none;
+}
+
+.sidebar-menu a:hover {
+  background-color: #ccc;
+}
+
+.sidebar-menu .material-icons {
+  margin-right: 10px;
+}
+
+.page-container {
+  display: flex;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+.student-profile {
+  text-align: center;
+  padding: 20px;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+span {
+  font-weight: normal;
+}
+
+
+
 
 
 

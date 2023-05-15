@@ -1,20 +1,9 @@
-<h2>Mentor Page</h2>
-
 <div class="page-container">
   <div class="sidebar">
     <div class="sidebar-wrapper">
-      <form class="sidebar-search">
-        <div class="input-group no-border">
-          <input type="text" value="" class="form-control" placeholder="Search...">
-          <button mat-raised-button type="submit" class="btn btn-white btn-round btn-just-icon">
-            <i class="material-icons">search</i>
-            <div class="ripple-container"></div>
-          </button>
-        </div>
-      </form>
       <ul class="sidebar-menu">
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">
+          <a class="nav-link" href="/stats">
             <i class="material-icons">dashboard</i>
             <span>Stats</span>
           </a>
@@ -31,14 +20,6 @@
           <a class="nav-link" href="javascript:void(0)">
             <i class="material-icons">person</i>
             <span>Account</span>
-          </a>
-        </li>
-      </ul>
-      <ul class="sidebar-menu">
-        <li routerLinkActive="active" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item">
-          <a class="nav-link" [routerLink]="[menuItem.path]">
-            <i class="material-icons">{{menuItem.icon}}</i>
-            <span>{{menuItem.title}}</span>
           </a>
         </li>
       </ul>
@@ -80,9 +61,9 @@
           <div class="expanded-detail" *ngIf="expandedElement === team">
             <div class="grade-input">
               <label for="team-grade">Team Grade:</label>
-              <input id="team-grade" placeholder="Enter grade (1-10)">
+              <input id="team-grade" placeholder="Enter grade (1-10)" (click)="$event.stopPropagation()">
             </div>
-            <button class="assign-button">Assign Grade</button>
+            <button class="assign-button" (click)="$event.stopPropagation()">Assign Grade</button>
           </div>
         </td>
       </ng-container>

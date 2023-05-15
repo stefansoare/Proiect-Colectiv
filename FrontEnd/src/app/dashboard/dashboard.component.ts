@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Student } from '../Classes/Student';
 import { StudentService } from '../Services/student.service';
 
@@ -9,12 +9,24 @@ import { StudentService } from '../Services/student.service';
 })
 export class DashboardComponent implements OnInit {
   students: Student[] = [];
-student: Student | undefined;
+  
+   student: Student = {
+    id: 1,
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    lider: false,
+    TeamID: 1
+  };
+  
+
+
   constructor(private studentService: StudentService) { }
 
   ngOnInit(): void {
     this.getStudents();
   }
+  
+ 
 
   getStudents(): void {
     this.studentService.getStudents()

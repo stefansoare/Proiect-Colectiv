@@ -14,6 +14,14 @@ export class StudentsComponent implements OnInit {
   
   constructor(private studentService: StudentService){}
 
+
+
+  menuItems = [
+    { title: 'Home', path: '/home', icon: 'home', class: '' },
+    { title: 'About', path: '/about', icon: 'info', class: '' },
+    { title: 'Contact', path: '/contact', icon: 'email', class: '' }
+  ];
+
   ngOnInit(): void {
     this.getStudents();
   }

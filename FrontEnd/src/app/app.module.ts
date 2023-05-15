@@ -25,6 +25,9 @@ import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatTableModule} from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
+import { StatsComponent } from './stats/stats.component';
+
+
 
 @NgModule({
   declarations: [
@@ -37,6 +40,8 @@ import { MatInputModule } from '@angular/material/input';
     GradesComponent,
     MentorPageComponent,
     NavigationComponent,
+    StatsComponent,
+    
   ],
   imports: [
     BrowserModule,
