@@ -55,6 +55,8 @@ public class TeamController {
         }
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
+
+
     @PutMapping("{id}")
     public ResponseEntity<Team> updateTeam(@PathVariable("id") Long id, @RequestBody Team team){
         Team update = teamService.updateTeam(id, team);

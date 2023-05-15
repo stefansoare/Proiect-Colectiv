@@ -1,6 +1,7 @@
 package com.project.pc.controller;
 
 import com.project.pc.model.Task;
+import com.project.pc.model.Team;
 import com.project.pc.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,22 @@ public class TaskController {
         }
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
+    @GetMapping("{id}/attendance")
+    public ResponseEntity<Integer> getAttendance(@PathVariable("id") Long id) {
+        Task task = taskService.getTaskById(id);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task.getAttendance(), HttpStatus.OK);
+    }
+    @GetMapping("{id}/grade")
+    public ResponseEntity<Integer> getGrade(@PathVariable("id") Long id) {
+        Task task = taskService.getTaskById(id);
+        if (task == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task.getGrade(), HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody Task task){
         Task update = taskService.updateTask(id, task);
@@ -51,6 +68,30 @@ public class TaskController {
     public ResponseEntity<Task> patchTask(@PathVariable("id") Long id, @RequestBody Task task) {
         Task updated = taskService.patchTask(id, task);
         if (updated == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @PatchMapping("{id}/attendance")
+    public ResponseEntity<Task> patchTaskAtendance(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTaskAttendance(id, task);
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @PatchMapping("{id}/grade")
+    public ResponseEntity<Task> patchTaskGrade(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTaskGrade(id, task);
+        if (updated == null) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @PatchMapping("{id}/comment")
+    public ResponseEntity<Task> patchTaskComment(@PathVariable("id") Long id, @RequestBody Task task) {
+        Task updated = taskService.patchTaskComment(id, task);
+        if (updated == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
