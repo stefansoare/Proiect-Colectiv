@@ -2,6 +2,7 @@
   <div class="sidebar">
     <div class="sidebar-wrapper">
       <ul class="sidebar-menu">
+        <!-- Sidebar menu items -->
         <li class="nav-item">
           <a class="nav-link" href="/stats">
             <i class="material-icons">dashboard</i>
@@ -25,52 +26,56 @@
       </ul>
     </div>
   </div>
+
+
   <div class="content-container">
-    <mat-form-field>
-      <mat-label>Filter</mat-label>
-      <input matInput (keyup)="onFilterKeyUp($event)" [(ngModel)]="filterValue" placeholder="Ex. ium">
-    </mat-form-field>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="onFilterKeyUp($event)" [(ngModel)]="filterValue" placeholder="Ex. Team 1">
+  </mat-form-field>
 
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <!-- Position Column -->
-      <ng-container matColumnDef="id">
-        <th mat-header-cell *matHeaderCellDef>No.</th>
-        <td mat-cell *matCellDef="let team">{{team.id}}</td>
-      </ng-container>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <td mat-cell *matCellDef="let team">{{team.id}}</td>
+    </ng-container>
 
-      <!-- Team Name Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef>Team Name</th>
-        <td mat-cell *matCellDef="let team">{{team.name}}</td>
-      </ng-container>
+    <!-- Team Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Team Name</th>
+      <td mat-cell *matCellDef="let team">{{team.name}}</td>
+    </ng-container>
 
-      <!-- Students Column -->
-      <ng-container matColumnDef="students">
-        <th mat-header-cell *matHeaderCellDef>Students</th>
-        <td mat-cell *matCellDef="let team">
-          <ul>
-            <li *ngFor="let student of team.students">{{student}}</li>
-          </ul>
-        </td>
-      </ng-container>
+    <!-- Students Column -->
+    <ng-container matColumnDef="students">
+      <th mat-header-cell *matHeaderCellDef>Students</th>
+      <td mat-cell *matCellDef="let team">
+        <ul>
+          <li *ngFor="let student of team.students">{{student}}</li>
+        </ul>
+      </td>
+    </ng-container>
 
-      <!-- Expanded Detail Column -->
-      <ng-container matColumnDef="expandedDetail">
-        <th mat-header-cell *matHeaderCellDef>Grading area</th>
-        <td mat-cell *matCellDef="let team" [attr.colspan]="displayedColumns.length - 1">
-          <div class="expanded-detail" *ngIf="expandedElement === team">
-            <div class="grade-input">
-              <label for="team-grade">Team Grade:</label>
-              <input id="team-grade" placeholder="Enter grade (1-10)" (click)="$event.stopPropagation()">
-            </div>
-            <button class="assign-button" (click)="$event.stopPropagation()">Assign Grade</button>
+    <!-- Expanded Detail Column -->
+    <ng-container matColumnDef="expandedDetail">
+      <th mat-header-cell *matHeaderCellDef>Grading area</th>
+      <td mat-cell *matCellDef="let team" [attr.colspan]="displayedColumns.length - 1">
+        <div class="expanded-detail" *ngIf="expandedElement === team">
+          <div class="grade-input">
+            <ul>
+              <li *ngFor="let student of team.students; let i = index">
+                <input id="team-grade-{{i}}" [(ngModel)]="team.grades[i]" placeholder="Enter grade (1-10)" (click)="$event.stopPropagation()">
+              </li>
+            </ul>
           </div>
-        </td>
-      </ng-container>
+          <button class="assign-button" (click)="$event.stopPropagation()">Assign Grades</button>
+        </div>
+      </td>
+    </ng-container>
 
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr>
-      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isRowExpanded"></tr>
-    </table>
-  </div>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isRowExpanded"></tr>
+  </table>
 </div>
