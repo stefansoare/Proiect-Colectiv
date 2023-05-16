@@ -13,6 +13,25 @@ import { debounceTime } from 'rxjs/operators';
   styleUrls: ['./mentor-page.component.css']
 })
 export class MentorPageComponent {
+
+
+  longTextT = `A collaborative effort where individuals work together to achieve a common goal or 
+  complete a task. Promotes teamwork and integration of diverse skills and perspectives.`;
+
+  longTextP = `Practical learning and work experience during the summer break. Helps students apply
+  theoretical knowledge, gain real-world exposure, and develop professional skills.`;
+
+  longTextI = `Practical training for individuals pursuing a career in informatics. Offers hands-on
+  experience, exposure to relevant tools and technologies, and collaboration with industry professionals.
+  Bridges the gap between academic knowledge and real-world applications.`;
+
+  // Add the showTable property
+showTable: boolean = false;
+
+// Method to toggle the visibility of the table
+toggleTableVisibility() {
+  this.showTable = !this.showTable;
+}
   
   displayedColumns: string[] = ['id', 'name', 'students', 'expandedDetail'];
 
@@ -34,12 +53,6 @@ export class MentorPageComponent {
     { id: 3, name: 'Team 3', students: ['Student 7', 'Student 8', 'Student 9'], leader:'Student 1', mentorID:1, activityID:2, grade1:2 }
   ];
 
-  menuItems = [
-    { title: 'Home', path: '/home', icon: 'home', class: '' },
-    { title: 'About', path: '/about', icon: 'info', class: '' },
-    { title: 'Contact', path: '/contact', icon: 'email', class: '' }
-  ];
-
   dataSource: MatTableDataSource<Team>; // Adjust the type to 'Team' if it contains the required properties
 
   constructor() {
@@ -50,6 +63,8 @@ export class MentorPageComponent {
       this.applyFilter(value);
     });
   }
+
+  
 
   onSelect(team: any) {
     if (this.selectedTeam === team) {

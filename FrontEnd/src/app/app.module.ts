@@ -28,6 +28,7 @@ import { MatInputModule } from '@angular/material/input';
 import { StatsComponent } from './stats/stats.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
+import {MatCardModule} from '@angular/material/card';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
     BrowserModule,
     BrowserAnimationsModule,
     MatMenuModule,
+    MatCardModule,
     MatTabsModule,
     FormsModule,
     AppRoutingModule,
