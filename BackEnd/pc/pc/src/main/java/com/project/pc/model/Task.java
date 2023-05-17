@@ -28,6 +28,7 @@ public class Task {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Nullable
     private Activity activity;
+
     public Task(){}
     public Task(int grade, String description, String deadline, int attendance, String comment) {
         this.grade = grade;
