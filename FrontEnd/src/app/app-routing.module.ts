@@ -6,6 +6,8 @@ import { StudentDetailComponent } from './Student-detail/student-detail.componen
 import { GradesComponent } from './Grades/grades.component';
 import { MentorPageComponent } from './Mentor-page/mentor-page.component';
 import { StatsComponent } from './stats/stats.component';
+import { StudentListComponent } from './student-list/student-list.component';
+import { StudentFormComponent } from './student-form/student-form.component';
 
 const routes: Routes = [
   { path: 'students', component: StudentsComponent },
@@ -14,7 +16,11 @@ const routes: Routes = [
   { path: 'detail/:id', component: StudentDetailComponent },
   { path: 'grades', component: GradesComponent},
   { path: 'mentor-page', component: MentorPageComponent},
-  { path: 'stats', component: StatsComponent}
+  { path: 'stats', component: StatsComponent},
+  { path: 'students', component: StudentListComponent },
+  { path: 'addstudent', component: StudentFormComponent },
+  { path: 'view', component: StudentListComponent}
+ 
 ];
 
 @NgModule({

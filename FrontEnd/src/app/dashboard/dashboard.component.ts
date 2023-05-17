@@ -7,7 +7,7 @@ import { StudentService } from '../Services/student.service';
   templateUrl: './dashboard.component.html',
   styleUrls: [ './dashboard.component.css' ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   students: Student[] = [];
   
    student: Student = {
@@ -17,21 +17,6 @@ export class DashboardComponent implements OnInit {
     lider: false,
     TeamID: 1
   };
-  
-
-
-  constructor(private studentService: StudentService) { }
-
-  ngOnInit(): void {
-    this.getStudents();
-  }
-  
- 
-
-  getStudents(): void {
-    this.studentService.getStudents()
-      .subscribe(students => this.students = students.slice(1, 5));
-  }
   createDb() {
     const students = [
       { id: 12, name: 'Antonio', email: 'antonio@yahoo.com', lider: true, TeamID: 1 },
@@ -42,9 +27,25 @@ export class DashboardComponent implements OnInit {
     ];
     return {students};
   }
+  
+
+
+  constructor(private studentService: StudentService) { }
+
+ /* ngOnInit(): void {
+    this.getStudents();
+  }
+  
+ 
+
+  getStudents(): void {
+    this.studentService.getStudents()
+      .subscribe(students => this.students = students.slice(1, 5));
+  }
+  
 
   
   genId(students: Student[]): number {
     return students.length > 0 ? Math.max(...students.map(student => student.id)) + 1 : 11;
-  }
+  }*/
 }

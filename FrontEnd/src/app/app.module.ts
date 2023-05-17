@@ -29,6 +29,9 @@ import { StatsComponent } from './stats/stats.component';
 import { NgChartsModule } from 'ng2-charts';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
 import {MatCardModule} from '@angular/material/card';
+import { StudentListComponent } from './student-list/student-list.component';
+import { StudentFormComponent } from './student-form/student-form.component';
+import { StudentService } from './Services/student.service';
 
 
 @NgModule({
@@ -44,6 +47,8 @@ import {MatCardModule} from '@angular/material/card';
     NavigationComponent,
     StatsComponent,
     PieChartComponent,
+    StudentListComponent,
+    StudentFormComponent,
     
   ],
   imports: [
@@ -68,7 +73,7 @@ import {MatCardModule} from '@angular/material/card';
       InMemoryDataService, { dataEncapsulation: false })
     
   ],
-  providers: [],
+  providers: [StudentService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

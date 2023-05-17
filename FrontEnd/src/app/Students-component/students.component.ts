@@ -9,7 +9,7 @@ import { StudentService } from '../Services/student.service';
   styleUrls: ['./students.component.css']
 })
 
-export class StudentsComponent implements OnInit {
+export class StudentsComponent  {
   students: Student[] = [];
   
   constructor(private studentService: StudentService){}
@@ -22,7 +22,7 @@ export class StudentsComponent implements OnInit {
     { title: 'Contact', path: '/contact', icon: 'email', class: '' }
   ];
 
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     this.getStudents();
   }
 
@@ -44,6 +44,6 @@ export class StudentsComponent implements OnInit {
     this.students = this.students.filter(h => h !== student);
     this.studentService.deleteStudent(student.id).subscribe();
   }
- 
+ */
 }  
   
