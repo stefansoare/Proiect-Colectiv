@@ -7,4 +7,5 @@ import lombok.Data;
 public class TeamDTO {
     private ActivityDTO activityDTO;
     private MentorDTO mentorDTO;
+    private TaskDTO taskDTO;
 }
