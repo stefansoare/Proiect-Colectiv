@@ -22,6 +22,12 @@ public class Student {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Nullable
     private Team team;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Nullable
+    private Task task;
     public Student() {}
     public Student(String name, String email) {
         this.name = name;
@@ -47,4 +53,6 @@ public class Student {
     }
     public Team getTeam() {return team;}
     public void setTeam(Team team) {this.team = team;}
+    public Task getTask() {return task;}
+    public void setTask(Task task) {this.task = task;}
 }

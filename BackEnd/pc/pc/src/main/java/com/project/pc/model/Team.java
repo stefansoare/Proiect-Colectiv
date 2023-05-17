@@ -26,6 +26,12 @@ public class Team {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @Nullable
     private Mentor mentor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Nullable
+    private Task task;
     public Team() {}
     public Team(long teamLeader) {this.teamLeader = teamLeader;}
     public long getId() {
@@ -44,4 +50,6 @@ public class Team {
     public void setActivity(Activity activity) {this.activity = activity;}
     public Mentor getMentor() {return mentor;}
     public void setMentor(Mentor mentor) {this.mentor = mentor;}
+    public Task getTask() {return task;}
+    public void setTask(Task task) {this.task = task;}
 }

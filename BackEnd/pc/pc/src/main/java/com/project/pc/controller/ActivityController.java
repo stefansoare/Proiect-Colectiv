@@ -43,7 +43,7 @@ public class ActivityController {
         if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(updated, HttpStatus.OK);
+        return new ResponseEntity<>(updated,  HttpStatus.OK);
     }
     @PatchMapping("{id}")
     public ResponseEntity<Activity> patchActivity(@PathVariable("id") Long id, @RequestBody Activity activity) {
