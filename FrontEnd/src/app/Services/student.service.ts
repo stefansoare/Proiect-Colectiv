@@ -10,18 +10,12 @@ import { catchError, map, tap } from 'rxjs/operators';
 })
 export class StudentService {
  
-  private studentsUrl = 'api/students';
+  private studentsUrl = 'http://localhost:8080/api/students/';
 
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-  
+  constructor(private http: HttpClient) { }
+
   getStudents(): Observable<Student[]> {
-    return this.http.get<Student[]>(this.studentsUrl)
-      .pipe(
-        tap(_ => this.log('fetched students')),
-        catchError(this.handleError<Student[]>('getStudents', []))
-      );
+    return this.http.get<Student[]>(this.studentsUrl);
   }
 
   /**
@@ -30,7 +24,7 @@ export class StudentService {
  *
  * @param operation - name of the operation that failed
  * @param result - optional value to return as the observable result
- */
+
 private handleError<T>(operation = 'operation', result?: T) {
   return (error: any): Observable<T> => {
 
@@ -98,5 +92,5 @@ searchStudents(term: string): Observable<Student[]> {
     catchError(this.handleError<Student[]>('searchStudents', []))
   );
 }
-
+*/
 }

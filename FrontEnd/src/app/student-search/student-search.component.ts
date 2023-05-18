@@ -14,7 +14,7 @@ import { StudentService } from '../Services/student.service';
   templateUrl: './student-search.component.html',
   styleUrls: [ './student-search.component.css' ]
 })
-export class StudentSearchComponent implements OnInit {
+export class StudentSearchComponent {
   students$!: Observable<Student[]>;
   private searchTerms = new Subject<string>();
 
@@ -24,7 +24,7 @@ export class StudentSearchComponent implements OnInit {
   search(term: string): void {
     this.searchTerms.next(term);
   }
-
+/*
   ngOnInit(): void {
     this.students$ = this.searchTerms.pipe(
       // wait 300ms after each keystroke before considering the term
@@ -36,5 +36,5 @@ export class StudentSearchComponent implements OnInit {
       // switch to new search observable each time the term changes
       switchMap((term: string) => this.studentService.searchStudents(term)),
     );
-  }
+  }*/
 }

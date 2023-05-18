@@ -11,7 +11,7 @@ import { StudentService } from '../Services/student.service';
   templateUrl: './student-detail.component.html',
   styleUrls: [ './student-detail.component.css' ]
 })
-export class StudentDetailComponent implements OnInit {
+export class StudentDetailComponent {
   student: Student | undefined;
 
   constructor(
@@ -19,7 +19,7 @@ export class StudentDetailComponent implements OnInit {
     private studentService: StudentService,
     private location: Location
   ) {}
-
+/*
   ngOnInit(): void {
     this.getStudent();
   }
@@ -38,5 +38,5 @@ export class StudentDetailComponent implements OnInit {
       this.studentService.updateStudent(this.student)
         .subscribe(() => this.goBack());
     }
-  }
+  }*/
 }

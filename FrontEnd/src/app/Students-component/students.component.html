@@ -40,9 +40,9 @@
       <label for="new-student">Student name:</label>
       <input id="new-student" #studentName />
 
-      <button type="button" class="add-button" (click)="add(studentName.value); studentName.value=''">
+     <!--<button type="button" class="add-button" (click)="add(studentName.value); studentName.value=''">
         Add student
-      </button>
+      </button> -->
     </div>
 
     <ul class="students">
@@ -51,7 +51,7 @@
           <button type="button" class="student-button" routerLink="/detail/{{student.id}}">
             <span class="badge">{{student.id}}</span> {{student.name}}
           </button>
-          <button type="button" class="delete-button" title="Delete student" (click)="delete(student)">x</button>
+          <!--<button type="button" class="delete-button" title="Delete student" (click)="delete(student)">x</button>-->
         </div>
       </li>
     </ul>
