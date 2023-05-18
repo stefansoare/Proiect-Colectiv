@@ -10,13 +10,14 @@ import { StudentService } from '../Services/student.service';
 export class DashboardComponent implements OnInit {
   students: Student[] = [];
   
-   student: Student = {
+  student: Student = {
     id: 1,
     name: 'John Doe',
-    email: 'johndoe@example.com',
+    email: 'john@example.com',
     lider: false,
-    TeamID: 1
+    TeamID: 1,
   };
+  
   
 
 
@@ -29,8 +30,7 @@ export class DashboardComponent implements OnInit {
  
 
   getStudents(): void {
-    this.studentService.getStudents()
-      .subscribe(students => this.students = students.slice(1, 5));
+    this.studentService.getStudents().subscribe(students => this.students = students.slice(1, 5));
   }
   createDb() {
     const students = [

@@ -1,35 +1,32 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { NgChartsModule } from 'ng2-charts';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { StudentsComponent } from './Students-component/students.component';
-import { FormsModule } from '@angular/forms';
-import { StudentDetailComponent } from './Student-detail/student-detail.component';
-import { MessagesComponent } from './Messages/messages.component';
-import { AppRoutingModule } from './app-routing.module';
-import { DashboardComponent } from './Dashboard/dashboard.component';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './Services/in-memory-data.service';
-import { StudentSearchComponent } from './Student-search/student-search.component';
-import { GradesComponent } from './Grades/grades.component';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { MatMenuModule} from '@angular/material/menu';
-import { MentorPageComponent } from './Mentor-page/mentor-page.component';
-import {MatTabsModule} from '@angular/material/tabs';
-import {MatCheckbox, MatCheckboxModule} from '@angular/material/checkbox';
-import {MatDividerModule} from '@angular/material/divider';
-import {MatListModule} from '@angular/material/list';
-import {MatIconModule} from '@angular/material/icon';
+import { StudentDetailComponent } from './student-detail/student-detail.component';
+import { MessagesComponent } from './messages/messages.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { StudentSearchComponent } from './student-search/student-search.component';
+import { GradesComponent } from './grades/grades.component';
+import { MentorPageComponent } from './mentor-page/mentor-page.component';
 import { NavigationComponent } from './Navigation/navigation.component';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatSidenavModule} from '@angular/material/sidenav';
-import {MatTableModule} from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
 import { StatsComponent } from './stats/stats.component';
-import { NgChartsModule } from 'ng2-charts';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
-import {MatCardModule} from '@angular/material/card';
-
 
 @NgModule({
   declarations: [
@@ -44,17 +41,15 @@ import {MatCardModule} from '@angular/material/card';
     NavigationComponent,
     StatsComponent,
     PieChartComponent,
-    
   ],
   imports: [
     BrowserModule,
+    FormsModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     MatMenuModule,
     MatCardModule,
     MatTabsModule,
-    FormsModule,
-    AppRoutingModule,
-    HttpClientModule,
     MatCheckboxModule,
     MatDividerModule,
     MatListModule,
@@ -64,9 +59,7 @@ import {MatCardModule} from '@angular/material/card';
     MatTableModule,
     MatInputModule,
     NgChartsModule,
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false })
-    
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

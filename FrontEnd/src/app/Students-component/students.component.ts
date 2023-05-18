@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Student } from "../Classes/Student";
-import { StudentService } from '../Services/student.service';
-
+import { InMemoryDataService } from '../Services/in-memory-data.service';
 
 @Component({
   selector: 'app-students',
@@ -11,26 +10,25 @@ import { StudentService } from '../Services/student.service';
 
 export class StudentsComponent implements OnInit {
   students: Student[] = [];
-  
-  constructor(private studentService: StudentService){}
-
-
 
   menuItems = [
     { title: 'Home', path: '/home', icon: 'home', class: '' },
     { title: 'About', path: '/about', icon: 'info', class: '' },
     { title: 'Contact', path: '/contact', icon: 'email', class: '' }
   ];
+  constructor(private inMemoryDataService: InMemoryDataService) { }
 
   ngOnInit(): void {
     this.getStudents();
   }
 
-  getStudents(): void{
-    this.studentService.getStudents()
-    .subscribe(students => this.students = students);
+  getStudents(): void {
+    this.inMemoryDataService.getAllStudents()
+      .then(students => this.students = students)
+      .catch(error => console.error('Error retrieving students:', error));
   }
 
+/*
   add(name: string): void {
     name = name.trim();
     if (!name) { return; }
@@ -44,6 +42,6 @@ export class StudentsComponent implements OnInit {
     this.students = this.students.filter(h => h !== student);
     this.studentService.deleteStudent(student.id).subscribe();
   }
- 
+ */
 }  
   

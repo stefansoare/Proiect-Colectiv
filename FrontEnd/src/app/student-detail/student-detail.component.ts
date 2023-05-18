@@ -1,23 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-
 import { Student } from '../Classes/Student';
 import { StudentService } from '../Services/student.service';
-
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-student-detail',
   templateUrl: './student-detail.component.html',
-  styleUrls: [ './student-detail.component.css' ]
+  styleUrls: ['./student-detail.component.css']
 })
 export class StudentDetailComponent implements OnInit {
-  student: Student | undefined;
+  student: Student | null=null;
 
   constructor(
-    private route: ActivatedRoute,
     private studentService: StudentService,
-    private location: Location
+    private route: ActivatedRoute // Inject ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -25,18 +21,8 @@ export class StudentDetailComponent implements OnInit {
   }
 
   getStudent(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.studentService.getStudent(id).subscribe(student => this.student = student);
-  }
-
-  goBack(): void {
-    this.location.back();
-  }
-
-  save(): void {
-    if (this.student) {
-      this.studentService.updateStudent(this.student)
-        .subscribe(() => this.goBack());
-    }
+    this.studentService.getStudents().subscribe((students: Student[]) => {
+      this.student = students[0]; // Assign the first student
+    });
   }
 }
