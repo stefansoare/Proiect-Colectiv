@@ -6,6 +6,7 @@ import { Pool, QueryResult } from 'pg';
   providedIn: 'root',
 })
 export class InMemoryDataService {
+<<<<<<< Updated upstream
   private pool: Pool;
 
   constructor() {
@@ -18,6 +19,9 @@ export class InMemoryDataService {
       port: 5432, // Adjust the port if necessary
     });
   }
+=======
+  
+>>>>>>> Stashed changes
 
   async getAllStudents(): Promise<Student[]> {
     try {

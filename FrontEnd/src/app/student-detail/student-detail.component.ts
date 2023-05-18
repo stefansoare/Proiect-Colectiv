@@ -8,14 +8,19 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './student-detail.component.html',
   styleUrls: ['./student-detail.component.css']
 })
+<<<<<<< Updated upstream
 export class StudentDetailComponent implements OnInit {
   student: Student | null=null;
+=======
+export class StudentDetailComponent {
+  student: Student | undefined;
+>>>>>>> Stashed changes
 
   constructor(
     private studentService: StudentService,
     private route: ActivatedRoute // Inject ActivatedRoute
   ) {}
-
+/*
   ngOnInit(): void {
     this.getStudent();
   }
@@ -25,4 +30,19 @@ export class StudentDetailComponent implements OnInit {
       this.student = students[0]; // Assign the first student
     });
   }
+<<<<<<< Updated upstream
 }
+=======
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  save(): void {
+    if (this.student) {
+      this.studentService.updateStudent(this.student)
+        .subscribe(() => this.goBack());
+    }
+  }*/
+}
+>>>>>>> Stashed changes

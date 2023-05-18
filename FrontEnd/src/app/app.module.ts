@@ -27,6 +27,12 @@ import { MentorPageComponent } from './mentor-page/mentor-page.component';
 import { NavigationComponent } from './Navigation/navigation.component';
 import { StatsComponent } from './stats/stats.component';
 import { PieChartComponent } from './pie-chart/pie-chart.component';
+<<<<<<< Updated upstream
+=======
+import {MatCardModule} from '@angular/material/card';
+import { StudentListComponent } from './student-list/student-list.component';
+
+>>>>>>> Stashed changes
 
 @NgModule({
   declarations: [
@@ -41,6 +47,11 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
     NavigationComponent,
     StatsComponent,
     PieChartComponent,
+<<<<<<< Updated upstream
+=======
+    StudentListComponent,
+    
+>>>>>>> Stashed changes
   ],
   imports: [
     BrowserModule,
@@ -59,7 +70,12 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
     MatTableModule,
     MatInputModule,
     NgChartsModule,
+<<<<<<< Updated upstream
     AppRoutingModule,
+=======
+    
+    
+>>>>>>> Stashed changes
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -8,7 +8,7 @@ import { InMemoryDataService } from '../Services/in-memory-data.service';
   styleUrls: ['./students.component.css']
 })
 
-export class StudentsComponent implements OnInit {
+export class StudentsComponent {
   students: Student[] = [];
 
   menuItems = [
@@ -18,7 +18,7 @@ export class StudentsComponent implements OnInit {
   ];
   constructor(private inMemoryDataService: InMemoryDataService) { }
 
-  ngOnInit(): void {
+  /*ngOnInit(): void {
     this.getStudents();
   }
 
