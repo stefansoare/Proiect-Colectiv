@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Team } from '../Classes/Team';
 import { TEAMS } from '../mock-students';
 import { Student } from '../Classes/Student';
-import { StudentDetailComponent } from '../Student-detail/student-detail.component';
+import { StudentDetailComponent } from '../student-detail/student-detail.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
