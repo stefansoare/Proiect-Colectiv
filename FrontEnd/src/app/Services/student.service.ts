@@ -9,24 +9,8 @@ import { catchError, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class StudentService {
-
-  private studentsUrl: string;
-
-  constructor(private http: HttpClient) {
-    this.studentsUrl = 'http://localhost:8080/students/';
-  }
-
-  public findAll(): Observable<Student[]> {
-    return this.http.get<Student[]>(this.studentsUrl);
-  }
-
-  public save(student: Student) {
-    return this.http.post<Student>(this.studentsUrl, student);
-  }
-
-
  
-  /*private studentsUrl = 'api/students';
+  private studentsUrl = 'api/students';
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -40,13 +24,13 @@ export class StudentService {
       );
   }
 
-  
+  /**
  * Handle Http operation that failed.
  * Let the app continue.
  *
  * @param operation - name of the operation that failed
  * @param result - optional value to return as the observable result
- 
+ */
 private handleError<T>(operation = 'operation', result?: T) {
   return (error: any): Observable<T> => {
 
@@ -113,6 +97,6 @@ searchStudents(term: string): Observable<Student[]> {
        this.log(`no students matching "${term}"`)),
     catchError(this.handleError<Student[]>('searchStudents', []))
   );
-}*/
+}
 
 }
