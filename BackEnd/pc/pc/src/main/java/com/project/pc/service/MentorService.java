@@ -1,11 +1,13 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.MentorDTO;
 import com.project.pc.model.Mentor;
 import com.project.pc.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,41 +15,48 @@ import java.util.Optional;
 public class MentorService {
     @Autowired
     private MentorRepository mentorRepository;
-    public Mentor createMentor(Mentor mentor){
-        return mentorRepository.save(new Mentor(mentor.getName(), mentor.getEmail()));
+    @Autowired
+    private MappingService mappingService;
+    public Mentor createMentor(MentorDTO mentorDTO){
+        return mentorRepository.save(mappingService.convertDTOIntoMentor(mentorDTO));
     }
-    public List<Mentor> getAllMentors(){
-        return mentorRepository.findAll();
+    public List<MentorDTO> getAllMentors(){
+        List<Mentor> mentors = mentorRepository.findAll();
+        List<MentorDTO> mentorDTOS = new ArrayList<>();
+        for(Mentor mentor : mentors){
+            mentorDTOS.add(mappingService.convertMentorIntoDTO(mentor));
+        }
+        return mentorDTOS;
     }
-    public Mentor getMentorById(Long id){
-        return mentorRepository.findById(id).orElse(null);
+    public MentorDTO getMentorById(Long id){
+        return mappingService.convertMentorIntoDTO(mentorRepository.findById(id).orElse(null));
     }
-    public List<Mentor> getMentorByName(String name){
-        return mentorRepository.findMentorByName(name);
+    public MentorDTO getMentorByName(String name){
+        return mappingService.convertMentorIntoDTO(mentorRepository.findMentorByName(name).orElse(null));
     }
-    public Mentor getMentorByEmail(String email){
-        return mentorRepository.findMentorByEmail(email).orElse(null);
+    public MentorDTO getMentorByEmail(String email){
+        return mappingService.convertMentorIntoDTO(mentorRepository.findMentorByEmail(email).orElse(null));
     }
-    public Mentor updateMentor(Long id, Mentor mentor){
+    public Mentor updateMentor(Long id, MentorDTO mentorDTO){
         Mentor update = mentorRepository.findMentorById(id).orElse(null);
         if (update == null){
             return null;
         }
-        update.setName(mentor.getName());
-        update.setEmail(mentor.getEmail());
+        update.setName(mentorDTO.getName());
+        update.setEmail(mentorDTO.getEmail());
         mentorRepository.save(update);
         return update;
     }
-    public Mentor patchMentor(Long id, Mentor mentor){
+    public Mentor patchMentor(Long id, MentorDTO mentorDTO){
         Mentor update = mentorRepository.findMentorById(id).orElse(null);
         if (update == null){
             return null;
         }
-        if (mentor.getEmail() != null){
-            update.setEmail(mentor.getEmail());
+        if (mentorDTO.getEmail() != null){
+            update.setEmail(mentorDTO.getEmail());
         }
-        if (mentor.getName() != null){
-            update.setName(mentor.getName());
+        if (mentorDTO.getName() != null){
+            update.setName(mentorDTO.getName());
         }
         mentorRepository.save(update);
         return update;

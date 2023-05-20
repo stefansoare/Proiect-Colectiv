@@ -1,10 +1,13 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.repository.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,38 +15,47 @@ import java.util.Optional;
 public class ActivityService {
     @Autowired
     private ActivityRepository activityRepository;
-    public Activity createActivity(Activity activity){
-        return activityRepository.save(new Activity(activity.getName(), activity.getDescription()));
+    @Autowired
+    private MappingService mappingService;
+    public Activity createActivity(ActivityDTO activityDTO){
+        if (activityDTO == null)
+            return null;
+        return activityRepository.save(mappingService.convertDTOIntoActivity(activityDTO));
     }
-    public List<Activity> getAllActivities(){
-        return activityRepository.findAll();
+    public List<ActivityDTO> getAllActivities(){
+        List<Activity> activities = activityRepository.findAll();
+        List<ActivityDTO> activityDTOS = new ArrayList<>();
+        for(Activity activity : activities){
+            activityDTOS.add(mappingService.convertActivityIntoDTO(activity));
+        }
+        return activityDTOS;
     }
-    public Activity getActivityById (Long id) {
-        return activityRepository.findById(id).orElse(null);
+    public ActivityDTO getActivityById (Long id) {
+        return mappingService.convertActivityIntoDTO(activityRepository.findById(id).orElse(null));
     }
-    public List<Activity> getActivityByName(String name){
-        return activityRepository.findByName(name);
+    public ActivityDTO getActivityByName(String name){
+        return mappingService.convertActivityIntoDTO(activityRepository.findByName(name).orElse(null));
     }
-    public Activity updateActivity (Long id, Activity activity){
+    public Activity updateActivity (Long id, ActivityDTO activityDTO){
         Activity update = activityRepository.findById(id).orElse(null);
         if (update == null){
             return null;
         }
-        update.setName(activity.getName());
-        update.setDescription(activity.getDescription());
+        update.setName(activityDTO.getName());
+        update.setDescription(activityDTO.getDescription());
         activityRepository.save(update);
         return update;
     }
-    public Activity patchActivity(long id, Activity activity) {
+    public Activity patchActivity(long id, ActivityDTO activityDTO) {
         Activity update = activityRepository.findById(id).orElse(null);
-        if (update == null){
+        if (update == null) {
             return null;
         }
-        if (activity.getName() != null) {
-            update.setName(activity.getName());
+        if (activityDTO.getName() != null) {
+            update.setName(activityDTO.getName());
         }
-        if (activity.getDescription() != null) {
-            update.setDescription(activity.getDescription());
+        if (activityDTO.getDescription() != null) {
+            update.setDescription(activityDTO.getDescription());
         }
         activityRepository.save(update);
         return update;
