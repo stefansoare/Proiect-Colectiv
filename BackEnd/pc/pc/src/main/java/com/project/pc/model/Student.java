@@ -1,6 +1,8 @@
 package com.project.pc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.pc.dto.TaskDTO;
+import com.project.pc.dto.TeamDTO;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -51,8 +53,8 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
-    public Team getTeam() {return team;}
-    public void setTeam(Team team) {this.team = team;}
-    public Task getTask() {return task;}
-    public void setTask(Task task) {this.task = task;}
+    public TeamDTO getTeam() {return team;}
+    public void setTeam(TeamDTO team) {this.team = team;}
+    public TaskDTO getTask() {return task;}
+    public void setTask(TaskDTO task) {this.task = task;}
 }

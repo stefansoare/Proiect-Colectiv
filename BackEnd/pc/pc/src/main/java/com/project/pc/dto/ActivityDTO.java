@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class ActivityDTO {
-    private String description;
     private String name;
+    private String description;
 }
 
