@@ -11,14 +11,20 @@ import { StudentService } from '../Services/student.service';
   templateUrl: './student-detail.component.html',
   styleUrls: [ './student-detail.component.css' ]
 })
-export class StudentDetailComponent {
-  student: Student | undefined;
+export class StudentDetailComponent{
+  student: Student[] = [];
 
-  constructor(
-    private route: ActivatedRoute,
-    private studentService: StudentService,
-    private location: Location
-  ) {}
+  constructor(private studentService: StudentService) { }
+
+  ngOnInit() {
+    this.studentService.getStudents().subscribe(
+      student => this.student = student
+    );
+  }
+  
+
+
+
 /*
   ngOnInit(): void {
     this.getStudent();

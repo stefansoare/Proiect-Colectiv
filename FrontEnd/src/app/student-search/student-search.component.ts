@@ -9,6 +9,7 @@ import {
 import { Student } from '../Classes/Student';
 import { StudentService } from '../Services/student.service';
 
+
 @Component({
   selector: 'app-student-search',
   templateUrl: './student-search.component.html',

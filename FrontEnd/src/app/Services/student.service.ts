@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import {Express}  from 'express';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,10 +15,18 @@ export class StudentService {
   private studentsUrl = 'http://localhost:8080/api/students/';
 
   constructor(private http: HttpClient) { }
+  
 
   getStudents(): Observable<Student[]> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     return this.http.get<Student[]>(this.studentsUrl);
   }
+
+  createStudent(student: Student): Observable<Student> {
+    return this.http.post<Student>(this.studentsUrl, student);
+  }
+
+  
 
   /**
  * Handle Http operation that failed.

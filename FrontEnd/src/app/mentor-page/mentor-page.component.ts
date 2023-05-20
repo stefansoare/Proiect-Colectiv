@@ -6,6 +6,7 @@ import { StudentDetailComponent } from '../student-detail/student-detail.compone
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { StudentService } from '../Services/student.service';
 
 @Component({
   selector: 'app-mentor-page',
@@ -47,24 +48,39 @@ toggleTableVisibility() {
 
   expandedElement: any;
 
-  teams: Team[] = [
-    { id: 1, name: 'Team 1', students: ['Student 1', 'Student 2', 'Student 3'], leader:'Student 1', mentorID:1, activityID:2, grade1:2},
-    { id: 2, name: 'Team 2', students: ['Student 4', 'Student 5', 'Student 6'] , leader:'Student 1', mentorID:1, activityID:2, grade1:2},
-    { id: 3, name: 'Team 3', students: ['Student 7', 'Student 8', 'Student 9'], leader:'Student 1', mentorID:1, activityID:2, grade1:2 }
-  ];
+  
 
-  dataSource: MatTableDataSource<Team>; // Adjust the type to 'Team' if it contains the required properties
+  dataSource: MatTableDataSource<Student>; // Adjust the type to 'Team' if it contains the required properties
 
-  constructor() {
-    this.dataSource = new MatTableDataSource<Team>(this.teams);
+ 
 
-    // Subscribe to the filterSubject and apply debounceTime
-    this.filterSubject.pipe(debounceTime(1000)).subscribe((value) => {
-      this.applyFilter(value);
-    });
+  students: Student[] = [];
+
+  constructor(private studentService: StudentService) { 
+    this.dataSource = new MatTableDataSource<Student>(this.students);
+
   }
 
+  ngOnInit() {
+    this.studentService.getStudents().subscribe(
+      students => {
+        this.students = students;
+        this.dataSource.data = this.students;
+      }
+    );
+  }
   
+
+
+
+
+
+
+
+
+
+
+
 
   onSelect(team: any) {
     if (this.selectedTeam === team) {
@@ -75,7 +91,7 @@ toggleTableVisibility() {
       this.selectedTeam = team;
     }
   }
-
+  
   onSelectStudent(student: any) {
     if (this.selectedStudent === student) {
       // If the selected button is clicked again, clear the selectedStudent
@@ -86,17 +102,19 @@ toggleTableVisibility() {
     }
   }
   
-  applyFilter(filtervalue: string) {
-    this.dataSource.filter = filtervalue.trim().toLowerCase();
+  applyFilter(filterValue: string) {
+    this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
+  
   onFilterKeyUp(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    this.filterSubject.next(filterValue);
+    this.applyFilter(filterValue);
   }
   
   isRowExpanded = (row: any) => this.expandedElement === row;
+  
   onRowClick(row: any) {
     this.expandedElement = this.expandedElement === row ? null : row;
   }
+  
 }

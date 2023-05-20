@@ -1,11 +1,13 @@
-<div *ngIf="student">
-
-    <h2>{{student.name | uppercase}} Details</h2>
-    <div><span>id: </span>{{student.id}}</div>
-    <div><span>email: </span>{{student.email}}</div>
-    <div><span>leader: </span>{{student.lider}}</div>
-    <div><span>teamID: </span>{{student.TeamID}}</div>
+<div *ngFor="let student of student">
+  <div *ngIf="student">
+    <h2>{{ student.name | uppercase }} Details</h2>
+    <div><span>id: </span>{{ student.id }}</div>
+    <div><span>email: </span>{{ student.email }}</div>
+    <div><span>leader: </span>{{ student.lider }}</div>
+    <div><span>teamID: </span>{{ student.TeamID }}</div>
   </div>
+</div>
+
  <!-- <button type="button" (click)="goBack()">go back</button> -->
   <button>
   <a routerLink="/grades">view attendances and grades</a>
