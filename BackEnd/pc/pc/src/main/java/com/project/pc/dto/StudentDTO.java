@@ -1,6 +1,5 @@
 package com.project.pc.dto;
 
-import com.project.pc.model.Team;
 import lombok.Data;
 
 @Data

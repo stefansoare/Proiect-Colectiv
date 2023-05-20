@@ -1,6 +1,7 @@
 package com.project.pc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.project.pc.dto.ActivityDTO;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -76,6 +77,6 @@ public class Task {
         this.comment = comment;
     }
 
-    public Activity getActivity(){return activity;}
-    public void setActivity(Activity activity){this.activity = activity;}
+    public ActivityDTO getActivity(){return activity;}
+    public void setActivity(ActivityDTO activity){this.activity = activity;}
 }
