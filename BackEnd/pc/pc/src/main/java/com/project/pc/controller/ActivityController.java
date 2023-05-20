@@ -1,5 +1,6 @@
 package com.project.pc.controller;
 
+import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,39 +16,37 @@ public class ActivityController {
     @Autowired
     private ActivityService activityService;
     @PostMapping
-    public ResponseEntity<Activity> createActivity(@RequestBody Activity activity) {
-        Activity createdActivity = activityService.createActivity(activity);
-        return new ResponseEntity<>(createdActivity, HttpStatus.CREATED);
+    public ResponseEntity<Activity> createActivity(@RequestBody ActivityDTO activityDTO) {
+        return new ResponseEntity<>(activityService.createActivity(activityDTO), HttpStatus.CREATED);
     }
     @GetMapping
-    public ResponseEntity<List<Activity>> getAllActivities(){
-        List<Activity> activities = activityService.getAllActivities();
+    public ResponseEntity<List<ActivityDTO>> getAllActivities(){
+        List<ActivityDTO> activities = activityService.getAllActivities();
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
     @GetMapping("id/{id}")
-    public ResponseEntity<Activity> getActivityById(@PathVariable("id") Long id) {
-        Activity activity = activityService.getActivityById(id);
-        if (activity == null){
+    public ResponseEntity<ActivityDTO> getActivityById(@PathVariable("id") Long id) {
+        ActivityDTO activityDTO = activityService.getActivityById(id);
+        if (activityDTO == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(activity, HttpStatus.FOUND);
+        return new ResponseEntity<>(activityDTO, HttpStatus.FOUND);
     }
     @GetMapping("name/{name}")
-    public ResponseEntity<List<Activity>> getActivityByName(@PathVariable("name") String name) {
-        List<Activity> activities = activityService.getActivityByName(name);
-        return new ResponseEntity<>(activities, HttpStatus.FOUND);
+    public ResponseEntity<ActivityDTO> getActivityByName(@PathVariable("name") String name) {
+        return new ResponseEntity<>(activityService.getActivityByName(name), HttpStatus.FOUND);
     }
     @PutMapping("{id}")
-    public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody Activity activity){
-        Activity updated = activityService.updateActivity(id, activity);
+    public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDTO){
+        Activity updated = activityService.updateActivity(id, activityDTO);
         if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(updated,  HttpStatus.OK);
     }
     @PatchMapping("{id}")
-    public ResponseEntity<Activity> patchActivity(@PathVariable("id") Long id, @RequestBody Activity activity) {
-        Activity updated = activityService.patchActivity(id, activity);
+    public ResponseEntity<Activity> patchActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDTO) {
+        Activity updated = activityService.patchActivity(id, activityDTO);
         if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

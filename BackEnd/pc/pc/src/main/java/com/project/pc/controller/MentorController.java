@@ -1,5 +1,6 @@
 package com.project.pc.controller;
 
+import com.project.pc.dto.MentorDTO;
 import com.project.pc.model.Mentor;
 import com.project.pc.service.MentorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,47 +16,49 @@ public class MentorController {
     @Autowired
     private MentorService mentorService;
     @PostMapping
-    public ResponseEntity<Mentor> createMentor(@RequestBody Mentor mentor){
-        Mentor createdMentor = mentorService.createMentor(mentor);
-        return new ResponseEntity<>(createdMentor, HttpStatus.CREATED);
+    public ResponseEntity<Mentor> createMentor(@RequestBody MentorDTO mentorDTO){
+        return new ResponseEntity<>(mentorService.createMentor(mentorDTO), HttpStatus.CREATED);
     }
     @GetMapping
-    public ResponseEntity<List<Mentor>> getAllMentors(){
-        List<Mentor> mentors = mentorService.getAllMentors();
-        return new ResponseEntity<>(mentors, HttpStatus.OK);
+    public ResponseEntity<List<MentorDTO>> getAllMentors(){
+        List<MentorDTO> mentorsDTOS = mentorService.getAllMentors();
+        return new ResponseEntity<>(mentorsDTOS, HttpStatus.OK);
     }
     @GetMapping("{id}")
-    public ResponseEntity<Mentor> getMentorById(@PathVariable("id") Long id){
-        Mentor mentor = mentorService.getMentorById(id);
-        if (mentor == null){
+    public ResponseEntity<MentorDTO> getMentorById(@PathVariable("id") Long id){
+        MentorDTO mentorDTO = mentorService.getMentorById(id);
+        if (mentorDTO == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(mentor, HttpStatus.OK);
+        return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
     }
     @GetMapping("name/{name}")
-    public ResponseEntity<List<Mentor>> getMentorByName(@PathVariable("name") String name){
-        List<Mentor> mentors = mentorService.getMentorByName(name);
-        return new ResponseEntity<>(mentors, HttpStatus.FOUND);
-    }
-    @GetMapping("email/{email}")
-    public ResponseEntity<Mentor> getMentorByEmail(@PathVariable("email") String email){
-        Mentor mentor = mentorService.getMentorByEmail(email);
-        if (mentor == null){
+    public ResponseEntity<MentorDTO> getMentorByName(@PathVariable("name") String name){
+        MentorDTO mentorDTO = mentorService.getMentorByName(name);
+        if (mentorDTO == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(mentor, HttpStatus.OK);
+        return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
+    }
+    @GetMapping("email/{email}")
+    public ResponseEntity<MentorDTO> getMentorByEmail(@PathVariable("email") String email){
+        MentorDTO mentorDTO = mentorService.getMentorByEmail(email);
+        if (mentorDTO == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
     }
     @PutMapping("{id}")
-    public ResponseEntity<Mentor> updateMentor(@PathVariable("id") Long id, @RequestBody Mentor mentor){
-        Mentor update = mentorService.updateMentor(id, mentor);
+    public ResponseEntity<Mentor> updateMentor(@PathVariable("id") Long id, @RequestBody MentorDTO mentorDTO){
+        Mentor update = mentorService.updateMentor(id, mentorDTO);
         if (update == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
     @PatchMapping("{id}")
-    public ResponseEntity<Mentor> patchMentor(@PathVariable("id") Long id, @RequestBody Mentor mentor){
-        Mentor update = mentorService.patchMentor(id, mentor);
+    public ResponseEntity<Mentor> patchMentor(@PathVariable("id") Long id, @RequestBody MentorDTO mentorDTO){
+        Mentor update = mentorService.patchMentor(id, mentorDTO);
         if (update == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
