@@ -18,6 +18,8 @@ public class MentorService {
     @Autowired
     private MappingService mappingService;
     public Mentor createMentor(MentorDTO mentorDTO){
+        if (mentorDTO == null)
+            return null;
         return mentorRepository.save(mappingService.convertDTOIntoMentor(mentorDTO));
     }
     public List<MentorDTO> getAllMentors(){
@@ -64,6 +66,14 @@ public class MentorService {
     public HttpStatus deleteAllMentors(){
         mentorRepository.deleteAll();
         return HttpStatus.OK;
+    }
+    public HttpStatus deleteMentorByEmail(String email){
+        Optional<Mentor> mentor = mentorRepository.findMentorByEmail(email);
+        if (mentor.isPresent()){
+            mentorRepository.deleteById(mentor.get().getId());
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
     }
     public HttpStatus deleteMentorById(Long id){
         Optional<Mentor> mentor = mentorRepository.findMentorById(id);

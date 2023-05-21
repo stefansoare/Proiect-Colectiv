@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/mentors/")
 public class MentorController {
@@ -24,7 +24,7 @@ public class MentorController {
         List<MentorDTO> mentorsDTOS = mentorService.getAllMentors();
         return new ResponseEntity<>(mentorsDTOS, HttpStatus.OK);
     }
-    @GetMapping("{id}")
+    @GetMapping("id/{id}")
     public ResponseEntity<MentorDTO> getMentorById(@PathVariable("id") Long id){
         MentorDTO mentorDTO = mentorService.getMentorById(id);
         if (mentorDTO == null){
@@ -68,7 +68,11 @@ public class MentorController {
     public ResponseEntity<HttpStatus> deleteAllMentors(){
         return new ResponseEntity<>(mentorService.deleteAllMentors());
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("email/{email}")
+    public ResponseEntity<HttpStatus> deleteMentorByEmail(@PathVariable("email") String email){
+        return new ResponseEntity<>(mentorService.deleteMentorByEmail(email));
+    }
+    @DeleteMapping("id/{id}")
     public ResponseEntity<HttpStatus> deleteMentorById(@PathVariable("id") Long id){
         return new ResponseEntity<>(mentorService.deleteMentorById(id));
     }
