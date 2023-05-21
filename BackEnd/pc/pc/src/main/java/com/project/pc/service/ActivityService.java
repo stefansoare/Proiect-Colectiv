@@ -46,7 +46,7 @@ public class ActivityService {
         activityRepository.save(update);
         return update;
     }
-    public Activity patchActivity(long id, ActivityDTO activityDTO) {
+    public Activity patchActivity(Long id, ActivityDTO activityDTO) {
         Activity update = activityRepository.findById(id).orElse(null);
         if (update == null) {
             return null;
@@ -64,7 +64,7 @@ public class ActivityService {
         activityRepository.deleteAll();
         return HttpStatus.OK;
     }
-    public HttpStatus deleteActivityById(long id){
+    public HttpStatus deleteActivityById(Long id){
         Optional<Activity> activity = activityRepository.findById(id);
         if (activity.isPresent()){
             activityRepository.deleteById(id);
