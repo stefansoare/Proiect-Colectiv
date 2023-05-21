@@ -1,7 +1,7 @@
 package com.project.pc.controller;
 
+import com.project.pc.dto.TaskDTO;
 import com.project.pc.model.Task;
-import com.project.pc.model.Team;
 import com.project.pc.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,12 +29,12 @@ public class TaskController {
         return new ResponseEntity<>(task, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks(){
+    public ResponseEntity<List<TaskDTO>> getAllTasks(){
         return new ResponseEntity<>(taskService.getAllTasks(), HttpStatus.OK);
     }
     @GetMapping("{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable("id") Long id){
-        Task task = taskService.getTaskById(id);
+    public ResponseEntity<TaskDTO> getTaskById(@PathVariable("id") Long id){
+        TaskDTO task = taskService.getTaskById(id);
         if (task == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -42,7 +42,7 @@ public class TaskController {
     }
     @GetMapping("{id}/attendance")
     public ResponseEntity<Integer> getAttendance(@PathVariable("id") Long id) {
-        Task task = taskService.getTaskById(id);
+        TaskDTO task = taskService.getTaskById(id);
         if (task == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -50,7 +50,7 @@ public class TaskController {
     }
     @GetMapping("{id}/grade")
     public ResponseEntity<Integer> getGrade(@PathVariable("id") Long id) {
-        Task task = taskService.getTaskById(id);
+        TaskDTO task = taskService.getTaskById(id);
         if (task == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -73,7 +73,7 @@ public class TaskController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
     @PatchMapping("{id}/attendance")
-    public ResponseEntity<Task> patchTaskAtendance(@PathVariable("id") Long id, @RequestBody Task task) {
+    public ResponseEntity<Task> patchTaskAttendance(@PathVariable("id") Long id, @RequestBody Task task) {
         Task updated = taskService.patchTaskAttendance(id, task);
         if (updated == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

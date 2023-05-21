@@ -1,5 +1,6 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.TeamDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Mentor;
 import com.project.pc.model.Team;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +23,8 @@ public class TeamService {
     private ActivityRepository activityRepository;
     @Autowired
     private MentorRepository mentorRepository;
+    @Autowired
+    private MappingService mappingService;
     public Team createTeam(Team team){
         return teamRepository.save(new Team(team.getTeamLeader()));
     }
@@ -44,14 +48,19 @@ public class TeamService {
         teamRepository.save(team);
         return team;
     }
-    public List<Team> getAllTeams(){
-        return teamRepository.findAll();
+    public List<TeamDTO> getAllTeams(){
+        List<Team> teams = teamRepository.findAll();
+        List<TeamDTO> teamDTOS = new ArrayList<>();
+        for (Team team : teams){
+            teamDTOS.add(mappingService.convertTeamIntoDTO(team));
+        }
+        return teamDTOS;
     }
-    public Team getTeamById(Long id){
-        return teamRepository.findTeamById(id).orElse(null);
+    public TeamDTO getTeamById(Long id){
+        return mappingService.convertTeamIntoDTO(teamRepository.findById(id).orElse(null));
     }
-    public Team getTeamByTeamLeader(Long id){
-        return teamRepository.findByTeamLeader(id).orElse(null);
+    public TeamDTO getTeamByTeamLeader(Long id){
+        return mappingService.convertTeamIntoDTO(teamRepository.findByTeamLeader(id).orElse(null));
     }
     public Team updateTeam(Long id, Team team){
         Team update = teamRepository.findById(id).orElse(null);
