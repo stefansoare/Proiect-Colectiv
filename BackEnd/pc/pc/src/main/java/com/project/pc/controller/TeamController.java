@@ -10,27 +10,35 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin("http://localhost:8080")
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/teams/")
 public class TeamController {
     @Autowired
     private TeamService teamService;
     @PostMapping
-    public ResponseEntity<Team> createTeam(@RequestBody Team team){
-        return new ResponseEntity<>(teamService.createTeam(team), HttpStatus.CREATED);
+    public ResponseEntity<Team> createTeam(@RequestBody TeamDTO teamDTO){
+        return new ResponseEntity<>(teamService.createTeam(teamDTO), HttpStatus.CREATED);
     }
     @PostMapping("{id}/activities/{aId}")
-    public ResponseEntity<Team> addToActivity(@PathVariable("id") Long id, @PathVariable("aId") Long aId){
-        Team team = teamService.addToActivity(id, aId);
+    public ResponseEntity<Team> assignActivity(@PathVariable("id") Long id, @PathVariable("aId") Long aId){
+        Team team = teamService.assignActivity(id, aId);
         if (team == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
     @PostMapping("{id}/mentors/{mId}")
-    public ResponseEntity<Team> addToMentor(@PathVariable("id") Long id, @PathVariable("mId") Long mId){
-        Team team = teamService.addToMentor(id, mId);
+    public ResponseEntity<Team> assignMentor(@PathVariable("id") Long id, @PathVariable("mId") Long mId){
+        Team team = teamService.assignMentor(id, mId);
+        if (team == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(team, HttpStatus.OK);
+    }
+    @PostMapping("{id}/tasks/{tId}")
+    public ResponseEntity<Team> assignTask(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
+        Team team = teamService.assignTask(id, tId);
         if (team == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -56,11 +64,9 @@ public class TeamController {
         }
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
-
-
     @PutMapping("{id}")
-    public ResponseEntity<Team> updateTeam(@PathVariable("id") Long id, @RequestBody Team team){
-        Team update = teamService.updateTeam(id, team);
+    public ResponseEntity<Team> updateTeam(@PathVariable("id") Long id, @RequestBody TeamDTO teamDTO){
+        Team update = teamService.updateTeam(id, teamDTO);
         if (update == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
