@@ -23,8 +23,10 @@ public class TaskService {
     private ActivityRepository activityRepository;
     @Autowired
     private MappingService mappingService;
-    public Task createTask(Task task){
-        return taskRepository.save(new Task(task.getGrade(), task.getDescription(), task.getDeadline(), task.getAttendance(), task.getComment()));
+    public Task createTask(TaskDTO taskDTO){
+        if (taskDTO == null)
+            return null;
+        return taskRepository.save(mappingService.convertDTOIntoTask(taskDTO));
     }
     public Task addToActivity(Long id, Long aId){
         Task task = taskRepository.findById(id).orElse(null);
@@ -47,66 +49,42 @@ public class TaskService {
     public TaskDTO getTaskById(Long id){
         return mappingService.convertTaskIntoDTO(taskRepository.findById(id).orElse(null));
     }
-    public Task updateTask(Long id, Task task){
+    public Task updateTask(Long id, TaskDTO taskDTO){
         Task update = taskRepository.findById(id).orElse(null);
         if (update == null){
             return null;
         }
-        update.setGrade(task.getGrade());
-        update.setDeadline(task.getDeadline());
-        update.setDescription(task.getDescription());
-        update.setAttendance(task.getAttendance());
+        update.setGrade(taskDTO.getGrade());
+        update.setDeadline(taskDTO.getDeadline());
+        update.setDescription(taskDTO.getDescription());
+        update.setAttendance(taskDTO.getAttendance());
+        update.setComment(taskDTO.getComment());
+        update.setActivity(mappingService.convertDTOIntoActivity(taskDTO.getActivityDTO()));
         taskRepository.save(update);
         return update;
     }
-    public Task patchTask(long id, Task task) {
+    public Task patchTask(long id, TaskDTO taskDTO) {
         Task update = taskRepository.findById(id).orElse(null);
         if (update == null){
             return null;
         }
-        if (task.getAttendance() != 0) {
-            update.setAttendance(task.getAttendance());
+        if (taskDTO.getAttendance() != 0) {
+            update.setAttendance(taskDTO.getAttendance());
         }
-        if (task.getDescription() != null) {
-            update.setDescription(task.getDescription());
+        if (taskDTO.getDescription() != null) {
+            update.setDescription(taskDTO.getDescription());
         }
-        if (task.getGrade() != 0){
-            update.setGrade(task.getGrade());
+        if (taskDTO.getGrade() != 0){
+            update.setGrade(taskDTO.getGrade());
         }
-        if (task.getDeadline() != null){
-            update.setDeadline(task.getDeadline());
+        if (taskDTO.getDeadline() != null){
+            update.setDeadline(taskDTO.getDeadline());
         }
-        if (task.getComment() != null) {
-            update.setComment(task.getComment());
+        if (taskDTO.getComment() != null) {
+            update.setComment(taskDTO.getComment());
         }
-        taskRepository.save(update);
-        return update;
-    }
-    public Task patchTaskAttendance(long id, Task task) {
-        Task update = taskRepository.findById(id).orElse(null);
-        if (update == null) {
-            return null;
-        }
-        update.setAttendance(task.getAttendance());
-        taskRepository.save(update);
-        return update;
-    }
-    public Task patchTaskGrade(long id, Task task) {
-        Task update = taskRepository.findById(id).orElse(null);
-        if (update == null) {
-            return null;
-        }
-        update.setGrade(task.getGrade());
-        taskRepository.save(update);
-        return update;
-    }
-    public Task patchTaskComment(long id, Task task) {
-        Task update = taskRepository.findById(id).orElse(null);
-        if (update == null) {
-            return null;
-        }
-        if (task.getComment() != null) {
-            update.setComment(task.getComment());
+        if (taskDTO.getActivityDTO() != null){
+            update.setActivity(mappingService.convertDTOIntoActivity(taskDTO.getActivityDTO()));
         }
         taskRepository.save(update);
         return update;
