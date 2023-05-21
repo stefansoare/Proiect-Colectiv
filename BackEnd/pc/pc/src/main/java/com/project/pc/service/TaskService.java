@@ -1,13 +1,17 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.TaskDTO;
+import com.project.pc.dto.TeamDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Task;
+import com.project.pc.model.Team;
 import com.project.pc.repository.ActivityRepository;
 import com.project.pc.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +21,8 @@ public class TaskService {
     private TaskRepository taskRepository;
     @Autowired
     private ActivityRepository activityRepository;
+    @Autowired
+    private MappingService mappingService;
     public Task createTask(Task task){
         return taskRepository.save(new Task(task.getGrade(), task.getDescription(), task.getDeadline(), task.getAttendance(), task.getComment()));
     }
@@ -30,11 +36,16 @@ public class TaskService {
         taskRepository.save(task);
         return task;
     }
-    public List<Task> getAllTasks(){
-        return taskRepository.findAll();
+    public List<TaskDTO> getAllTasks(){
+        List<Task> tasks = taskRepository.findAll();
+        List<TaskDTO> taskDTOS = new ArrayList<>();
+        for (Task task : tasks){
+            taskDTOS.add(mappingService.convertTaskIntoDTO(task));
+        }
+        return taskDTOS;
     }
-    public Task getTaskById(Long id){
-        return taskRepository.findById(id).orElse(null);
+    public TaskDTO getTaskById(Long id){
+        return mappingService.convertTaskIntoDTO(taskRepository.findById(id).orElse(null));
     }
     public Task updateTask(Long id, Task task){
         Task update = taskRepository.findById(id).orElse(null);

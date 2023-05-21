@@ -1,5 +1,6 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.StudentDTO;
 import com.project.pc.model.Student;
 import com.project.pc.model.Team;
 import com.project.pc.repository.StudentRepository;
@@ -7,6 +8,8 @@ import com.project.pc.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +19,8 @@ public class StudentService {
     private StudentRepository studentRepository;
     @Autowired
     private TeamRepository teamRepository;
+    @Autowired
+    private MappingService mappingService;
     public Student createStudent(Student student){
         return studentRepository.save(new Student(student.getName(), student.getEmail()));
     }
@@ -29,17 +34,29 @@ public class StudentService {
         studentRepository.save(student);
         return student;
     }
-    public List<Student> getAllStudents(){
-        return studentRepository.findAll();
+    public List<StudentDTO> getAllStudents(){
+        List<Student> students = studentRepository.findAll();
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student : students){
+            studentDTOS.add(mappingService.convertStudentIntoDTO(student));
+        }
+        return studentDTOS;
     }
-    public Student getStudentById (Long id) {
-        return studentRepository.findById(id).orElse(null);
+    public StudentDTO getStudentById (Long id) {
+        return mappingService.convertStudentIntoDTO(studentRepository.findStudentById(id).orElse(null));
     }
-    public List<Student> getStudentByName(String name){
-        return studentRepository.findStudentByName(name);
+    public List<StudentDTO> getStudentByName(String name){
+        List<Student> students =  studentRepository.findStudentByName(name);
+        List<StudentDTO> studentsByName = new ArrayList<>();
+        for (Student student : students){
+            if (student.getName().equals(name)){
+                studentsByName.add(mappingService.convertStudentIntoDTO(student));
+            }
+        }
+        return studentsByName;
     }
-    public Student getStudentByEmail(String email){
-        return studentRepository.findStudentByEmail(email).orElse(null);
+    public StudentDTO getStudentByEmail(String email){
+        return mappingService.convertStudentIntoDTO(studentRepository.findStudentByEmail(email).orElse(null));
     }
     public List<Student> getTeamMembers(Long tId){
         return studentRepository.findByTeamId(tId);

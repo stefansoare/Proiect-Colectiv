@@ -53,8 +53,8 @@ public class Student {
     public void setEmail(String email) {
         this.email = email;
     }
-    public TeamDTO getTeam() {return team;}
-    public void setTeam(TeamDTO team) {this.team = team;}
-    public TaskDTO getTask() {return task;}
-    public void setTask(TaskDTO task) {this.task = task;}
+    public Team getTeam() {return team;}
+    public void setTeam(Team team) {this.team = team;}
+    public Task getTask() {return task;}
+    public void setTask(Task task) {this.task = task;}
 }

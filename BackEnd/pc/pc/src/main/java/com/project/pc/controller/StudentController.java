@@ -1,5 +1,6 @@
 package com.project.pc.controller;
 
+import com.project.pc.dto.StudentDTO;
 import com.project.pc.model.Student;
 import com.project.pc.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,26 +29,26 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
     @GetMapping
-    public ResponseEntity<List<Student>> getAllStudents(){
-        List<Student> students = studentService.getAllStudents();
+    public ResponseEntity<List<StudentDTO>> getAllStudents(){
+        List<StudentDTO> students = studentService.getAllStudents();
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
     @GetMapping("id/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable("id") Long id) {
-        Student student = studentService.getStudentById(id);
+    public ResponseEntity<StudentDTO> getStudentById(@PathVariable("id") Long id) {
+        StudentDTO student = studentService.getStudentById(id);
         if (student == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(student, HttpStatus.FOUND);
     }
     @GetMapping("name/{name}")
-    public ResponseEntity<List<Student>> getStudentByName(@PathVariable("name") String name){
-        List<Student> students = studentService.getStudentByName(name);
+    public ResponseEntity<List<StudentDTO>> getStudentByName(@PathVariable("name") String name){
+        List<StudentDTO> students = studentService.getStudentByName(name);
         return new ResponseEntity<>(students, HttpStatus.FOUND);
     }
     @GetMapping("email/{email}")
-    public ResponseEntity<Student> getStudentByEmail(@PathVariable("email") String email){
-        Student student = studentService.getStudentByEmail(email);
+    public ResponseEntity<StudentDTO> getStudentByEmail(@PathVariable("email") String email){
+        StudentDTO student = studentService.getStudentByEmail(email);
         if (student == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

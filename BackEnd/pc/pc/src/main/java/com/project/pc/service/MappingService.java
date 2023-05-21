@@ -42,28 +42,7 @@ public class MappingService {
         mentorDTO.setEmail(mentor.getEmail());
         return mentorDTO;
     }
-    public Student convertDTOIntoStudent(StudentDTO studentDTO){
-        if (studentDTO == null){
-            return null;
-        }
-        Student student = new Student();
-        student.setName(studentDTO.getName());
-        student.setEmail(studentDTO.getEmail());
-        student.setTeam(studentDTO.getTeamDTO());
-        student.setTask(studentDTO.getTaskDTO());
-        return student;
-    }
-    public StudentDTO convertStudentIntoDTO(Student student){
-        if (student == null){
-            return null;
-        }
-        StudentDTO studentDTO = new StudentDTO();
-        studentDTO.setName(student.getName());
-        studentDTO.setEmail(student.getEmail());
-        studentDTO.setTeamDTO(student.getTeam());
-        studentDTO.setTaskDTO(student.getTask());
-        return studentDTO;
-    }
+
     public Team convertDTOIntoTeam(TeamDTO teamDTO){
         if (teamDTO == null){
             return null;
@@ -90,7 +69,7 @@ public class MappingService {
         task.setDeadline(taskDTO.getDeadline());
         task.setAttendance(taskDTO.getAttendance());
         task.setComment(taskDTO.getComment());
-        task.setActivity(taskDTO.getActivityDTO());
+        task.setActivity(convertDTOIntoActivity(taskDTO.getActivityDTO()));
         return task;
     }
     public TaskDTO convertTaskIntoDTO(Task task){
@@ -103,7 +82,29 @@ public class MappingService {
         taskDTO.setDeadline(task.getDeadline());
         taskDTO.setAttendance(task.getAttendance());
         taskDTO.setComment(task.getComment());
-        taskDTO.setActivityDTO(task.getActivity());
+        taskDTO.setActivityDTO(convertActivityIntoDTO(task.getActivity()));
         return taskDTO;
+    }
+    public Student convertDTOIntoStudent(StudentDTO studentDTO){
+        if (studentDTO == null){
+            return null;
+        }
+        Student student = new Student();
+        student.setName(studentDTO.getName());
+        student.setEmail(studentDTO.getEmail());
+        student.setTeam(convertDTOIntoTeam(studentDTO.getTeamDTO()));
+        student.setTask(convertDTOIntoTask(studentDTO.getTaskDTO()));
+        return student;
+    }
+    public StudentDTO convertStudentIntoDTO(Student student){
+        if (student == null){
+            return null;
+        }
+        StudentDTO studentDTO = new StudentDTO();
+        studentDTO.setName(student.getName());
+        studentDTO.setEmail(student.getEmail());
+        studentDTO.setTeamDTO(convertTeamIntoDTO(student.getTeam()));
+        studentDTO.setTaskDTO(convertTaskIntoDTO(student.getTask()));
+        return studentDTO;
     }
 }
