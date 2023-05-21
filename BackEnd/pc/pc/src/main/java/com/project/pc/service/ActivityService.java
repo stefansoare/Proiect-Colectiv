@@ -64,13 +64,20 @@ public class ActivityService {
         activityRepository.deleteAll();
         return HttpStatus.OK;
     }
+    public HttpStatus deleteActivityByName(String name){
+        Optional<Activity> activity = activityRepository.findByName(name);
+        if (activity.isPresent()){
+            activityRepository.deleteById(activity.get().getId());
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
+    }
     public HttpStatus deleteActivityById(Long id){
         Optional<Activity> activity = activityRepository.findById(id);
         if (activity.isPresent()){
             activityRepository.deleteById(id);
             return HttpStatus.OK;
-        }else {
-            return HttpStatus.BAD_REQUEST;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 }

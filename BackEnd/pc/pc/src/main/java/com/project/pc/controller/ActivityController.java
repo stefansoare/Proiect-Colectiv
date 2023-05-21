@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/activities/")
 public class ActivityController {
@@ -56,7 +56,11 @@ public class ActivityController {
     public ResponseEntity<HttpStatus> deleteAllActivities(){
         return new ResponseEntity<>(activityService.deleteAllActivities());
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("name/{name}")
+    public ResponseEntity<HttpStatus> deleteActivityByName(@PathVariable("name") String name){
+        return new ResponseEntity<>(activityService.deleteActivityByName(name));
+    }
+    @DeleteMapping("id/{id}")
     public ResponseEntity<HttpStatus> deleteActivityById(@PathVariable("id") Long id){
         return new ResponseEntity<>(activityService.deleteActivityById(id));
     }
