@@ -1,6 +1,7 @@
 package com.project.pc.service;
 
 import com.project.pc.dto.StudentDTO;
+import com.project.pc.model.Mentor;
 import com.project.pc.model.Student;
 import com.project.pc.model.Team;
 import com.project.pc.repository.StudentRepository;
@@ -21,8 +22,10 @@ public class StudentService {
     private TeamRepository teamRepository;
     @Autowired
     private MappingService mappingService;
-    public Student createStudent(Student student){
-        return studentRepository.save(new Student(student.getName(), student.getEmail()));
+    public Student createStudent(StudentDTO studentDTO){
+        if (studentDTO == null)
+            return null;
+        return studentRepository.save(mappingService.convertDTOIntoStudent(studentDTO));
     }
     public Student addToTeam(Long id, Long tId){
         Student student = studentRepository.findById(id).orElse(null);
@@ -34,6 +37,7 @@ public class StudentService {
         studentRepository.save(student);
         return student;
     }
+    // assigntask
     public List<StudentDTO> getAllStudents(){
         List<Student> students = studentRepository.findAll();
         List<StudentDTO> studentDTOS = new ArrayList<>();
@@ -49,38 +53,49 @@ public class StudentService {
         List<Student> students =  studentRepository.findStudentByName(name);
         List<StudentDTO> studentsByName = new ArrayList<>();
         for (Student student : students){
-            if (student.getName().equals(name)){
-                studentsByName.add(mappingService.convertStudentIntoDTO(student));
-            }
+            studentsByName.add(mappingService.convertStudentIntoDTO(student));
         }
         return studentsByName;
     }
     public StudentDTO getStudentByEmail(String email){
         return mappingService.convertStudentIntoDTO(studentRepository.findStudentByEmail(email).orElse(null));
     }
-    public List<Student> getTeamMembers(Long tId){
-        return studentRepository.findByTeamId(tId);
+    public List<StudentDTO> getTeamMembers(Long tId){
+        List<Student> students = studentRepository.findByTeamId(tId);
+        List<StudentDTO> studentDTOS = new ArrayList<>();
+        for (Student student : students){
+            studentDTOS.add(mappingService.convertStudentIntoDTO(student));
+        }
+        return studentDTOS;
     }
-    public Student updateStudent (Long id, Student student){
+    public Student updateStudent (Long id, StudentDTO studentDTO){
         Student update = studentRepository.findStudentById(id).orElse(null);
         if (update == null){
             return null;
         }
-        update.setName(student.getName());
-        update.setEmail(student.getEmail());
+        update.setName(studentDTO.getName());
+        update.setEmail(studentDTO.getEmail());
+        update.setTeam(mappingService.convertDTOIntoTeam(studentDTO.getTeamDTO()));
+        update.setTask(mappingService.convertDTOIntoTask(studentDTO.getTaskDTO()));
         studentRepository.save(update);
         return update;
     }
-    public Student patchStudent(long id, Student student) {
+    public Student patchStudent(long id, StudentDTO studentDTO) {
         Student update = studentRepository.findById(id).orElse(null);
         if (update == null){
             return null;
         }
-        if (student.getName() != null) {
-            update.setName(student.getName());
+        if (studentDTO.getName() != null) {
+            update.setName(studentDTO.getName());
         }
-        if (student.getEmail() != null) {
-            update.setEmail(student.getEmail());
+        if (studentDTO.getEmail() != null) {
+            update.setEmail(studentDTO.getEmail());
+        }
+        if (studentDTO.getTeamDTO() != null){
+            update.setTeam(mappingService.convertDTOIntoTeam(studentDTO.getTeamDTO()));
+        }
+        if (studentDTO.getTaskDTO() != null){
+            update.setTask(mappingService.convertDTOIntoTask(studentDTO.getTaskDTO()));
         }
         studentRepository.save(update);
         return update;
@@ -98,13 +113,20 @@ public class StudentService {
         studentRepository.deleteAll();
         return HttpStatus.OK;
     }
+    public HttpStatus deleteStudentByEmail(String email){
+        Optional<Student> student = studentRepository.findStudentByEmail(email);
+        if (student.isPresent()){
+            studentRepository.deleteById(student.get().getId());
+            return HttpStatus.OK;
+        }
+        return HttpStatus.BAD_REQUEST;
+    }
     public HttpStatus deleteStudentById(long id){
         Optional<Student> student = studentRepository.findById(id);
         if (student.isPresent()){
             studentRepository.deleteById(id);
             return HttpStatus.OK;
-        }else {
-            return HttpStatus.BAD_REQUEST;
         }
+        return HttpStatus.BAD_REQUEST;
     }
 }

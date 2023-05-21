@@ -16,8 +16,8 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody Student student){
-        Student createdStudent = studentService.createStudent(student);
+    public ResponseEntity<Student> createStudent(@RequestBody StudentDTO studentDTO){
+        Student createdStudent = studentService.createStudent(studentDTO);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
     @PostMapping("{id}/teams/{tId}")
@@ -55,20 +55,20 @@ public class StudentController {
         return new ResponseEntity<>(student, HttpStatus.OK);
     }
     @GetMapping("{tId}")
-    public ResponseEntity<List<Student>> getTeamMembers(@PathVariable("tId") Long tId){
+    public ResponseEntity<List<StudentDTO>> getTeamMembers(@PathVariable("tId") Long tId){
         return new ResponseEntity<>(studentService.getTeamMembers(tId), HttpStatus.OK);
     }
     @PutMapping("{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody Student student){
-        Student update = studentService.updateStudent(id, student);
+    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody StudentDTO studentDTO){
+        Student update = studentService.updateStudent(id, studentDTO);
         if (update == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
     }
     @PatchMapping("{id}")
-    public ResponseEntity<Student> patchStudent(@PathVariable("id") Long id, @RequestBody Student student) {
-        Student updated = studentService.patchStudent(id, student);
+    public ResponseEntity<Student> patchStudent(@PathVariable("id") Long id, @RequestBody StudentDTO studentDTO) {
+        Student updated = studentService.patchStudent(id, studentDTO);
         if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -82,7 +82,11 @@ public class StudentController {
     public ResponseEntity<HttpStatus> deleteAllStudents(){
         return new ResponseEntity<>(studentService.deleteAllStudents());
     }
-    @DeleteMapping("{id}")
+    @DeleteMapping("email/{email}")
+    public ResponseEntity<HttpStatus> deleteStudentByEmail(@PathVariable("email") String email){
+        return new ResponseEntity<>(studentService.deleteStudentByEmail(email));
+    }
+    @DeleteMapping("id/{id}")
     public ResponseEntity<HttpStatus> deleteStudentById(@PathVariable("id") Long id){
         return new ResponseEntity<>(studentService.deleteStudentById(id));
     }
