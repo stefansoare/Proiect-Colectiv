@@ -12,21 +12,22 @@ import { StudentService } from '../Services/student.service';
 })
 export class StudentDetailComponent implements OnInit {
   student: Student | undefined;
-  route: any;
 
-  constructor(private studentService: StudentService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private studentService: StudentService
+  ) {}
 
-  ngOnInit(): void {
-    this.getStudent();
+  ngOnInit() {
+    const studentId =Number (this.route.snapshot.paramMap.get('id'));
+    this.getStudent(studentId);
   }
 
-  getStudent(): void {
-    const email = String(this.route.snapshot.paramMap.get('email'));
-    this.studentService.getStudentByEmail(email).subscribe(
-      (student: Student | null) => {
-        this.student = student ? student : undefined;
-      }
-    );
+  getStudent(studentId: number) {
+    this.studentService.getStudent(studentId)
+      .subscribe(
+        student => this.student = student,
+        error => console.error(error)
+      );
   }
-
 }

@@ -44,12 +44,11 @@ export class StudentService {
       })
     );
   }
-  
-  getStudent(id: number): Observable<Student> {
-    const url = `${this.studentsUrl}id/${id}`;
-    return this.http.get<Student>(url);
+  getStudent(studentId: number): Observable<Student> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    const url = `${this.studentsUrl}id/${studentId}`;
+    return this.http.get<Student>(url, { headers });
   }
-  
 
   /**
  * Handle Http operation that failed.
