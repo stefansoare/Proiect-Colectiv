@@ -48,7 +48,7 @@
     <ul class="students">
       <li *ngFor="let student of students">
         <div class="student-wrapper">
-          <button type="button" class="student-button" routerLink="/detail/{{student.id}}">
+          <button type="button" class="student-button" [routerLink]="['/detail', student.id]">
             <span class="badge">{{student.id}}</span> {{student.name}}
           </button>
           <button type="button" class="delete-button" title="Delete student" (click)="deleteStudent(student)">x</button>

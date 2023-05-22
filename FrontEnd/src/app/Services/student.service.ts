@@ -3,7 +3,7 @@ import { Student } from '../Classes/Student';
 import { GRADES } from '../mock-students';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import {Express}  from 'express';
 
@@ -25,7 +25,30 @@ export class StudentService {
   createStudent(student: Student): Observable<Student> {
     return this.http.post<Student>(this.studentsUrl, student);
   }
-
+  getStudentByEmail(email: string): Observable<Student | null> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    const url = `${this.studentsUrl}/email=${email}`;
+    return this.http.get<Student[]>(url, { headers }).pipe(
+      map((students: Student[]) => students.length > 0 ? students[0] : null),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 302) {
+          const redirectUrl = error.headers.get('Location');
+          if (redirectUrl) {
+            return this.http.get<Student>(redirectUrl, { headers }).pipe(
+              catchError(() => of(null))
+            );
+          }
+        }
+        console.error(error);
+        return of(null);
+      })
+    );
+  }
+  
+  getStudent(id: number): Observable<Student> {
+    const url = `${this.studentsUrl}id/${id}`;
+    return this.http.get<Student>(url);
+  }
   
 
   /**

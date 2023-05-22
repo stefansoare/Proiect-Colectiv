@@ -30,7 +30,7 @@ export class StudentsComponent {
       name: studentName,
       id: 0,
       email: '',
-      lider: false,
+      leader: false,
       TeamID: 0
     };
   
@@ -44,8 +44,8 @@ export class StudentsComponent {
     );
     }
     deleteStudent(student: Student) {
-      const studentId = student.id;
-      this.http.delete(`http://localhost:8080/api/students/${studentId}`).subscribe(
+      const studentID = student.id;
+      this.http.delete(`http://localhost:8080/api/students/${studentID}`).subscribe(
         () => {
           const index = this.students.indexOf(student);
           if (index > -1) {

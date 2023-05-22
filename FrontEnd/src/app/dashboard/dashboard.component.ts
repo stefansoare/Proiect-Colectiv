@@ -14,7 +14,7 @@ export class DashboardComponent implements OnInit {
     id: 1,
     name: 'John Doe',
     email: 'johndoe@example.com',
-    lider: false,
+    leader: false,
     TeamID: 1
   };
   
