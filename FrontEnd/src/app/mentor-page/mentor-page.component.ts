@@ -1,20 +1,18 @@
 import { Component } from '@angular/core';
 import { Team } from '../Classes/Team';
-import { TEAMS } from '../mock-students';
 import { Student } from '../Classes/Student';
 import { StudentDetailComponent } from '../student-detail/student-detail.component';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { StudentService } from '../Services/student.service';
-
+import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-mentor-page',
   templateUrl: './mentor-page.component.html',
   styleUrls: ['./mentor-page.component.css']
 })
 export class MentorPageComponent {
-
 
   longTextT = `A collaborative effort where individuals work together to achieve a common goal or 
   complete a task. Promotes teamwork and integration of diverse skills and perspectives.`;
@@ -27,60 +25,39 @@ export class MentorPageComponent {
   Bridges the gap between academic knowledge and real-world applications.`;
 
   // Add the showTable property
-showTable: boolean = false;
+  showTable: boolean = false;
 
-// Method to toggle the visibility of the table
-toggleTableVisibility() {
-  this.showTable = !this.showTable;
-}
-  
-  displayedColumns: string[] = ['id', 'name', 'students', 'expandedDetail'];
-
+  // Method to toggle the visibility of the table
+  toggleTableVisibility() {
+    this.showTable = !this.showTable;
+  }
+  member: Student | null=null;
+  displayedColumns: string[] = ['index', 'id'];
   name = '';
   position = 0;
   weight = 0;
   symbol = '';
   selectedTeam: any = null;
   selectedStudent: any = null;
-
   private filterSubject = new Subject<string>();
   filterValue = '';
-
   expandedElement: any;
-
-  
-
-  dataSource: MatTableDataSource<Student>; // Adjust the type to 'Team' if it contains the required properties
-
- 
-
+  dataSource: MatTableDataSource<Team>; // Adjust the type to 'Team' if it contains the required properties
   students: Student[] = [];
-
-  constructor(private studentService: StudentService) { 
-    this.dataSource = new MatTableDataSource<Student>(this.students);
+  teams: Team[]=[];
+  constructor(private studentService: StudentService) {
+    this.dataSource = new MatTableDataSource<Team>(this.teams);
 
   }
 
   ngOnInit() {
-    this.studentService.getStudents().subscribe(
-      students => {
-        this.students = students;
-        this.dataSource.data = this.students;
+    this.studentService.getTeams().subscribe(
+      teams => {
+        this.teams = teams;
+        this.dataSource.data = this.teams;
       }
     );
   }
-  
-
-
-
-
-
-
-
-
-
-
-
 
   onSelect(team: any) {
     if (this.selectedTeam === team) {
@@ -91,7 +68,6 @@ toggleTableVisibility() {
       this.selectedTeam = team;
     }
   }
-  
   onSelectStudent(student: any) {
     if (this.selectedStudent === student) {
       // If the selected button is clicked again, clear the selectedStudent
@@ -101,20 +77,20 @@ toggleTableVisibility() {
       this.selectedStudent = student;
     }
   }
-  
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  
+
   onFilterKeyUp(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.applyFilter(filterValue);
   }
-  
+
   isRowExpanded = (row: any) => this.expandedElement === row;
-  
+
   onRowClick(row: any) {
     this.expandedElement = this.expandedElement === row ? null : row;
   }
-  
+
 }

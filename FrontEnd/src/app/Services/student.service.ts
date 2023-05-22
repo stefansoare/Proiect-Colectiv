@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Student } from '../Classes/Student';
-import { GRADES } from '../mock-students';
+import { Team } from '../Classes/Team';
 import { Observable, of } from 'rxjs';
 import { MessageService } from './message.service';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
@@ -13,7 +13,8 @@ import {Express}  from 'express';
 export class StudentService {
  
   private studentsUrl = 'http://localhost:8080/api/students/';
-
+  private teamsUrl = 'http://localhost:8080/api/teams/';
+  private teamMembersUrl= 'http://localhost:8080/api/students/';
   constructor(private http: HttpClient) { }
   
 
@@ -24,25 +25,6 @@ export class StudentService {
 
   createStudent(student: Student): Observable<Student> {
     return this.http.post<Student>(this.studentsUrl, student);
-  }
-  getStudentByEmail(email: string): Observable<Student | null> {
-    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    const url = `${this.studentsUrl}/email=${email}`;
-    return this.http.get<Student[]>(url, { headers }).pipe(
-      map((students: Student[]) => students.length > 0 ? students[0] : null),
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 302) {
-          const redirectUrl = error.headers.get('Location');
-          if (redirectUrl) {
-            return this.http.get<Student>(redirectUrl, { headers }).pipe(
-              catchError(() => of(null))
-            );
-          }
-        }
-        console.error(error);
-        return of(null);
-      })
-    );
   }
   getStudent(studentId: number): Observable<Student> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
@@ -67,82 +49,13 @@ export class StudentService {
   
     return this.http.delete<void>(url, { headers });
   }
-  
-  
-
-  /**
- * Handle Http operation that failed.
- * Let the app continue.
- *
- * @param operation - name of the operation that failed
- * @param result - optional value to return as the observable result
-
-private handleError<T>(operation = 'operation', result?: T) {
-  return (error: any): Observable<T> => {
-
-    // TODO: send the error to remote logging infrastructure
-    console.error(error); // log to console instead
-
-    // TODO: better job of transforming error for user consumption
-    this.log(`${operation} failed: ${error.message}`);
-
-    // Let the app keep running by returning an empty result.
-    return of(result as T);
-  };
-}
-
-  constructor(private http: HttpClient,private messageService: MessageService) { }
-
- 
-  private log(message: string) {
-  this.messageService.add(`StudentService: ${message}`);
-}
-
-getStudent(id: number): Observable<Student> {
-  const url = `${this.studentsUrl}/${id}`;
-  return this.http.get<Student>(url).pipe(
-    tap(_ => this.log(`fetched student id=${id}`)),
-    catchError(this.handleError<Student>(`getStudent id=${id}`))
-  );
-}
-
-  
-updateStudent(student: Student): Observable<any> {
-  return this.http.put(this.studentsUrl, student, this.httpOptions).pipe(
-    tap(_ => this.log(`updated student id=${student.id}`)),
-    catchError(this.handleError<any>('updateStudent'))
-  );
-
-  
-}
-
-
-addStudent(student: Student): Observable<Student> {
-  return this.http.post<Student>(this.studentsUrl, student, this.httpOptions).pipe(
-    tap((newStudent: Student) => this.log(`added student w/ id=${newStudent.id}`)),
-    catchError(this.handleError<Student>('addStudent'))
-  );
-}
-
-deleteStudent(id: number): Observable<Student> {
-  const url = `${this.studentsUrl}/${id}`;
-
-  return this.http.delete<Student>(url, this.httpOptions).pipe(
-    tap(_ => this.log(`deleted student id=${id}`)),
-    catchError(this.handleError<Student>('deleteStudent'))
-  );
-}
-
-searchStudents(term: string): Observable<Student[]> {
-  if (!term.trim()) {
-    return of([]);
+  getTeams(): Observable<Team[]> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    return this.http.get<Team[]>(this.teamsUrl);
   }
-  return this.http.get<Student[]>(`${this.studentsUrl}/?name=${term}`).pipe(
-    tap(x => x.length ?
-       this.log(`found students matching "${term}"`) :
-       this.log(`no students matching "${term}"`)),
-    catchError(this.handleError<Student[]>('searchStudents', []))
-  );
-}
-*/
+
+  getTeamMembers(tId: number): Observable<Student[]> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    return this.http.get<Student[]>(`${this.teamMembersUrl}${tId}`, { headers });
+  }
 }

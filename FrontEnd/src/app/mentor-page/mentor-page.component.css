@@ -130,3 +130,12 @@ li.team-container {
   margin-top: 0;
 }
 
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.horizontal-card {
+  margin: 10px;
+}

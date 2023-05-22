@@ -84,9 +84,9 @@ public class TeamService {
             return null;
         }
         update.setTeamLeader(teamDTO.getTeamLeader());
-        update.setActivity(mappingService.convertDTOIntoActivity(teamDTO.getActivityDTO()));
-        update.setMentor(mappingService.convertDTOIntoMentor(teamDTO.getMentorDTO()));
-        update.setTask(mappingService.convertDTOIntoTask(teamDTO.getTaskDTO()));
+        //update.setActivity(mappingService.convertDTOIntoActivity(teamDTO.getActivityDTO()));
+        //update.setMentor(mappingService.convertDTOIntoMentor(teamDTO.getMentorDTO()));
+        //update.setTask(mappingService.convertDTOIntoTask(teamDTO.getTaskDTO()));
         teamRepository.save(update);
         return update;
     }

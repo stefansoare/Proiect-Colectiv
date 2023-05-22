@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class TeamDTO {
+    private Long id;
     private Long teamLeader;
-    private ActivityDTO activityDTO;
-    private MentorDTO mentorDTO;
-    private TaskDTO taskDTO;
 }

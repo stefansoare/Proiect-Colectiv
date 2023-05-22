@@ -4,7 +4,7 @@ import { Student } from "./Student";
 export interface Team {
     id: number;
     name:string;
-    students: string[];
+    students: Student[];
     leader: String;
     mentorID: number;
     activityID: number;

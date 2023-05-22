@@ -31,7 +31,6 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
 import {MatCardModule} from '@angular/material/card';
 import { StudentListComponent } from './student-list/student-list.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +64,7 @@ import { StudentListComponent } from './student-list/student-list.component';
     MatSidenavModule,
     MatTableModule,
     MatInputModule,
-    NgChartsModule
+    NgChartsModule,
     
   ],
   providers: [],

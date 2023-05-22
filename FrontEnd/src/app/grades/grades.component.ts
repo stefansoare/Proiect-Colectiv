@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { GRADES } from '../mock-students';
 import { Student } from '../Classes/Student'
 import { Location } from '@angular/common';
 
@@ -10,7 +9,6 @@ import { Location } from '@angular/common';
 })
 export class GradesComponent {
 
-    students = GRADES;
 
     constructor(
       private location: Location
