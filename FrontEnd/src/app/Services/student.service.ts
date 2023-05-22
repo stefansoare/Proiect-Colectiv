@@ -47,8 +47,28 @@ export class StudentService {
   getStudent(studentId: number): Observable<Student> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     const url = `${this.studentsUrl}id/${studentId}`;
-    return this.http.get<Student>(url, { headers });
+  
+    return this.http.get(url, { headers, observe: 'response' }).pipe(
+      map(response => {
+        // Extract the student details from the response body
+        const student = response.body as Student;
+        return student;
+      }),
+      catchError(error => {
+        console.error(error);
+        throw error;
+      })
+    );
   }
+
+  deleteStudent(studentId: number): Observable<void> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    const url = `${this.studentsUrl}id/${studentId}`;
+  
+    return this.http.delete<void>(url, { headers });
+  }
+  
+  
 
   /**
  * Handle Http operation that failed.

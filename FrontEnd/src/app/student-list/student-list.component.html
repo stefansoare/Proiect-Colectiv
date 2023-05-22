@@ -1,6 +1,16 @@
 <ul>
     <li *ngFor="let student of students">
-      {{ student.name }}, {{student.email}}
+      <div class="student-profile">
+        <h2>Student profile</h2>
+        
+        <div class="profile-details" *ngIf="student">
+          <div><span>Name: </span>{{ student.name }}</div>
+          <div><span>ID: </span>{{ student.id }}</div>
+          <div><span>Email: </span>{{ student.email }}</div>
+          <div><span>Leader: </span>{{ student.leader }}</div>
+          <div><span>Team ID: </span>{{ student.TeamID }}</div>
+        </div>
+      </div>
     </li>
   </ul>
   

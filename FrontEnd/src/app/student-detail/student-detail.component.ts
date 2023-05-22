@@ -19,7 +19,7 @@ export class StudentDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const studentId =Number (this.route.snapshot.paramMap.get('id'));
+    const studentId = Number(this.route.snapshot.paramMap.get('id'));
     this.getStudent(studentId);
   }
 
@@ -27,7 +27,13 @@ export class StudentDetailComponent implements OnInit {
     this.studentService.getStudent(studentId)
       .subscribe(
         student => this.student = student,
-        error => console.error(error)
+        error => {
+          console.error(error);
+          // Handle the error case when the request returns a 302 status code
+          if (error.status === 302 && error.error) {
+            this.student = error.error;
+          }
+        }
       );
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Student } from "../Classes/Student";
 import { StudentService } from '../Services/student.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 
 
@@ -44,8 +44,7 @@ export class StudentsComponent {
     );
     }
     deleteStudent(student: Student) {
-      const studentID = student.id;
-      this.http.delete(`http://localhost:8080/api/students/${studentID}`).subscribe(
+      this.studentService.deleteStudent(student.id).subscribe(
         () => {
           const index = this.students.indexOf(student);
           if (index > -1) {
@@ -61,6 +60,10 @@ export class StudentsComponent {
     
     
     }
+    
+    
+    
+    
     
   
   

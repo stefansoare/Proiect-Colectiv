@@ -1,50 +1,34 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Student } from '../Classes/Student';
 import { StudentService } from '../Services/student.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: [ './dashboard.component.css' ]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent  {
   students: Student[] = [];
-  
-   student: Student = {
-    id: 1,
-    name: 'John Doe',
-    email: 'johndoe@example.com',
-    leader: false,
-    TeamID: 1
-  };
-  
-
+  student: Student | null = null;
 
   constructor(private studentService: StudentService) { }
 
-  ngOnInit(): void {
-    this.getStudents();
+  ngOnInit() {
+    this.studentService.getStudents().subscribe(
+      students => this.students = students
+    );
+
+    this.studentService.getStudent(1).subscribe(
+      student => this.student = student,
+      error => {
+        console.error(error);
+        // Handle error, show error message, etc.
+        if (error.status === 302 && error.error) {
+          this.student = error.error;
+        }
+      }
+    );
   }
   
- 
-
-  getStudents(): void {
-    this.studentService.getStudents()
-      .subscribe(students => this.students = students.slice(1, 5));
-  }
-  createDb() {
-    const students = [
-      { id: 12, name: 'Antonio', email: 'antonio@yahoo.com', lider: true, TeamID: 1 },
-      { id: 13, name: 'John', email: 'john@yahoo.com', lider: false, TeamID: 1  },
-      { id: 14, name: 'Alex', email: 'alex@yahoo.com', lider: false, TeamID: 1  },
-      { id: 15, name: 'Marcus', email: 'marcus@yahoo.com', lider: false, TeamID: 1  }
-    
-    ];
-    return {students};
-  }
-
-  
-  genId(students: Student[]): number {
-    return students.length > 0 ? Math.max(...students.map(student => student.id)) + 1 : 11;
-  }
 }

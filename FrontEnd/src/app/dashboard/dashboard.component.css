@@ -71,10 +71,7 @@ button:disabled {
   padding: 20px;
 }
 
-.student-profile {
-  text-align: center;
-  padding: 20px;
-}
+
 
 .profile-info {
   display: flex;
@@ -97,6 +94,26 @@ label {
 span {
   font-weight: normal;
 }
+
+
+.student-profile {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-details {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.profile-details div {
+  font-weight: bold;
+}
+
+
 
 
 

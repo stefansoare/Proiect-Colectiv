@@ -4,9 +4,9 @@
       <div class="sidebar-wrapper">
         <ul class="sidebar-menu">
             <li class="nav-item">
-                <a class="nav-link" href="/lista">
+                <a class="nav-link" href="/dashboard">
                   <i class="material-icons">person</i>
-                  <span>List</span>
+                  <span>Account</span>
                 </a>
               </li>
               
@@ -28,33 +28,15 @@
       </div>
     </div>
     <div class="student-profile">
-        <h2>Student Profile</h2>
+      <h2>Student Profile</h2>
       
-        <div class="profile-info">
-          <div class="info-row">
-            <label>ID:</label>
-            <span>{{ student.id }}</span>
-          </div>
-      
-          <div class="info-row">
-            <label>Name:</label>
-            <span>{{ student.name }}</span>
-          </div>
-      
-          <div class="info-row">
-            <label>Email:</label>
-            <span>{{ student.email }}</span>
-          </div>
-      
-          <div class="info-row">
-            <label>Team ID:</label>
-            <span>{{ student.TeamID }}</span>
-          </div>
-      
-          <div class="info-row">
-            <label>Leader:</label>
-            <span>{{ student.leader ? 'Yes' : 'No' }}</span>
-          </div>
-        </div>
+      <div class="profile-details" *ngIf="student">
+        <div><span>Name: </span>{{ student.name }}</div>
+        <div><span>ID: </span>{{ student.id }}</div>
+        <div><span>Email: </span>{{ student.email }}</div>
+        <div><span>Leader: </span>{{ student.leader }}</div>
+        <div><span>Team ID: </span>{{ student.TeamID }}</div>
       </div>
+    </div>
+    
       
