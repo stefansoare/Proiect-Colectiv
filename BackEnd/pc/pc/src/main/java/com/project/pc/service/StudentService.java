@@ -1,7 +1,6 @@
 package com.project.pc.service;
 
 import com.project.pc.dto.StudentDTO;
-import com.project.pc.model.Mentor;
 import com.project.pc.model.Student;
 import com.project.pc.model.Team;
 import com.project.pc.repository.StudentRepository;
@@ -75,8 +74,6 @@ public class StudentService {
         }
         update.setName(studentDTO.getName());
         update.setEmail(studentDTO.getEmail());
-        update.setTeam(mappingService.convertDTOIntoTeam(studentDTO.getTeamDTO()));
-        update.setTask(mappingService.convertDTOIntoTask(studentDTO.getTaskDTO()));
         studentRepository.save(update);
         return update;
     }
@@ -90,12 +87,6 @@ public class StudentService {
         }
         if (studentDTO.getEmail() != null) {
             update.setEmail(studentDTO.getEmail());
-        }
-        if (studentDTO.getTeamDTO() != null){
-            update.setTeam(mappingService.convertDTOIntoTeam(studentDTO.getTeamDTO()));
-        }
-        if (studentDTO.getTaskDTO() != null){
-            update.setTask(mappingService.convertDTOIntoTask(studentDTO.getTaskDTO()));
         }
         studentRepository.save(update);
         return update;

@@ -45,8 +45,6 @@ public class MappingService {
         Student student = new Student();
         student.setName(studentDTO.getName());
         student.setEmail(studentDTO.getEmail());
-        student.setTeam(convertDTOIntoTeam(studentDTO.getTeamDTO()));
-        student.setTask(convertDTOIntoTask(studentDTO.getTaskDTO()));
         return student;
     }
     public StudentDTO convertStudentIntoDTO(Student student){
@@ -57,8 +55,6 @@ public class MappingService {
         studentDTO.setId(student.getId());
         studentDTO.setName(student.getName());
         studentDTO.setEmail(student.getEmail());
-        studentDTO.setTeamDTO(convertTeamIntoDTO(student.getTeam()));
-        studentDTO.setTaskDTO(convertTaskIntoDTO(student.getTask()));
         return studentDTO;
     }
     public Team convertDTOIntoTeam(TeamDTO teamDTO){
