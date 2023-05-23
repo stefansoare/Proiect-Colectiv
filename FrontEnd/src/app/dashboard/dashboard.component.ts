@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Student } from '../Classes/Student';
 import { StudentService } from '../Services/student.service';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',

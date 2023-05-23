@@ -10,15 +10,13 @@
           </a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link" href="javascript:void(0)">
-            <i class="material-icons">notifications</i>
-            <span>Notifications</span>
+          <a class="nav-link" href="/mentor-page">
+            <i class="material-icons">grade</i>
+            <span>Activities</span>
           </a>
-          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-          </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="javascript:void(0)">
+          <a class="nav-link" href="/mentor-account">
             <i class="material-icons">person</i>
             <span>Account</span>
           </a>
@@ -106,29 +104,9 @@
               </ul>
             </td>
           </ng-container>
-
-
-          <!-- Expanded Detail Column 
-          <ng-container matColumnDef="expandedDetail">
-            <th mat-header-cell *matHeaderCellDef>Grading area</th>
-            <td mat-cell *matCellDef="let student">
-              <div class="expanded-detail" *ngIf="expandedElement === student">
-                <div class="grade-input">
-                  <ul>
-                    <li>
-                      <input id="team-grade" [(ngModel)]="student.grade" placeholder="Enter grade (1-10)"
-                        (click)="$event.stopPropagation()">
-                    </li>
-                  </ul>
-                </div>
-                <button class="assign-button" (click)="$event.stopPropagation()">Assign Grade</button>
-              </div>
-            </td>
-          </ng-container>-->
-
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let team; columns: displayedColumns;" (click)="onRowClick(team)"></tr>
-          <!--<tr mat-row *matRowDef="let team; columns: ['expandedDetail']; when: isRowExpanded"></tr>-->
+          <tr mat-row *matRowDef="let team; columns: displayedColumns;" ></tr>
+
         </table>
       </div>
     </div>

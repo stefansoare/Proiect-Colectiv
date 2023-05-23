@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { Team } from '../Classes/Team';
 import { Student } from '../Classes/Student';
-import { StudentDetailComponent } from '../student-detail/student-detail.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { StudentService } from '../Services/student.service';
-import { MatDialog } from '@angular/material/dialog';
 @Component({
   selector: 'app-mentor-page',
   templateUrl: './mentor-page.component.html',
@@ -102,12 +99,6 @@ export class MentorPageComponent {
   onFilterKeyUp(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.applyFilter(filterValue);
-  }
-
-  isRowExpanded = (row: any) => this.expandedElement === row;
-
-  onRowClick(row: any) {
-    this.expandedElement = this.expandedElement === row ? null : row;
   }
 
 }
