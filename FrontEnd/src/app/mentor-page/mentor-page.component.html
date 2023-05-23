@@ -97,12 +97,16 @@
             <td mat-cell *matCellDef="let team">Team {{ team.id }}</td>
           </ng-container>
 
-          <!-- Students Column 
-          <ng-container matColumnDef="Members">
+          <!-- Students Column -->
+          <ng-container matColumnDef="members">
             <th mat-header-cell *matHeaderCellDef>Members</th>
-            <td mat-cell *matCellDef="let team">{{ getTeamMembersNames(team) }}</td>
-          </ng-container>-->
-        
+            <td mat-cell *matCellDef="let team">
+              <ul>
+                <li *ngFor="let student of team.students">{{ student.name }}</li>
+              </ul>
+            </td>
+          </ng-container>
+
 
           <!-- Expanded Detail Column 
           <ng-container matColumnDef="expandedDetail">

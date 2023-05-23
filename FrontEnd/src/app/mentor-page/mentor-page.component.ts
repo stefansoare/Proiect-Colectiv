@@ -32,7 +32,7 @@ export class MentorPageComponent {
     this.showTable = !this.showTable;
   }
   member: Student | null=null;
-  displayedColumns: string[] = ['index', 'id'];
+  displayedColumns: string[] = ['index', 'id', 'members'];
   name = '';
   position = 0;
   weight = 0;
@@ -55,10 +55,19 @@ export class MentorPageComponent {
       teams => {
         this.teams = teams;
         this.dataSource.data = this.teams;
+        this.populateTeamMembersNames(); // Add this line to populate the member names
       }
     );
   }
-
+  populateTeamMembersNames() {
+    this.teams.forEach(team => {
+      this.studentService.getTeamMembers(team.id).subscribe(
+        members => {
+          team.students = members;
+        }
+      );
+    });
+  }
   onSelect(team: any) {
     if (this.selectedTeam === team) {
       // If the selected button is clicked again, clear the selectedTeam
