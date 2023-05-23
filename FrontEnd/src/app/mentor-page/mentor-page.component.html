@@ -84,7 +84,7 @@
           <input matInput (keyup)="onFilterKeyUp($event)" [(ngModel)]="filterValue" placeholder="Ex. Team 1">
         </mat-form-field>
 
-        <table mat-table [dataSource]="teams" class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource.filteredData" class="mat-elevation-z8">
           <!-- No. Column -->
           <ng-container matColumnDef="index">
             <th mat-header-cell *matHeaderCellDef>No.</th>
@@ -128,7 +128,7 @@
 
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let team; columns: displayedColumns;" (click)="onRowClick(team)"></tr>
-          <tr mat-row *matRowDef="let team; columns: ['expandedDetail']; when: isRowExpanded"></tr>
+          <!--<tr mat-row *matRowDef="let team; columns: ['expandedDetail']; when: isRowExpanded"></tr>-->
         </table>
       </div>
     </div>

@@ -88,7 +88,15 @@ export class MentorPageComponent {
   }
 
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.filterValue = filterValue.trim().toLowerCase();
+  
+    this.dataSource.data = this.teams.filter(team => {
+      // Check if the team id or any of the team members' names contains the filter value
+      return (
+        team.id.toString().includes(this.filterValue) ||
+        team.students.some(student => student.name.toLowerCase().includes(this.filterValue))
+      );
+    });
   }
 
   onFilterKeyUp(event: Event) {
