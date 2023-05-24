@@ -25,77 +25,40 @@
     </div>
   </div>
 
-  <div class="content-container">
-    <div class="activities-container">
-      <h1>Activities</h1>
+  <div class="card-container">
+    <div class="horizontal-card" *ngFor="let activity of activities">
+      <mat-card class="example-card">
+        <mat-card-header>
+          <mat-card-title>{{ activity.name }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ activity.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button (click)="navigateToComponent('tasks')">Give grades</button>
+        </mat-card-actions>
+      </mat-card>
 
-      <div class="card-container">
-        <div class="horizontal-card">
-          <mat-card class="example-card">
-            <mat-card-header>
-              <mat-card-title>Team project</mat-card-title>
-              <mat-card-subtitle>School project</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{ longTextT }}</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button (click)="$event.stopPropagation(); toggleTableVisibility()">Give grades</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-
-        <div class="horizontal-card">
-          <mat-card class="example-card">
-            <mat-card-header>
-              <mat-card-title>Summer practice</mat-card-title>
-              <mat-card-subtitle>School practice</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{ longTextP }}</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button (click)="$event.stopPropagation(); toggleTableVisibility()">Give grades</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-
-        <div class="horizontal-card">
-          <mat-card class="example-card">
-            <mat-card-header>
-              <mat-card-title>Internship</mat-card-title>
-              <mat-card-subtitle>Practice</mat-card-subtitle>
-            </mat-card-header>
-            <mat-card-content>
-              <p>{{ longTextI }}</p>
-            </mat-card-content>
-            <mat-card-actions>
-              <button mat-button (click)="$event.stopPropagation(); toggleTableVisibility()">Give grades</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-      </div>
-
-      <div class="table-container" *ngIf="showTable">
+     <!-- <div class="table-container" *ngIf="showTable">
         <mat-form-field>
           <mat-label>Filter</mat-label>
           <input matInput (keyup)="onFilterKeyUp($event)" [(ngModel)]="filterValue" placeholder="Ex. Team 1">
         </mat-form-field>
 
         <table mat-table [dataSource]="dataSource.filteredData" class="mat-elevation-z8">
-          <!-- No. Column -->
+          
           <ng-container matColumnDef="index">
             <th mat-header-cell *matHeaderCellDef>No.</th>
             <td mat-cell *matCellDef="let team; let i = index">{{ i + 1 }}</td>
           </ng-container>
 
-          <!-- Team Name Column -->
+          
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef>Team id</th>
             <td mat-cell *matCellDef="let team">Team {{ team.id }}</td>
           </ng-container>
 
-          <!-- Students Column -->
+          
           <ng-container matColumnDef="members">
             <th mat-header-cell *matHeaderCellDef>Members</th>
             <td mat-cell *matCellDef="let team">
@@ -107,8 +70,8 @@
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let team; columns: displayedColumns;" ></tr>
 
-        </table>
-      </div>
+        </table> 
+      </div>-->
     </div>
   </div>
 </div>

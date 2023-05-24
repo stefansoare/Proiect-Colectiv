@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { Team } from '../Classes/Team';
 import { Student } from '../Classes/Student';
+import { Activity } from '../Classes/Activity';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subject } from 'rxjs';
 import { StudentService } from '../Services/student.service';
+import { ActivitiesService } from '../Services/activities.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-mentor-page',
   templateUrl: './mentor-page.component.html',
@@ -11,15 +14,9 @@ import { StudentService } from '../Services/student.service';
 })
 export class MentorPageComponent {
 
-  longTextT = `A collaborative effort where individuals work together to achieve a common goal or 
-  complete a task. Promotes teamwork and integration of diverse skills and perspectives.`;
-
-  longTextP = `Practical learning and work experience during the summer break. Helps students apply
-  theoretical knowledge, gain real-world exposure, and develop professional skills.`;
-
-  longTextI = `Practical training for individuals pursuing a career in informatics. Offers hands-on
-  experience, exposure to relevant tools and technologies, and collaboration with industry professionals.
-  Bridges the gap between academic knowledge and real-world applications.`;
+  navigateToComponent(componentName: string) {
+    this.router.navigate([componentName]);
+  }
 
   // Add the showTable property
   showTable: boolean = false;
@@ -39,24 +36,33 @@ export class MentorPageComponent {
   private filterSubject = new Subject<string>();
   filterValue = '';
   expandedElement: any;
-  dataSource: MatTableDataSource<Team>; // Adjust the type to 'Team' if it contains the required properties
+  dataSource: MatTableDataSource<Activity>; // Adjust the type to 'Team' if it contains the required properties
   students: Student[] = [];
   teams: Team[]=[];
-  constructor(private studentService: StudentService) {
-    this.dataSource = new MatTableDataSource<Team>(this.teams);
+  activities: Activity[]=[];
+  constructor(private studentService: StudentService,
+              private activitiesService: ActivitiesService,
+              private router: Router) {
+    this.dataSource = new MatTableDataSource<Activity>(this.activities);
 
   }
 
   ngOnInit() {
-    this.studentService.getTeams().subscribe(
+   /* this.studentService.getTeams().subscribe(
       teams => {
         this.teams = teams;
         this.dataSource.data = this.teams;
         this.populateTeamMembersNames(); // Add this line to populate the member names
       }
+    );*/
+    this.activitiesService.getActivities().subscribe(
+      activities => {
+        this.activities = activities;
+        this.dataSource.data = this.activities;
+      }
     );
   }
-  populateTeamMembersNames() {
+  /*populateTeamMembersNames() {
     this.teams.forEach(team => {
       this.studentService.getTeamMembers(team.id).subscribe(
         members => {
@@ -99,6 +105,5 @@ export class MentorPageComponent {
   onFilterKeyUp(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.applyFilter(filterValue);
-  }
-
+  }*/
 }

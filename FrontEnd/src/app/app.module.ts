@@ -31,6 +31,7 @@ import { PieChartComponent } from './pie-chart/pie-chart.component';
 import {MatCardModule} from '@angular/material/card';
 import { StudentListComponent } from './student-list/student-list.component';
 import { MentorAccountComponent } from './mentor-account/mentor-account.component';
+import { TasksComponent } from './tasks/tasks.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MentorAccountComponent } from './mentor-account/mentor-account.componen
     PieChartComponent,
     StudentListComponent,
     MentorAccountComponent,
+    TasksComponent,
     
   ],
   imports: [
