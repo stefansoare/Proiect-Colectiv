@@ -56,6 +56,11 @@ public class TaskController {
         }
         return new ResponseEntity<>(task.getGrade(), HttpStatus.OK);
     }
+    @GetMapping("{aId}")
+    public ResponseEntity<List<TaskDTO>> getActivityTasks(@PathVariable("aId") Long aId){
+        return new ResponseEntity<>(taskService.getActivityTasks(aId), HttpStatus.OK);
+    }
+
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskDTO taskDTO){
         Task update = taskService.updateTask(id, taskDTO);

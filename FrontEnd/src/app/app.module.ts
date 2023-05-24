@@ -32,6 +32,7 @@ import {MatCardModule} from '@angular/material/card';
 import { StudentListComponent } from './student-list/student-list.component';
 import { MentorAccountComponent } from './mentor-account/mentor-account.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { SidebarTasksComponent } from './sidebar-tasks/sidebar-tasks.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import { TasksComponent } from './tasks/tasks.component';
     StudentListComponent,
     MentorAccountComponent,
     TasksComponent,
+    SidebarTasksComponent,
     
   ],
   imports: [
