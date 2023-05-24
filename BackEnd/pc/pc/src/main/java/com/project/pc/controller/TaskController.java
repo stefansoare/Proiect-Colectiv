@@ -1,5 +1,6 @@
 package com.project.pc.controller;
 
+import com.project.pc.dto.StudentDTO;
 import com.project.pc.dto.TaskDTO;
 import com.project.pc.model.Task;
 import com.project.pc.service.TaskService;
@@ -55,6 +56,10 @@ public class TaskController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(task.getGrade(), HttpStatus.OK);
+    }
+    @GetMapping("activities/{aId}")
+    public ResponseEntity<List<TaskDTO>> getAllTasksFromActivity(@PathVariable("aId") Long aId){
+        return new ResponseEntity<>(taskService.getAllTasksFromActivity(aId), HttpStatus.OK);
     }
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskDTO taskDTO){
