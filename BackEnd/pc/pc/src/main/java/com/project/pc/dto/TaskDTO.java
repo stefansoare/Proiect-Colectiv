@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class TaskDTO {
+    private long id;
     private int grade;
     private String description;
     private String deadline;

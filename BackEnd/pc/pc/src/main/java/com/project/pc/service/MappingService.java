@@ -86,6 +86,7 @@ public class MappingService {
             return null;
         }
         Task task = new Task();
+        task.setId(taskDTO.getId());
         task.setGrade(taskDTO.getGrade());
         task.setDescription(taskDTO.getDescription());
         task.setDeadline(taskDTO.getDeadline());
@@ -99,6 +100,7 @@ public class MappingService {
             return null;
         }
         TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setId(task.getId());
         taskDTO.setGrade(task.getGrade());
         taskDTO.setDescription(task.getDescription());
         taskDTO.setDeadline(task.getDeadline());

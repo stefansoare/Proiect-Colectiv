@@ -9,6 +9,9 @@
         </mat-card-content>
         <mat-card-actions>
           <button mat-button (click)="$event.stopPropagation(); toggleTableVisibility()">Give grades</button>
+          <button type="button" class="delete-button" title="Delete task" (click)="deleteTask(task)">
+            <i class="material-icons">delete</i>
+          </button>
         </mat-card-actions>
       </mat-card>
     </div>

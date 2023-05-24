@@ -37,10 +37,9 @@ export class TasksService {
       })
     );
   }
-
-  deleteMentor(taskId: number): Observable<void> {
+  deleteTask(taskId: number): Observable<void> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    const url = `${this.tasksUrl}id/${taskId}`;
+    const url = `${this.tasksUrl}${taskId}`;
   
     return this.http.delete<void>(url, { headers });
   }

@@ -54,6 +54,7 @@ public class TaskService {
         if (update == null){
             return null;
         }
+        update.setId(taskDTO.getId());
         update.setGrade(taskDTO.getGrade());
         update.setDeadline(taskDTO.getDeadline());
         update.setDescription(taskDTO.getDescription());
@@ -67,6 +68,9 @@ public class TaskService {
         Task update = taskRepository.findById(id).orElse(null);
         if (update == null){
             return null;
+        }
+        if (taskDTO.getId() != 0) {
+            update.setId(taskDTO.getId());
         }
         if (taskDTO.getAttendance() != 0) {
             update.setAttendance(taskDTO.getAttendance());
