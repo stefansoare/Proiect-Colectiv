@@ -1,8 +1,10 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.StudentDTO;
 import com.project.pc.dto.TaskDTO;
 import com.project.pc.dto.TeamDTO;
 import com.project.pc.model.Activity;
+import com.project.pc.model.Student;
 import com.project.pc.model.Task;
 import com.project.pc.model.Team;
 import com.project.pc.repository.ActivityRepository;
@@ -56,6 +58,14 @@ public class TaskService {
     }
     public TaskDTO getTaskById(Long id){
         return mappingService.convertTaskIntoDTO(taskRepository.findById(id).orElse(null));
+    }
+    public List<TaskDTO> getAllTasksFromActivity(Long aId){
+        List<Task> tasks = taskRepository.findByActivityId(aId);
+        List<TaskDTO> taskDTOS = new ArrayList<>();
+        for (Task task : tasks){
+            taskDTOS.add(mappingService.convertTaskIntoDTO(task));
+        }
+        return taskDTOS;
     }
     public Task updateTask(Long id, TaskDTO taskDTO){
         Task update = taskRepository.findById(id).orElse(null);
