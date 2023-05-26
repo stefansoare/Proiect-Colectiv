@@ -1,30 +1,5 @@
 <div class="page-container">
-  <div class="sidebar">
-    <div class="sidebar-wrapper">
-      <ul class="sidebar-menu">
-        <!-- Sidebar menu items -->
-        <li class="nav-item">
-          <a class="nav-link" href="/stats">
-            <i class="material-icons">dashboard</i>
-            <span>Stats</span>
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link" href="/mentor-page">
-            <i class="material-icons">grade</i>
-            <span>Activities</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/mentor-account">
-            <i class="material-icons">person</i>
-            <span>Account</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-
+  <app-sidebar-mentor></app-sidebar-mentor>
   <div class="card-container">
     <div class="horizontal-card" *ngFor="let activity of activities">
       <mat-card class="example-card">
@@ -38,40 +13,6 @@
           <button mat-button (click)="navigateToComponent('tasks')">Give grades</button>
         </mat-card-actions>
       </mat-card>
-
-     <!-- <div class="table-container" *ngIf="showTable">
-        <mat-form-field>
-          <mat-label>Filter</mat-label>
-          <input matInput (keyup)="onFilterKeyUp($event)" [(ngModel)]="filterValue" placeholder="Ex. Team 1">
-        </mat-form-field>
-
-        <table mat-table [dataSource]="dataSource.filteredData" class="mat-elevation-z8">
-          
-          <ng-container matColumnDef="index">
-            <th mat-header-cell *matHeaderCellDef>No.</th>
-            <td mat-cell *matCellDef="let team; let i = index">{{ i + 1 }}</td>
-          </ng-container>
-
-          
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>Team id</th>
-            <td mat-cell *matCellDef="let team">Team {{ team.id }}</td>
-          </ng-container>
-
-          
-          <ng-container matColumnDef="members">
-            <th mat-header-cell *matHeaderCellDef>Members</th>
-            <td mat-cell *matCellDef="let team">
-              <ul>
-                <li *ngFor="let student of team.students">{{ student.name }}</li>
-              </ul>
-            </td>
-          </ng-container>
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-          <tr mat-row *matRowDef="let team; columns: displayedColumns;" ></tr>
-
-        </table> 
-      </div>-->
     </div>
   </div>
 </div>
