@@ -20,7 +20,9 @@ export class StudentsComponent {
 
   ngOnInit() {
     this.studentService.getStudents().subscribe(
-      students => this.students = students
+      students => {
+        this.students = students.filter(student => student.teamID === 1);
+      }
     );
   }
 
@@ -31,7 +33,7 @@ export class StudentsComponent {
       id: 0,
       email: '',
       leader: false,
-      TeamID: 0
+      teamID: 0
     };
   
     this.studentService.createStudent(newStudent).subscribe(

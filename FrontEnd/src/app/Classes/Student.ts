@@ -3,5 +3,5 @@ export interface Student {
     name: string;
     email: string;
     leader: boolean;
-    TeamID: number;
+    teamID: number;
 }

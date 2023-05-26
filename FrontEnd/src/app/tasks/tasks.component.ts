@@ -22,6 +22,7 @@ export class TasksComponent {
   toggleTableVisibility() {
     this.showTable = !this.showTable;
   }
+  
   deleteTask(task: Task) {
     this.taskService.deleteTask(task.id).subscribe(
       () => {
@@ -34,5 +35,29 @@ export class TasksComponent {
         // Handle error if necessary
       }
     );
+  }
+  addTask(newTask: Task) {
+    this.taskService.createTask(newTask).subscribe(
+      task => {
+        this.tasks.push(task);
+      },
+      (error: any) => {
+        // Handle error if necessary
+      }
+    );
+  }
+
+  createNewTask() {
+    const newTask: Task = {
+      id: 0, // The actual ID will be assigned by the server
+      attendence: 0,
+      comment: '',
+      deadline: '', // Provide the desired deadline value
+      description: '', // Provide the task description
+      grade: 0,
+      activity_id: 0 // Provide the activity ID
+    };
+
+    this.addTask(newTask);
   }
 }

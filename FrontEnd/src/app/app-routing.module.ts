@@ -9,6 +9,7 @@ import { StatsComponent } from './stats/stats.component';
 import { StudentListComponent } from './student-list/student-list.component';
 import { MentorAccountComponent } from './mentor-account/mentor-account.component';
 import { TasksComponent } from './tasks/tasks.component';
+import { RegisterActivityComponent } from './register-activity/register-activity.component';
 
 const routes: Routes = [
   { path: 'students', component: StudentsComponent },
@@ -20,7 +21,8 @@ const routes: Routes = [
   { path: 'stats', component: StatsComponent},
   { path: 'lista', component: StudentListComponent},
   { path: 'mentor-account' , component: MentorAccountComponent},
-  { path: 'tasks', component: TasksComponent}
+  { path: 'tasks', component: TasksComponent},
+  { path: 'activity', component: RegisterActivityComponent}
 ];
 
 @NgModule({

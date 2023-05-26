@@ -34,6 +34,7 @@ import { SidebarTasksComponent } from './Sidebars/sidebar-tasks/sidebar-tasks.co
 import { SidebarMentorComponent } from './Sidebars/sidebar-mentor/sidebar-mentor.component';
 import { SidebarTeamleaderComponent } from './Sidebars/sidebar-teamleader/sidebar-teamleader.component';
 import { SidebarStudentComponent } from './Sidebars/sidebar-student/sidebar-student.component';
+import { RegisterActivityComponent } from './register-activity/register-activity.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { SidebarStudentComponent } from './Sidebars/sidebar-student/sidebar-stud
     SidebarMentorComponent,
     SidebarTeamleaderComponent,
     SidebarStudentComponent,
+    RegisterActivityComponent,
     
   ],
   imports: [

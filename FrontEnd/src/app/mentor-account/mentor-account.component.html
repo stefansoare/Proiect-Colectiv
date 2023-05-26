@@ -1,36 +1,10 @@
 <div class="page-container">
-    <div class="sidebar">
-        <div class="sidebar-wrapper">
-            <ul class="sidebar-menu">
-                <!-- Sidebar menu items -->
-                <li class="nav-item">
-                    <a class="nav-link" href="/stats">
-                      <i class="material-icons">dashboard</i>
-                      <span>Stats</span>
-                    </a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link" href="/mentor-page">
-                      <i class="material-icons">grade</i>
-                      <span>Activities</span>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/mentor-account">
-                      <i class="material-icons">person</i>
-                      <span>Account</span>
-                    </a>
-                  </li>
-            </ul>
-        </div>
+  <app-sidebar-mentor></app-sidebar-mentor>
+  <div class="student-profile">
+    <h2>Mentor Profile</h2>
+    <div class="profile-details" *ngIf="mentor">
+      <div><span>Name: </span>{{ mentor.name }}</div>
+      <div><span>Email: </span>{{ mentor.email }}</div>
     </div>
-    <div class="student-profile">
-        <h2>Mentor Profile</h2>
+  </div>
 
-        <div class="profile-details" *ngIf="mentor">
-            <div><span>Name: </span>{{ mentor.name }}</div>
-            <div><span>ID: </span>{{ mentor.id }}</div>
-            <div><span>Email: </span>{{ mentor.email }}</div>
-        </div>
-    </div>
-</div>
