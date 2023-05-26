@@ -55,7 +55,6 @@ public class MappingService {
         studentDTO.setId(student.getId());
         studentDTO.setName(student.getName());
         studentDTO.setEmail(student.getEmail());
-        studentDTO.setTeamId(student.getTeam().getId());
         return studentDTO;
     }
     public Team convertDTOIntoTeam(TeamDTO teamDTO){
