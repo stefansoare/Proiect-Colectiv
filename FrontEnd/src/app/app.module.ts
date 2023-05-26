@@ -8,8 +8,6 @@ import { MessagesComponent } from './messages/messages.component';
 import { AppRoutingModule } from './app-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryDataService } from './Services/in-memory-data.service';
 import { StudentSearchComponent } from './student-search/student-search.component';
 import { GradesComponent } from './grades/grades.component';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -33,6 +31,9 @@ import { StudentListComponent } from './student-list/student-list.component';
 import { MentorAccountComponent } from './mentor-account/mentor-account.component';
 import { TasksComponent } from './tasks/tasks.component';
 import { SidebarTasksComponent } from './sidebar-tasks/sidebar-tasks.component';
+import { SidebarMentorComponent } from './sidebar-mentor/sidebar-mentor.component';
+import { SidebarTeamleaderComponent } from './sidebar-teamleader/sidebar-teamleader.component';
+import { SidebarStudentComponent } from './sidebar-student/sidebar-student.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,9 @@ import { SidebarTasksComponent } from './sidebar-tasks/sidebar-tasks.component';
     MentorAccountComponent,
     TasksComponent,
     SidebarTasksComponent,
+    SidebarMentorComponent,
+    SidebarTeamleaderComponent,
+    SidebarStudentComponent,
     
   ],
   imports: [
