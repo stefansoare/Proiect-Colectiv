@@ -1,6 +1,7 @@
 package com.project.pc.controller;
 
 import com.project.pc.dto.TeamDTO;
+import com.project.pc.model.Task;
 import com.project.pc.model.Team;
 import com.project.pc.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +38,12 @@ public class TeamController {
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
     @PostMapping("{id}/tasks/{tId}")
-    public ResponseEntity<Team> assignTask(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
-        Team team = teamService.assignTask(id, tId);
-        if (team == null){
+    public ResponseEntity<Task> assignTask(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
+        Task task = teamService.assignTask(id, tId);
+        if (task == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(team, HttpStatus.OK);
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<TeamDTO>> getAllTeams(){
