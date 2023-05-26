@@ -54,15 +54,15 @@ public class TeamService {
         teamRepository.save(team);
         return team;
     }
-    public Team assignTask(Long id, Long tId){
+    public Task assignTask(Long id, Long tId){
         Team team = teamRepository.findById(id).orElse(null);
         Task task = taskRepository.findById(tId).orElse(null);
         if (team == null || task == null){
             return null;
         }
-        team.setTask(task);
+        task.setTeam(team);
         teamRepository.save(team);
-        return team;
+        return task;
     }
     public List<TeamDTO> getAllTeams(){
         List<Team> teams = teamRepository.findAll();

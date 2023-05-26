@@ -61,6 +61,9 @@ public class TaskController {
     public ResponseEntity<List<TaskDTO>> getAllTasksFromActivity(@PathVariable("aId") Long aId){
         return new ResponseEntity<>(taskService.getAllTasksFromActivity(aId), HttpStatus.OK);
     }
+
+    // grade din task in functie de
+    // team id si student id mutat in task
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskDTO taskDTO){
         Task update = taskService.updateTask(id, taskDTO);
