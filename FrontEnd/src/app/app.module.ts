@@ -30,10 +30,10 @@ import {MatCardModule} from '@angular/material/card';
 import { StudentListComponent } from './student-list/student-list.component';
 import { MentorAccountComponent } from './mentor-account/mentor-account.component';
 import { TasksComponent } from './tasks/tasks.component';
-import { SidebarTasksComponent } from './sidebar-tasks/sidebar-tasks.component';
-import { SidebarMentorComponent } from './sidebar-mentor/sidebar-mentor.component';
-import { SidebarTeamleaderComponent } from './sidebar-teamleader/sidebar-teamleader.component';
-import { SidebarStudentComponent } from './sidebar-student/sidebar-student.component';
+import { SidebarTasksComponent } from './Sidebars/sidebar-tasks/sidebar-tasks.component';
+import { SidebarMentorComponent } from './Sidebars/sidebar-mentor/sidebar-mentor.component';
+import { SidebarTeamleaderComponent } from './Sidebars/sidebar-teamleader/sidebar-teamleader.component';
+import { SidebarStudentComponent } from './Sidebars/sidebar-student/sidebar-student.component';
 
 @NgModule({
   declarations: [
