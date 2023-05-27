@@ -140,3 +140,24 @@ table {
     margin: 10px;
   }
   
+  .example-card {
+    max-width: 400px;
+    position: relative;
+  }
+  
+  .activity-description {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+  
+  .example-card:hover .activity-description {
+    display: block;
+  }
+  

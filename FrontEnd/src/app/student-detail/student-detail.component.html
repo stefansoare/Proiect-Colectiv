@@ -1,10 +1,13 @@
-<div *ngIf="student">
-  <h2>{{ student.name | uppercase }} Details</h2>
-  <div><span>id: </span>{{ student.id }}</div>
-  <div><span>email: </span>{{ student.email }}</div>
-  <div><span>team id: </span>{{ student.teamID}}</div>
+<div class="page-container">
+  <app-sidebar-teamleader></app-sidebar-teamleader>
+  <div class="student-profile">
+    <div *ngIf="student">
+      <div class="profile-details">
+        <h2>{{ student.name}}'s details</h2>
+        <div><span>id: </span>{{ student.id }}</div>
+        <div><span>email: </span>{{ student.email }}</div>
+        <div><span>team id: </span>{{ student.teamID }}</div>
+      </div>
+    </div>
+  </div>
 </div>
-
-<button>
-  <a routerLink="/grades">View Attendances and Grades</a>
-</button>
