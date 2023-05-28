@@ -1,0 +1,27 @@
+.dialog-container {
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.profile-details {
+  margin-bottom: 20px;
+}
+
+.profile-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.profile-info {
+  font-size: 16px;
+}
+
+.profile-label {
+  font-weight: bold;
+}
+
+.profile-info div {
+  margin-bottom: 8px;
+}

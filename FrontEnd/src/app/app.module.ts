@@ -35,6 +35,8 @@ import { SidebarMentorComponent } from './Sidebars/sidebar-mentor/sidebar-mentor
 import { SidebarTeamleaderComponent } from './Sidebars/sidebar-teamleader/sidebar-teamleader.component';
 import { SidebarStudentComponent } from './Sidebars/sidebar-student/sidebar-student.component';
 import { RegisterActivityComponent } from './register-activity/register-activity.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { RegisterActivityComponent } from './register-activity/register-activity
     SidebarTeamleaderComponent,
     SidebarStudentComponent,
     RegisterActivityComponent,
+    DialogBoxComponent
+    
     
   ],
   imports: [
@@ -77,6 +81,8 @@ import { RegisterActivityComponent } from './register-activity/register-activity
     MatTableModule,
     MatInputModule,
     NgChartsModule,
+    MatDialogModule,
+    
     
   ],
   providers: [],

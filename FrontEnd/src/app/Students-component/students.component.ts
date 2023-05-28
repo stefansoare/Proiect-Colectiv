@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Student } from "../Classes/Student";
 import { StudentService } from '../Services/student.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 
 
 
@@ -14,7 +16,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class StudentsComponent {
   students: Student[] = [];
 
-  constructor(private studentService: StudentService,private http: HttpClient) { }
+  constructor(private studentService: StudentService,private http: HttpClient, public matDialog : MatDialog) { }
 
 
 
@@ -25,6 +27,13 @@ export class StudentsComponent {
       }
     );
   }
+
+  openDialog(studentId: number) {
+    const dialogRef = this.matDialog.open(DialogBoxComponent, {
+      data: { studentId }
+    });
+}
+
 
 
   addStudent(studentName: string) {

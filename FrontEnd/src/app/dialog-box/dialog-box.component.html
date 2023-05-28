@@ -1,0 +1,10 @@
+<div class="dialog-container">
+  <div *ngIf="student" class="profile-details">
+    <h2 class="profile-title">{{ student.name }}'s details</h2>
+    <div class="profile-info">
+      <div><span class="profile-label">ID:</span> {{ student.id }}</div>
+      <div><span class="profile-label">Email:</span> {{ student.email }}</div>
+      <div><span class="profile-label">Team ID:</span> {{ student.teamID }}</div>
+    </div>
+  </div>
+</div>
