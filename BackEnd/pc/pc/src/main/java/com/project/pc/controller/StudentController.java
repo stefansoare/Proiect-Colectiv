@@ -20,7 +20,7 @@ public class StudentController {
         Student createdStudent = studentService.createStudent(studentDTO);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
-    @PostMapping("{id}/teams/{tId}")
+    @PostMapping("{tId}/teams/{id}")
     public ResponseEntity<Student> addToTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
         Student student = studentService.addToTeam(id, tId);
         if (student == null){

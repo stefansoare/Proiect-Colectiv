@@ -1,6 +1,5 @@
 package com.project.pc.controller;
 
-import com.project.pc.dto.StudentDTO;
 import com.project.pc.dto.TaskDTO;
 import com.project.pc.model.Task;
 import com.project.pc.service.TaskService;
@@ -24,6 +23,22 @@ public class TaskController {
     @PostMapping("{id}/activities/{aId}")
     public ResponseEntity<Task> addToActivity(@PathVariable("id") Long id, @PathVariable("aId") Long aId){
         Task task = taskService.addToActivity(id, aId);
+        if (task == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+    @PostMapping("{sId}/studenttasks/{tId}")
+    public ResponseEntity<Task> assignTaskToStudent(@PathVariable("sId") Long sId, @PathVariable("tId") Long tId){
+        Task task = taskService.assignTaskToStudent(sId, tId);
+        if (task == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+    @PostMapping("{teamId}/teamtasks/{tId}")
+    public ResponseEntity<Task> assignTaskToTeam(@PathVariable("teamId") Long teamId, @PathVariable("tId") Long tId){
+        Task task = taskService.assignTaskToTeam(teamId, tId);
         if (task == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -61,9 +76,10 @@ public class TaskController {
     public ResponseEntity<List<TaskDTO>> getAllTasksFromActivity(@PathVariable("aId") Long aId){
         return new ResponseEntity<>(taskService.getAllTasksFromActivity(aId), HttpStatus.OK);
     }
-
-    // grade din task in functie de
-    // team id si student id mutat in task
+    @GetMapping("stats/{sId}")
+    public ResponseEntity<Integer> getStudentStats(@PathVariable("sId") Long sId){
+        return new ResponseEntity<>(taskService.getStudentStats(sId), HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskDTO taskDTO){
         Task update = taskService.updateTask(id, taskDTO);

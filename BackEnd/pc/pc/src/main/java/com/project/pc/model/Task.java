@@ -41,13 +41,16 @@ public class Task {
     @Nullable
     private Team team;
 
-    public Task(){}
-    public Task(int grade, String description, String deadline, int attendance, String comment) {
-        this.grade = grade;
+    public Task(){
+        this.grade = 0;
+        this.description = "";
+        this.deadline = "";
+        this.attendance = 0;
+        this.comment = "";
+    }
+    public Task(String description, String deadline) {
         this.description = description;
         this.deadline = deadline;
-        this.attendance = attendance;
-        this.comment = comment;
     }
     public long getId() {
         return id;
@@ -73,21 +76,10 @@ public class Task {
     public void setDeadline(String deadline) {
         this.deadline = deadline;
     }
-    public int getAttendance() {
-        return attendance;
-    }
-    public void setAttendance(int attendance) {
-        this.attendance = attendance;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
+    public int getAttendance() {return attendance;}
+    public void setAttendance(int attendance) {this.attendance = attendance;}
+    public String getComment() {return comment;}
+    public void setComment(String comment) {this.comment = comment;}
     public Activity getActivity(){return activity;}
     public void setActivity(Activity activity){this.activity = activity;}
 

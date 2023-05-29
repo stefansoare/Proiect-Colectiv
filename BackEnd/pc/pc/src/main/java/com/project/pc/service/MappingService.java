@@ -66,7 +66,7 @@ public class MappingService {
         }
         Team team = new Team();
         team.setTeamLeader(teamDTO.getTeamLeader());
-        team.setId(teamDTO.getId());
+        //team.setId(teamDTO.getId());
         //team.setActivity(convertDTOIntoActivity(teamDTO.getActivityDTO()));
         //team.setMentor(convertDTOIntoMentor(teamDTO.getMentorDTO()));
         //team.setTask(convertDTOIntoTask(teamDTO.getTaskDTO()));

@@ -1,14 +1,14 @@
 package com.project.pc.service;
 
-import com.project.pc.dto.StudentDTO;
 import com.project.pc.dto.TaskDTO;
-import com.project.pc.dto.TeamDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Student;
 import com.project.pc.model.Task;
 import com.project.pc.model.Team;
 import com.project.pc.repository.ActivityRepository;
+import com.project.pc.repository.StudentRepository;
 import com.project.pc.repository.TaskRepository;
+import com.project.pc.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +23,10 @@ public class TaskService {
     private TaskRepository taskRepository;
     @Autowired
     private ActivityRepository activityRepository;
+    @Autowired
+    private StudentRepository studentRepository;
+    @Autowired
+    private TeamRepository teamRepository;
     @Autowired
     private MappingService mappingService;
     public Task createTask(TaskDTO taskDTO){
@@ -39,6 +43,38 @@ public class TaskService {
         task.setActivity(activity);
         taskRepository.save(task);
         return task;
+    }
+    public Task assignTaskToStudent(Long sId, Long tId){
+        Task task = taskRepository.findById(tId).orElse(null);
+        Student student = studentRepository.findStudentById(sId).orElse(null);
+        if (task == null || student == null){
+            return null;
+        }
+        if (task.getStudent() == null){
+            task.setStudent(student);
+            taskRepository.save(task);
+            return task;
+        }
+        Task newTask = new Task(task.getDescription(), task.getDeadline());
+        newTask.setStudent(student);
+        taskRepository.save(newTask);
+        return newTask;
+    }
+    public Task assignTaskToTeam(Long teamId, Long tId){
+        Task task = taskRepository.findById(tId).orElse(null);
+        Team team = teamRepository.findById(teamId).orElse(null);
+        if (task == null || team == null){
+            return null;
+        }
+        if (task.getTeam() == null){
+            task.setTeam(team);
+            taskRepository.save(task);
+            return task;
+        }
+        Task newTask = new Task(task.getDescription(),task.getDeadline());
+        newTask.setTeam(team);
+        taskRepository.save(newTask);
+        return newTask;
     }
     public List<TaskDTO> getAllTasks(){
         List<Task> tasks = taskRepository.findAll();
@@ -66,6 +102,22 @@ public class TaskService {
             taskDTOS.add(mappingService.convertTaskIntoDTO(task));
         }
         return taskDTOS;
+    }
+    public Integer addGrades(List<Task> tasks){
+        int sum = 0;
+        for(Task task : tasks){
+            sum = sum + task.getGrade();
+        }
+        return sum / tasks.size();
+    }
+    public Integer getStudentStats(Long tId){
+        List<Student> students = studentRepository.findByTeamId(tId);
+        int sum = 0;
+        for (Student student : students){
+            List<Task> tasks = taskRepository.findByStudentId(student.getId());
+            sum = sum + addGrades(tasks);
+        }
+        return sum / students.size();
     }
     public Task updateTask(Long id, TaskDTO taskDTO){
         Task update = taskRepository.findById(id).orElse(null);
