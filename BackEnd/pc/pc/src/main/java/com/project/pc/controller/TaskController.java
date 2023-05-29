@@ -95,6 +95,13 @@ public class TaskController {
         }
         return new ResponseEntity<>(taskService.getAllTasksOfAStudentByEmail(sEmail), HttpStatus.OK);
     }
+    @GetMapping("name/{sName}/alltasks")
+    public ResponseEntity<List<Task>> getAllTasksOfAStudentByName(@PathVariable("sName") String sName){
+        if (taskService.getAllTasksOfAStudentByName(sName) == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(taskService.getAllTasksOfAStudentByName(sName), HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskDTO taskDTO){
         Task update = taskService.updateTask(id, taskDTO);

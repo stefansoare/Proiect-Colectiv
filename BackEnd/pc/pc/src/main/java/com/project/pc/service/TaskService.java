@@ -150,6 +150,20 @@ public class TaskService {
         }
         return getAllTasksOfAStudent(student.getId());
     }
+    public List<Task> getAllTasksOfAStudentByName(String name){
+        List<Student> students = studentRepository.findStudentByName(name);
+        if (students.isEmpty()){
+            return null;
+        }
+        List<Task> allTasks = new ArrayList<>();
+        for (Student student : students){
+            List<Task> tasks = getAllTasksOfAStudent(student.getId());
+            for (Task task : tasks){
+                allTasks.add(task);
+            }
+        }
+        return allTasks;
+    }
     public Task updateTask(Long id, TaskDTO taskDTO){
         Task update = taskRepository.findById(id).orElse(null);
         if (update == null){
