@@ -36,7 +36,6 @@ public class StudentService {
         studentRepository.save(student);
         return student;
     }
-    // assigntask
     public List<StudentDTO> getAllStudents(){
         List<Student> students = studentRepository.findAll();
         List<StudentDTO> studentDTOS = new ArrayList<>();

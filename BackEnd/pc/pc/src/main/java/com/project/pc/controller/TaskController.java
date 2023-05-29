@@ -80,6 +80,10 @@ public class TaskController {
     public ResponseEntity<Integer> getStudentStats(@PathVariable("sId") Long sId){
         return new ResponseEntity<>(taskService.getStudentStats(sId), HttpStatus.OK);
     }
+    @GetMapping("attendances/{sId}")
+    public ResponseEntity<Integer> getStudentAttendances(@PathVariable("sId") Long sId){
+        return new ResponseEntity<>(taskService.getAllStudentAttendance(sId), HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskDTO taskDTO){
         Task update = taskService.updateTask(id, taskDTO);

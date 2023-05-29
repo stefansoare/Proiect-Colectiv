@@ -119,6 +119,14 @@ public class TaskService {
         }
         return sum / students.size();
     }
+    public Integer getAllStudentAttendance(Long sId){
+        List<Task> tasks = taskRepository.findByStudentId(sId);
+        int sum = 0;
+        for (Task task : tasks){
+            sum = sum + task.getAttendance();
+        }
+        return sum;
+    }
     public Task updateTask(Long id, TaskDTO taskDTO){
         Task update = taskRepository.findById(id).orElse(null);
         if (update == null){

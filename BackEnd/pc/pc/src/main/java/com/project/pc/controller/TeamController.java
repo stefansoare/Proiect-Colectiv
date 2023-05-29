@@ -3,6 +3,7 @@ package com.project.pc.controller;
 import com.project.pc.dto.TeamDTO;
 import com.project.pc.model.Task;
 import com.project.pc.model.Team;
+import com.project.pc.service.StudentService;
 import com.project.pc.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,9 +18,13 @@ import java.util.List;
 public class TeamController {
     @Autowired
     private TeamService teamService;
+    @Autowired
+    private StudentService studentService;
     @PostMapping
     public ResponseEntity<Team> createTeam(@RequestBody TeamDTO teamDTO){
-        return new ResponseEntity<>(teamService.createTeam(teamDTO), HttpStatus.CREATED);
+        Team newTeam = teamService.createTeam(teamDTO);
+        studentService.addToTeam(teamDTO.getTeamLeader(), newTeam.getId());
+        return new ResponseEntity<>(newTeam, HttpStatus.CREATED);
     }
     @PostMapping("{id}/activities/{aId}")
     public ResponseEntity<Team> assignActivity(@PathVariable("id") Long id, @PathVariable("aId") Long aId){
