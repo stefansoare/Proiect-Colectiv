@@ -1,5 +1,24 @@
 <div class="page-container">
     <app-sidebar-student></app-sidebar-student>
     <div class="content-container">
+      <div class="task-list">
+        <h2>Student Tasks and Grades</h2>
+        <div class="icon-container">
+            <i class="material-icons">school</i>
+          </div>
+        <div class="task-cards">
+          <div class="task-card" *ngFor="let task of tasks">
+            <div class="task-card-header">
+              <span>Task ID: {{ task.id }}</span>
+              <span>Deadline: {{ task.deadline }}</span>
+            </div>
+            <div class="task-card-content">
+              <p>Grade: {{ task.grade }}</p>
+              <p>Attendance: {{ task.attendence }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
+  
