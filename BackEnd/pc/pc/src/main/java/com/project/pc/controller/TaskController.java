@@ -76,9 +76,9 @@ public class TaskController {
     public ResponseEntity<List<TaskDTO>> getAllTasksFromActivity(@PathVariable("aId") Long aId){
         return new ResponseEntity<>(taskService.getAllTasksFromActivity(aId), HttpStatus.OK);
     }
-    @GetMapping("stats/{sId}")
-    public ResponseEntity<Integer> getStudentStats(@PathVariable("sId") Long sId){
-        return new ResponseEntity<>(taskService.getStudentStats(sId), HttpStatus.OK);
+    @GetMapping("stats/{tId}")
+    public ResponseEntity<Integer> getTeamStats(@PathVariable("tId") Long tId){
+        return new ResponseEntity<>(taskService.getTeamStats(tId), HttpStatus.OK);
     }
     @GetMapping("attendances/{sId}")
     public ResponseEntity<Integer> getStudentAttendances(@PathVariable("sId") Long sId){
