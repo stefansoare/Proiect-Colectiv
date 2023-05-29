@@ -1,28 +1,55 @@
-import { Component } from '@angular/core';
-import {Task} from  '../Classes/Task';
+import { Component, OnInit } from '@angular/core';
+import { Task } from '../Classes/Task';
 import { TasksService } from '../Services/tasks.service';
+import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-tasks',
   templateUrl: './tasks.component.html',
   styleUrls: ['./tasks.component.css']
 })
-export class TasksComponent {
+export class TasksComponent implements OnInit {
   tasks: Task[] = [];
   showTable: boolean = false;
+  activityId: number = 0;
 
-  constructor(private taskService: TasksService) {}
+  constructor(
+    private taskService: TasksService,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.taskService.getTasks().subscribe(
+    this.route.params.subscribe(params => {
+      this.activityId = Number(params['aId']);
+      this.loadTasks();
+    });
+  }
+
+  loadTasks() {
+    this.taskService.getTasksByActivity(this.activityId).subscribe(
       tasks => {
         this.tasks = tasks;
+      },
+      error => {
+        // Handle error if necessary
       }
     );
   }
+  getTasksByActivity(activityId: number) {
+    this.taskService.getTasksByActivity(activityId).subscribe(
+      tasks => {
+        this.tasks = tasks;
+      },
+      error => {
+        console.error(error);
+      }
+    );
+  }
+
   toggleTableVisibility() {
     this.showTable = !this.showTable;
   }
-  
+
   deleteTask(task: Task) {
     this.taskService.deleteTask(task.id).subscribe(
       () => {
@@ -32,17 +59,18 @@ export class TasksComponent {
         }
       },
       (error: any) => {
-        // Handle error if necessary
+        console.error(error);
       }
     );
   }
+
   addTask(newTask: Task) {
     this.taskService.createTask(newTask).subscribe(
       task => {
         this.tasks.push(task);
       },
       (error: any) => {
-        // Handle error if necessary
+        console.error(error);
       }
     );
   }
@@ -55,7 +83,7 @@ export class TasksComponent {
       deadline: '', // Provide the desired deadline value
       description: '', // Provide the task description
       grade: 0,
-      activity_id: 0 // Provide the activity ID
+      activity_id: this.activityId // Use the activityId obtained from the route
     };
 
     this.addTask(newTask);

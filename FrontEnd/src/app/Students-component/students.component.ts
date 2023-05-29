@@ -43,14 +43,24 @@ addStudent(studentName: string) {
     name: studentName,
     id: 12,
     email: email,
-    leader: false,
     team_id: id,
+    leader: false,
     stats: 0
   };
 
   this.studentService.createStudent(newStudent).subscribe(
     (createdStudent: any) => {
       this.students.push(createdStudent);
+
+      // Add the student to the team with ID 1
+      this.studentService.addToTeam(createdStudent.id, 1).subscribe(
+        (updatedStudent: Student) => {
+          console.log(`Student ${updatedStudent.name} added to team.`);
+        },
+        (error: any) => {
+          console.error('Failed to add student to team:', error);
+        }
+      );
     },
     (error: any) => {
       // Handle error if necessary
@@ -60,9 +70,8 @@ addStudent(studentName: string) {
 
 
 
-
     deleteStudent(student: Student) {
-      this.studentService.deleteStudent(student.id).subscribe(
+      this.studentService.deleteStudent(student.id, 1).subscribe(
         () => {
           const index = this.students.indexOf(student);
           if (index > -1) {

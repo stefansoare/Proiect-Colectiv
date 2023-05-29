@@ -18,6 +18,7 @@ public class MappingService {
             return null;
         }
         ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setId(activity.getId());
         activityDTO.setName(activity.getName());
         activityDTO.setDescription(activity.getDescription());
         return activityDTO;

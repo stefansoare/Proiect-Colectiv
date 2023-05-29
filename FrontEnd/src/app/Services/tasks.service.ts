@@ -21,6 +21,14 @@ export class TasksService {
   createTask(task: Task): Observable<Task> {
     return this.http.post<Task>(this.tasksUrl, task);
   }
+  getTasksByActivity(aId: number): Observable<Task[]> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    const url = `${this.tasksUrl}activities/${aId}`; // Update the URL with the activity ID
+  
+    return this.http.get<Task[]>(url, { headers });
+  }
+  
+
   getTask(taskId: number): Observable<Task> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     const url = `${this.tasksUrl}id/${taskId}`;

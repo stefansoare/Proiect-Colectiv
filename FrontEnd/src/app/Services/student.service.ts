@@ -24,7 +24,7 @@ export class StudentService {
   addToTeam(studentId: number, teamId: number): Observable<Student> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     const targetTeamId = 1; // Set the target team id to 1
-    return this.http.post<Student>(`${this.studentsUrl}${studentId}/teams/${targetTeamId}`, null);
+    return this.http.post<Student>(`${this.studentsUrl}${targetTeamId}/teams/${studentId}`, null);
   }
   
 
@@ -48,9 +48,9 @@ export class StudentService {
     );
   }
 
-  deleteStudent(studentId: number): Observable<void> {
+  deleteStudent(studentId: number, teamId: number): Observable<void> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    const url = `${this.studentsUrl}id/${studentId}`;
+    const url = `${this.studentsUrl}${studentId}/teams/${teamId}`;
   
     return this.http.delete<void>(url, { headers });
   }

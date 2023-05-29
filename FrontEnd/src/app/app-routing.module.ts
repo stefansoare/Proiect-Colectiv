@@ -22,7 +22,7 @@ const routes: Routes = [
   { path: 'stats', component: StatsComponent},
   { path: 'lista', component: StudentListComponent},
   { path: 'mentor-account' , component: MentorAccountComponent},
-  { path: 'tasks', component: TasksComponent},
+  { path: 'tasks/:aId', component: TasksComponent},
   { path: 'activity', component: RegisterActivityComponent},
   { path: 'student-grades', component: StudentGradesComponent}
 ];

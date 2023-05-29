@@ -41,15 +41,15 @@ export class MentorService {
       })
     );
   }
-  getStudentStats(sId: number): Observable<number> {
+  getTeamStats(tId: number): Observable<number> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    const url = `http://localhost:8080/api/tasks/stats/${sId}`;
+    const url = `http://localhost:8080/api/tasks/stats/${tId}`;
   
     return this.http.get<number>(url, { headers }).pipe(
       map(response => {
         // Extract the student stats from the response body
-        const studentStats = response as number;
-        return studentStats;
+        const teamStats = response as number;
+        return teamStats;
       }),
       catchError(error => {
         console.error(error);

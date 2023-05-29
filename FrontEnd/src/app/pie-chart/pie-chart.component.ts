@@ -2,7 +2,7 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
 import { MentorService } from '../Services/mentor.service';
 import { Team } from '../Classes/Team';
-import { Student } from '../Classes/Student';
+
 @Component({
   selector: 'app-pie-chart',
   templateUrl: './pie-chart.component.html',
@@ -19,11 +19,11 @@ export class PieChartComponent implements OnInit {
     const myChart = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: [], // Labels will be populated dynamically
+        labels: [] as string[], // Type assertion
         datasets: [
           {
             label: 'Team activity',
-            data: [], // Data will be populated dynamically
+            data: [] as number[], // Type assertion
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -46,58 +46,30 @@ export class PieChartComponent implements OnInit {
         },
       },
     });
-
+  
     // Fetch teams from MentorService
     this.mentorService.getTeams().subscribe(
       (teams: Team[]) => {
         this.teams = teams;
-        this.calculateTeamStats(myChart); // Calculate and update team stats
+  
+        // Get team stats and insert them into the graph
+        this.teams.forEach((team, index) => {
+          this.mentorService.getTeamStats(team.id).subscribe(
+            (teamStats: number) => {
+              (myChart.data.labels as string[]).push(`Team ${team.id}`); // Type assertion
+              (myChart.data.datasets[0].data as number[]).push(teamStats); // Type assertion
+              myChart.update();
+            },
+            (error: any) => {
+              console.error(error);
+            }
+          );
+        });
       },
       (error: any) => {
         console.error(error);
       }
     );
   }
-
-  calculateTeamStats(myChart: Chart) {
-    const teamLabels: string[] = [];
-    const teamStats: number[] = [];
-  
-    this.teams.forEach((team: Team) => {
-      teamLabels.push(`Team ${team.id}`);
-  
-      this.mentorService.getTeamMembers(team.id).subscribe(
-        (members: Student[]) => {
-          let teamSum = 0;
-          let membersProcessed = 0;
-  
-          members.forEach((member: Student) => {
-            this.mentorService.getStudentStats(member.id).subscribe((stats: number) => {
-              teamSum += stats;
-              membersProcessed++;
-  
-              if (membersProcessed === members.length) {
-                // All members of the team processed
-                teamStats.push(teamSum);
-  
-                if (teamStats.length === this.teams.length) {
-                  // All teams processed, update the chart data
-                  myChart.data.labels = teamLabels;
-                  myChart.data.datasets[0].data = teamStats;
-                  myChart.update();
-                }
-              }
-            });
-          });
-        },
-        (error: any) => {
-          console.error(error);
-        }
-      );
-    });
-  }
-  
-  
-  
   
 }
