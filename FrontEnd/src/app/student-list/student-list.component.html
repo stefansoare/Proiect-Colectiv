@@ -1,21 +1,23 @@
 <div class="page-container">
   <app-sidebar-teamleader></app-sidebar-teamleader>
-  <div class="page-container">
-    <div class="content-container">
-      <h1 class="manage-team-title">Manage team</h1>
-      <ul>
-        <li *ngFor="let student of students">
-          <div class="student-profile">
-            <h2>Student profile</h2>
-            <div class="profile-details" *ngIf="student">
-              <div><span>Name: </span>{{ student.name }}</div>
-              <div><span>ID: </span>{{ student.id }}</div>
-              <div><span>Email: </span>{{ student.email }}</div>
-              <div><span>Leader: </span>{{ student.leader }}</div>
-              <div><span>Team ID: </span>{{ student.teamID }}</div>
-            </div>
+  <div class="content-container">
+    <h1 class="manage-team-title">Manage team</h1>
+    <div class="card-container">
+      <div *ngFor="let student of students" class="student-card">
+        <div class="student-profile">
+          <div class="icon-container">
+            <i class="material-icons">person</i>
           </div>
-        </li>
-      </ul>
+          <h2>Student profile</h2>
+          <div class="profile-details" *ngIf="student">
+            <div><span>Name: </span>{{ student.name }}</div>
+            <div><span>ID: </span>{{ student.id }}</div>
+            <div><span>Email: </span>{{ student.email }}</div>
+            <div><span>Leader: </span>{{ student.leader }}</div>
+            <div><span>Team ID: </span>{{ student.teamID }}</div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</div>

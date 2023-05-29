@@ -121,7 +121,12 @@ li.team-container {
 
 .example-card {
   max-width: 400px;
+  background-color: #fff;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 20px;
 }
+
 .activities-container {
   text-align: center;
 }
@@ -139,3 +144,4 @@ li.team-container {
 .horizontal-card {
   margin: 10px;
 }
+

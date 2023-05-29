@@ -42,7 +42,8 @@ export class StudentsComponent {
       id: 0,
       email: '',
       leader: false,
-      teamID: 0
+      teamID: 0,
+      stats:0
     };
   
     this.studentService.createStudent(newStudent).subscribe(

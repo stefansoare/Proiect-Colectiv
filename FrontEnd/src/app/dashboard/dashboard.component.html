@@ -1,14 +1,18 @@
 <div class="page-container">
   <app-sidebar-student></app-sidebar-student>
-  <div class="student-profile">
-    <h2>Student Profile</h2>
-    <div class="profile-details" *ngIf="student">
-      <div><span>Name: </span>{{ student.name }}</div>
-      <div><span>ID: </span>{{ student.id }}</div>
-      <div><span>Email: </span>{{ student.email }}</div>
-      <div><span>Leader: </span>{{ student.leader }}</div>
-      <div><span>Team ID: </span>{{ student.teamID }}</div>
+  <div class="content-container">
+    <div class="student-profile">
+      <div class="icon-container">
+        <i class="material-icons">person</i>
+      </div>
+      <h2>Student Profile</h2>
+      <div class="profile-details" *ngIf="student">
+        <div><span>Name: </span>{{ student.name }}</div>
+        <div><span>ID: </span>{{ student.id }}</div>
+        <div><span>Email: </span>{{ student.email }}</div>
+        <div><span>Leader: </span>{{ student.leader }}</div>
+        <div><span>Team ID: </span>{{ student.teamID }}</div>
+      </div>
     </div>
   </div>
-  <div>
-  
+</div>

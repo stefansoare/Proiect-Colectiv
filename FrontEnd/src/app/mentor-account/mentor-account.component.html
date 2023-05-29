@@ -1,10 +1,15 @@
 <div class="page-container">
   <app-sidebar-mentor></app-sidebar-mentor>
-  <div class="student-profile">
-    <h2>Mentor Profile</h2>
-    <div class="profile-details" *ngIf="mentor">
-      <div><span>Name: </span>{{ mentor.name }}</div>
-      <div><span>Email: </span>{{ mentor.email }}</div>
+  <div class="content-container">
+    <div class="student-profile">
+      <div class="icon-container">
+        <i class="material-icons">perm_identity</i>
+      </div>
+      <h2>Mentor Profile</h2>
+      <div class="profile-details" *ngIf="mentor">
+        <div><span><strong>Name:</strong></span>{{ mentor.name }}</div>
+        <div><span><strong>Email:</strong></span>{{ mentor.email }}</div>
+      </div>
     </div>
   </div>
-
+</div>

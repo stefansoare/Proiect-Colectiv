@@ -1,24 +1,30 @@
 
 .example-card {
-    max-width: 400px;
-  }
-  .activities-container {
-    text-align: center;
-  }
-  
-  .activities-container h1 {
-    margin-top: 0;
-  }
-  
-  .card-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .horizontal-card {
-    margin: 10px;
-  }
+  max-width: 400px;
+  background-color: #fff;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.activities-container {
+  text-align: center;
+}
+
+.activities-container h1 {
+  margin-top: 0;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.horizontal-card {
+  margin: 10px;
+}
+
   
 .sidebar-wrapper {
     width: 250px;

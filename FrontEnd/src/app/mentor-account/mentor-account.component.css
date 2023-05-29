@@ -1,123 +1,86 @@
+.page-container {
+  display: flex;
+}
+
+.student-profile {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.profile-details {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.profile-details div {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.profile-details div:last-child {
+  margin-bottom: 0;
+}
+
+.profile-details span {
+  color: #555;
+}
+
+.profile-details span:not(:last-child)::after {
+  content: ",";
+  margin-right: 5px;
+}
+
+.profile-details span:last-child::after {
+  content: "";
+}
+
+.profile-details span strong {
+  color: #333;
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 label {
-    color: #435960;
-    font-weight: bold;
-  }
-  input {
-    font-size: 1em;
-    padding: .5rem;
-  }
-  button {
-    margin-top: 20px;
-    background-color: #eee;
-    padding: 1rem;
-    border-radius: 4px;
-    font-size: 1rem;
-  }
-  button:hover {
-    background-color: #cfd8dc;
-  }
-  button:disabled {
-    background-color: #eee;
-    color: #ccc;
-    cursor: auto;
-  }
-  
-  .sidebar-wrapper {
-    width: 250px;
-    background-color: #f0f0f0;
-    padding: 20px;
-  }
-  
-  .sidebar {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .sidebar-search .input-group {
-    margin-bottom: 20px;
-  }
-  
-  .sidebar-menu {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar-menu li {
-    margin-bottom: 10px;
-  }
-  
-  .sidebar-menu a {
-    display: flex;
-    align-items: center;
-    color: #333;
-    text-decoration: none;
-  }
-  
-  .sidebar-menu a:hover {
-    background-color: #ccc;
-  }
-  
-  .sidebar-menu .material-icons {
-    margin-right: 10px;
-  }
-  
-  .page-container {
-    display: flex;
-  }
-  
-  .content-container {
-    flex-grow: 1;
-    padding: 20px;
-  }
-  
-  
-  
-  .profile-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .info-row {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  label {
-    font-weight: bold;
-    margin-right: 5px;
-  }
-  
-  span {
-    font-weight: normal;
-  }
-  
-  
-  .student-profile {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .profile-details {
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 20px;
-    margin-top: 20px;
-    text-align: center;
-  }
-  
-  .profile-details div {
-    font-weight: bold;
-  }
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+span {
+  font-weight: normal;
+}
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+}
+.icon-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.icon-container i {
+  font-size: 80px;
+}
+
+.student-profile h2 {
+  margin-top: 0;
+}

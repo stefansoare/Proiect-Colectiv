@@ -37,6 +37,7 @@ import { SidebarStudentComponent } from './Sidebars/sidebar-student/sidebar-stud
 import { RegisterActivityComponent } from './register-activity/register-activity.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
+import { StudentGradesComponent } from './student-grades/student-grades.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
     SidebarTeamleaderComponent,
     SidebarStudentComponent,
     RegisterActivityComponent,
-    DialogBoxComponent
+    DialogBoxComponent,
+    StudentGradesComponent
     
     
   ],

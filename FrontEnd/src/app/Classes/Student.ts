@@ -4,4 +4,5 @@ export interface Student {
     email: string;
     leader: boolean;
     teamID: number;
+    stats: number;
 }
