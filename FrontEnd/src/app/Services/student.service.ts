@@ -21,6 +21,13 @@ export class StudentService {
     return this.http.get<Student[]>(this.studentsUrl);
   }
 
+  addToTeam(studentId: number, teamId: number): Observable<Student> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    const targetTeamId = 1; // Set the target team id to 1
+    return this.http.post<Student>(`${this.studentsUrl}${studentId}/teams/${targetTeamId}`, null);
+  }
+  
+
   createStudent(student: Student): Observable<Student> {
     return this.http.post<Student>(this.studentsUrl, student);
   }
@@ -56,4 +63,6 @@ export class StudentService {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     return this.http.get<Student[]>(`${this.teamMembersUrl}${tId}`, { headers });
   }
+
+  
 }

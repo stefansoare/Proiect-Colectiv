@@ -1,10 +1,13 @@
-.student-profile h2 {
-  margin-top: 0;
+.page-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
+
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .student-card {
@@ -15,6 +18,7 @@
   margin: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   max-width: 400px;
+  flex: 0 0 auto;
 }
 
 .student-profile {
@@ -23,21 +27,45 @@
 }
 
 .profile-details {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 20px;
   margin-top: 20px;
   text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.icon-container {
-  display: flex;
-  justify-content: center;
+.profile-details div {
+  font-weight: bold;
   margin-bottom: 10px;
 }
 
-.icon-container i {
-  font-size: 80px;
+.profile-details div:last-child {
+  margin-bottom: 0;
+}
+
+.profile-details span {
+  color: #555;
+}
+
+.profile-details span:not(:last-child)::after {
+  content: ",";
+  margin-right: 5px;
+}
+
+.profile-details span:last-child::after {
+  content: "";
+}
+
+.profile-details span strong {
+  color: #333;
 }
 
 .student-profile h2 {
   margin-top: 0;
 }
-

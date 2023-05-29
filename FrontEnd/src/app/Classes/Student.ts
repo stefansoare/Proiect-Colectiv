@@ -3,6 +3,6 @@ export interface Student {
     name: string;
     email: string;
     leader: boolean;
-    teamID: number;
+    team_id: number;
     stats: number;
 }

@@ -1,19 +1,36 @@
-h2 {
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.content-container {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+h1.manage-team-title {
   color: #333;
+  margin-bottom: 20px;
 }
 
 .add-student-section {
+  display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
 label {
   font-weight: bold;
+  margin-right: 10px;
 }
 
 input[type="text"] {
-  padding: 5px;
+  padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  flex-grow: 1;
+  margin-right: 10px;
 }
 
 .add-button {
@@ -23,6 +40,8 @@ input[type="text"] {
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
 .add-button:hover {
@@ -45,13 +64,18 @@ input[type="text"] {
   background-color: #c5c5c5;
   color: #000000;
   border: none;
-  padding: 8px 16px;
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   flex-grow: 1;
   display: flex;
   align-items: center;
   text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .student-button:hover {
@@ -75,57 +99,11 @@ input[type="text"] {
   border-radius: 4px;
   cursor: pointer;
   margin-left: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.505);
+  transition: background-color 0.3s;
 }
 
 .delete-button:hover {
   background-color: #c82333;
 }
 
-.sidebar-wrapper {
-  width: 250px;
-  background-color: #f0f0f0;
-  padding: 20px;
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-search .input-group {
-  margin-bottom: 20px;
-}
-
-.sidebar-menu {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-.sidebar-menu li {
-  margin-bottom: 10px;
-}
-
-.sidebar-menu a {
-  display: flex;
-  align-items: center;
-  color: #333;
-  text-decoration: none;
-}
-
-.sidebar-menu a:hover {
-  background-color: #ccc;
-}
-
-.sidebar-menu .material-icons {
-  margin-right: 10px;
-}
-
-.page-container {
-  display: flex;
-}
-
-.content-container {
-  flex-grow: 1;
-  padding: 20px;
-}

@@ -23,7 +23,7 @@ export class StudentsComponent {
   ngOnInit() {
     this.studentService.getStudents().subscribe(
       students => {
-        this.students = students.filter(student => student.teamID === 1);
+        this.students = students.filter(student => student.team_id === 1);
       }
     );
   }
@@ -36,25 +36,31 @@ export class StudentsComponent {
 
 
 
-  addStudent(studentName: string) {
-    const newStudent: Student = {
-      name: studentName,
-      id: 0,
-      email: '',
-      leader: false,
-      teamID: 0,
-      stats:0
-    };
-  
-    this.studentService.createStudent(newStudent).subscribe(
-      (createdStudent: any) => {
-        this.students.push(createdStudent);
-      },
-      (error: any) => {
-        // Handle error if necessary
-      }
-    );
+addStudent(studentName: string) {
+  const email = studentName.toLowerCase() + '@gmail.com';
+  const id = 1;
+  const newStudent: Student = {
+    name: studentName,
+    id: 12,
+    email: email,
+    leader: false,
+    team_id: id,
+    stats: 0
+  };
+
+  this.studentService.createStudent(newStudent).subscribe(
+    (createdStudent: any) => {
+      this.students.push(createdStudent);
+    },
+    (error: any) => {
+      // Handle error if necessary
     }
+  );
+}
+
+
+
+
     deleteStudent(student: Student) {
       this.studentService.deleteStudent(student.id).subscribe(
         () => {

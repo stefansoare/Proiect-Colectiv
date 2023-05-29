@@ -56,7 +56,7 @@ public class MappingService {
         studentDTO.setName(student.getName());
         studentDTO.setEmail(student.getEmail());
         if (student.getTeam() != null){
-            studentDTO.setTeamID(student.getTeam().getId());
+            studentDTO.setTeam_id(student.getTeam().getId());
         }
         return studentDTO;
     }

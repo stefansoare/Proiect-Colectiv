@@ -1,7 +1,6 @@
 <div class="page-container">
   <app-sidebar-teamleader></app-sidebar-teamleader>
   <div class="content-container">
-    <h1 class="manage-team-title">Manage team</h1>
     <div class="card-container">
       <div *ngFor="let student of students" class="student-card">
         <div class="student-profile">
@@ -14,7 +13,7 @@
             <div><span>ID: </span>{{ student.id }}</div>
             <div><span>Email: </span>{{ student.email }}</div>
             <div><span>Leader: </span>{{ student.leader }}</div>
-            <div><span>Team ID: </span>{{ student.teamID }}</div>
+            <div><span>Team ID: </span>{{ student.team_id }}</div>
           </div>
         </div>
       </div>
