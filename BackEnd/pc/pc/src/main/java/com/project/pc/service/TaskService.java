@@ -1,5 +1,6 @@
 package com.project.pc.service;
 
+import com.project.pc.dto.StudentDTO;
 import com.project.pc.dto.TaskDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Student;
@@ -141,6 +142,13 @@ public class TaskService {
     }
     public List<Task> getAllTasksOfAStudent(Long sId){
         return taskRepository.findByStudentId(sId);
+    }
+    public List<Task> getAllTasksOfAStudentByEmail(String email){
+        Student student = studentRepository.findStudentByEmail(email).orElse(null);
+        if (student == null){
+            return null;
+        }
+        return getAllTasksOfAStudent(student.getId());
     }
     public Task updateTask(Long id, TaskDTO taskDTO){
         Task update = taskRepository.findById(id).orElse(null);
