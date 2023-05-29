@@ -55,7 +55,10 @@ public class TaskService {
             taskRepository.save(task);
             return task;
         }
-        Task newTask = new Task(task.getDescription(), task.getDeadline());
+        Task newTask = new Task();
+        newTask.setDescription(task.getDescription());
+        newTask.setDeadline(task.getDeadline());
+        newTask.setActivity(task.getActivity());
         newTask.setStudent(student);
         taskRepository.save(newTask);
         return newTask;
@@ -71,7 +74,10 @@ public class TaskService {
             taskRepository.save(task);
             return task;
         }
-        Task newTask = new Task(task.getDescription(),task.getDeadline());
+        Task newTask = new Task();
+        newTask.setDescription(task.getDescription());
+        newTask.setDeadline(task.getDeadline());
+        newTask.setActivity(task.getActivity());
         newTask.setTeam(team);
         taskRepository.save(newTask);
         return newTask;
@@ -133,6 +139,9 @@ public class TaskService {
         }
         return sum;
     }
+    public List<Task> getAllTasksOfAStudent(Long sId){
+        return taskRepository.findByStudentId(sId);
+    }
     public Task updateTask(Long id, TaskDTO taskDTO){
         Task update = taskRepository.findById(id).orElse(null);
         if (update == null){
@@ -176,6 +185,48 @@ public class TaskService {
         }
         taskRepository.save(update);
         return update;
+    }
+    public Task gradeStudent(Long sId, Long tId, int grade){
+        List<Task> tasks = taskRepository.findByStudentId(sId);
+        if (tasks.isEmpty()){
+            return null;
+        }
+        for (Task task : tasks){
+            if (task.getId() == tId){
+                task.setGrade(grade);
+                taskRepository.save(task);
+                return task;
+            }
+        }
+        return null;
+    }
+    public Task putAttendanceStudent(Long sId, Long tId, int attendance){
+        List<Task> tasks = taskRepository.findByStudentId(sId);
+        if (tasks.isEmpty()){
+            return null;
+        }
+        for (Task task : tasks){
+            if (task.getId() == tId){
+                task.setAttendance(attendance);
+                taskRepository.save(task);
+                return task;
+            }
+        }
+        return null;
+    }
+    public Task commentStudent(Long sId, Long tId, String comment){
+        List<Task> tasks = taskRepository.findByStudentId(sId);
+        if (tasks.isEmpty()){
+            return null;
+        }
+        for (Task task : tasks){
+            if (task.getId() == tId){
+                task.setComment(comment);
+                taskRepository.save(task);
+                return task;
+            }
+        }
+        return null;
     }
     public HttpStatus deleteAllTasks(){
         taskRepository.deleteAll();

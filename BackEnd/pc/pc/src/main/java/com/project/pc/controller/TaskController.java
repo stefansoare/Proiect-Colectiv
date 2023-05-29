@@ -84,6 +84,10 @@ public class TaskController {
     public ResponseEntity<Integer> getStudentAttendances(@PathVariable("sId") Long sId){
         return new ResponseEntity<>(taskService.getAllStudentAttendance(sId), HttpStatus.OK);
     }
+    @GetMapping("{sId}/alltasks")
+    public ResponseEntity<List<Task>> getAllTasksOfAStudent(@PathVariable("sId") Long sId){
+        return new ResponseEntity<>(taskService.getAllTasksOfAStudent(sId), HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Task> updateTask(@PathVariable("id") Long id, @RequestBody TaskDTO taskDTO){
         Task update = taskService.updateTask(id, taskDTO);
@@ -99,6 +103,30 @@ public class TaskController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+    @PatchMapping("{sId}/task/{tId}/grade")
+    public ResponseEntity<Task> gradeStudent(@PathVariable("sId") Long sId, @PathVariable("tId") Long tId, @RequestBody TaskDTO taskDTO){
+        Task task = taskService.gradeStudent(sId, tId, taskDTO.getGrade());
+        if (task == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+    @PatchMapping("{sId}/task/{tId}/attendance")
+    public ResponseEntity<Task> putAttendanceStudent(@PathVariable("sId") Long sId, @PathVariable("tId") Long tId, @RequestBody TaskDTO taskDTO){
+        Task task = taskService.putAttendanceStudent(sId, tId, taskDTO.getAttendance());
+        if (task == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
+    }
+    @PatchMapping("{sId}/task/{tId}/comment")
+    public ResponseEntity<Task> commentStudent(@PathVariable("sId") Long sId, @PathVariable("tId") Long tId, @RequestBody TaskDTO taskDTO){
+        Task task = taskService.commentStudent(sId, tId, taskDTO.getComment());
+        if (task == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(task, HttpStatus.OK);
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllTasks(){
