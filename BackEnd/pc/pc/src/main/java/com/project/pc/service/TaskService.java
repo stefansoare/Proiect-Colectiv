@@ -104,14 +104,20 @@ public class TaskService {
         return taskDTOS;
     }
     public Integer addGrades(List<Task> tasks){
+        if (tasks.isEmpty()){
+            return 0;
+        }
         int sum = 0;
         for(Task task : tasks){
             sum = sum + task.getGrade();
         }
         return sum / tasks.size();
     }
-    public Integer getStudentStats(Long tId){
+    public Integer getTeamStats(Long tId){
         List<Student> students = studentRepository.findByTeamId(tId);
+        if (students.isEmpty()){
+            return 0;
+        }
         int sum = 0;
         for (Student student : students){
             List<Task> tasks = taskRepository.findByStudentId(student.getId());
