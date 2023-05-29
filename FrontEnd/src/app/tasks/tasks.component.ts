@@ -83,7 +83,8 @@ export class TasksComponent implements OnInit {
       deadline: '', // Provide the desired deadline value
       description: '', // Provide the task description
       grade: 0,
-      activity_id: this.activityId // Use the activityId obtained from the route
+      activity_id: this.activityId ,// Use the activityId obtained from the route,
+      student_id: 1
     };
 
     this.addTask(newTask);

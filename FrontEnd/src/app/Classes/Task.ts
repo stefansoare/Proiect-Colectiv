@@ -6,4 +6,5 @@ export interface Task {
     description: string;
     grade: number;
     activity_id: number;
+    student_id: number;
 }

@@ -38,6 +38,7 @@ import { RegisterActivityComponent } from './register-activity/register-activity
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { StudentGradesComponent } from './student-grades/student-grades.component';
+import { DialogRegisterComponent } from './dialog-register/dialog-register.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { StudentGradesComponent } from './student-grades/student-grades.componen
     SidebarStudentComponent,
     RegisterActivityComponent,
     DialogBoxComponent,
-    StudentGradesComponent
+    StudentGradesComponent,
+    DialogRegisterComponent
     
     
   ],
