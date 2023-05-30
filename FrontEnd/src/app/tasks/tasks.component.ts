@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../Classes/Task';
+import { Student } from '../Classes/Student'; // Import the Student type
 import { TasksService } from '../Services/tasks.service';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-tasks',
@@ -14,7 +16,7 @@ export class TasksComponent implements OnInit {
   showTable: boolean = false;
   activityId: number = 0;
   searchQuery: string = '';
-  students: { [studentId: number]: string } = {}; // Map to store student names by student ID
+  students: { [studentId: number]: Student } = {}; // Map to store student objects by student ID
 
   constructor(
     private taskService: TasksService,
@@ -31,33 +33,63 @@ export class TasksComponent implements OnInit {
   loadTasks() {
     this.taskService.getTasksByActivity(this.activityId).subscribe(
       tasks => {
-        this.tasks = tasks.map(task => {
-          const studentName = this.students[task.student_id];
-          return {
-            ...task,
-            student_name: studentName
-          };
-        });
+        this.tasks = tasks;
         this.loadStudents(); // Load student details after fetching tasks
       },
       error => {
+        if (error.status === 302 && error.error) {
+          this.task = error.error;
         // Handle error if necessary
+        }
       }
     );
   }
 
   loadStudents() {
-    for (const task of this.tasks) {
-      this.taskService.getStudent(task.student_id).subscribe(
-        student => {
-          task.student_name = student.name; // Populate student_name field for the task
-        },
-        error => {
-          console.error(error);
-          // Handle error, show error message, etc.
+    const studentIds = Array.from(new Set(this.tasks.map(task => task.student_id))); // Get unique student IDs from tasks
+  
+    const requests = studentIds.map(studentId =>
+      this.taskService.getStudent(studentId)
+    );
+  
+    forkJoin(requests).subscribe(
+      students => {
+        students.forEach(student => {
+          this.students[student.id] = student; // Store student objects in the map
+        });
+  
+        // Populate the student_name field for each task
+        this.tasks.forEach(task => {
+          const student = this.students[task.student_id];
+          if (student) {
+            task.student_name = student.name;
+          }
+        });
+      },
+      error => {
+        console.error(error);
+        if (error.status === 302 && error.headers.get('location')) {
+          const redirectedUrl = error.headers.get('location');
+          const redirectedStudentId = parseInt(redirectedUrl.split('/').pop() || '', 10);
+          if (!isNaN(redirectedStudentId)) {
+            this.taskService.getStudent(redirectedStudentId).subscribe(
+              student => {
+                this.students[student.id] = student;
+                this.tasks.forEach(task => {
+                  if (task.student_id === student.id) {
+                    task.student_name = student.name;
+                  }
+                });
+              },
+              error => {
+                console.error(error);
+                // Handle error, show error message, etc.
+              }
+            );
+          }
         }
-      );
-    }
+      }
+    );
   }
 
   get filteredTasks(): Task[] {
@@ -81,6 +113,7 @@ export class TasksComponent implements OnInit {
       },
       (error: any) => {
         console.error(error);
+
       }
     );
   }
@@ -92,10 +125,10 @@ export class TasksComponent implements OnInit {
       },
       (error: any) => {
         console.error(error);
+        
       }
     );
   }
-
   createNewTask() {
     const newTask: Task = {
       id: 0, // The actual ID will be assigned by the server

@@ -39,6 +39,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { StudentGradesComponent } from './student-grades/student-grades.component';
 import { DialogRegisterComponent } from './dialog-register/dialog-register.component';
+import { GradingPageComponent } from './grading-page/grading-page.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { DialogRegisterComponent } from './dialog-register/dialog-register.compo
     RegisterActivityComponent,
     DialogBoxComponent,
     StudentGradesComponent,
-    DialogRegisterComponent
+    DialogRegisterComponent,
+    GradingPageComponent
     
     
   ],
