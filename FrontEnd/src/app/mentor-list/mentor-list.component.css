@@ -1,0 +1,82 @@
+.page-container {
+    display: flex;
+  }
+  
+  .content-container {
+    flex-grow: 1;
+  }
+  
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .card-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    justify-content: flex-start;
+  }
+  
+  .student-card {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex: 1 1 400px;
+    max-width: 400px;
+  }
+  
+  .student-profile {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .profile-details {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .profile-details div {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .profile-details div:last-child {
+    margin-bottom: 0;
+  }
+  
+  .profile-details span {
+    color: #555;
+  }
+  
+  .profile-details span:not(:last-child)::after {
+    content: ",";
+    margin-right: 5px;
+  }
+  
+  .profile-details span:last-child::after {
+    content: "";
+  }
+  
+  .profile-details span strong {
+    color: #333;
+  }
+  
+  .student-profile h2 {
+    margin-top: 0;
+  }
+  .search-input {
+    width: 300px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    font-size: 16px; /* Adjust the font size as needed */
+  }

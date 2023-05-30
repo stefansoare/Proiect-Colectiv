@@ -176,7 +176,6 @@ public class TaskService {
         update.setDescription(taskDTO.getDescription());
         update.setAttendance(taskDTO.getAttendance());
         update.setComment(taskDTO.getComment());
-        update.setActivity(mappingService.convertDTOIntoActivity(taskDTO.getActivityDTO()));
         taskRepository.save(update);
         return update;
     }
@@ -203,9 +202,7 @@ public class TaskService {
         if (taskDTO.getComment() != null) {
             update.setComment(taskDTO.getComment());
         }
-        if (taskDTO.getActivityDTO() != null){
-            update.setActivity(mappingService.convertDTOIntoActivity(taskDTO.getActivityDTO()));
-        }
+
         taskRepository.save(update);
         return update;
     }

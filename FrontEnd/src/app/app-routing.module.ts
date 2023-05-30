@@ -11,6 +11,7 @@ import { MentorAccountComponent } from './mentor-account/mentor-account.componen
 import { TasksComponent } from './tasks/tasks.component';
 import { RegisterActivityComponent } from './register-activity/register-activity.component';
 import { StudentGradesComponent } from './student-grades/student-grades.component';
+import { MentorListComponent } from './mentor-list/mentor-list.component';
 
 const routes: Routes = [
   { path: 'students', component: StudentsComponent },
@@ -24,7 +25,8 @@ const routes: Routes = [
   { path: 'mentor-account' , component: MentorAccountComponent},
   { path: 'tasks/:aId', component: TasksComponent},
   { path: 'activity', component: RegisterActivityComponent},
-  { path: 'student-grades', component: StudentGradesComponent}
+  { path: 'student-grades', component: StudentGradesComponent},
+  { path: 'mentor-list', component: MentorListComponent}
 ];
 
 @NgModule({

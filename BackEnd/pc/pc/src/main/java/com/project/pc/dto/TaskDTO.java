@@ -11,5 +11,5 @@ public class TaskDTO {
     private int attendance;
     private String comment;
     private long student_id;
-    private ActivityDTO activityDTO;
+
 }

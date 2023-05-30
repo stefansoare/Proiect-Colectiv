@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../Classes/Task';
-import { Student } from '../Classes/Student'; // Import the Student type
+import { Student } from '../Classes/Student'; 
 import { TasksService } from '../Services/tasks.service';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin } from 'rxjs';
+import { GradingDialogComponent } from '../grading-dialog/grading-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-tasks',
@@ -12,15 +14,18 @@ import { forkJoin } from 'rxjs';
 })
 export class TasksComponent implements OnInit {
   tasks: Task[] = [];
+  student: Student |null=null;
   task: Task | null = null;
   showTable: boolean = false;
   activityId: number = 0;
+  studentId: number=0;
   searchQuery: string = '';
-  students: { [studentId: number]: Student } = {}; // Map to store student objects by student ID
+  students: { [studentId: number]: Student } = {}; 
 
   constructor(
     private taskService: TasksService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -34,70 +39,40 @@ export class TasksComponent implements OnInit {
     this.taskService.getTasksByActivity(this.activityId).subscribe(
       tasks => {
         this.tasks = tasks;
-        this.loadStudents(); // Load student details after fetching tasks
+        tasks.forEach(task => {
+          this.loadStudent(task.student_id);
+        });
       },
       error => {
         if (error.status === 302 && error.error) {
           this.task = error.error;
-        // Handle error if necessary
         }
+
       }
     );
   }
 
-  loadStudents() {
-    const studentIds = Array.from(new Set(this.tasks.map(task => task.student_id))); // Get unique student IDs from tasks
-  
-    const requests = studentIds.map(studentId =>
-      this.taskService.getStudent(studentId)
-    );
-  
-    forkJoin(requests).subscribe(
-      students => {
-        students.forEach(student => {
-          this.students[student.id] = student; // Store student objects in the map
-        });
-  
-        // Populate the student_name field for each task
+  loadStudent(studentId: number) {
+    this.taskService.getStudent(studentId).subscribe(
+      student => {
         this.tasks.forEach(task => {
-          const student = this.students[task.student_id];
-          if (student) {
+          if (task.student_id === student.id) {
             task.student_name = student.name;
           }
         });
       },
       error => {
-        console.error(error);
-        if (error.status === 302 && error.headers.get('location')) {
-          const redirectedUrl = error.headers.get('location');
-          const redirectedStudentId = parseInt(redirectedUrl.split('/').pop() || '', 10);
-          if (!isNaN(redirectedStudentId)) {
-            this.taskService.getStudent(redirectedStudentId).subscribe(
-              student => {
-                this.students[student.id] = student;
-                this.tasks.forEach(task => {
-                  if (task.student_id === student.id) {
-                    task.student_name = student.name;
-                  }
-                });
-              },
-              error => {
-                console.error(error);
-                // Handle error, show error message, etc.
-              }
-            );
-          }
+        if (error.status === 302 && error.error) {
+          this.task = error.error;
         }
       }
     );
   }
-
+  
   get filteredTasks(): Task[] {
     if (!this.searchQuery) {
-      return this.tasks; // If search query is empty, return all tasks
+      return this.tasks;
     }
-
-    // Filter tasks based on the search query
     return this.tasks.filter(task =>
       task.student_name.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
@@ -131,17 +106,50 @@ export class TasksComponent implements OnInit {
   }
   createNewTask() {
     const newTask: Task = {
-      id: 0, // The actual ID will be assigned by the server
-      attendence: 0,
+      id: 0, 
+      attendance: 0,
       comment: '',
-      deadline: '', // Provide the desired deadline value
-      description: '', // Provide the task description
+      deadline: '', 
+      description: '', 
       grade: 0,
-      activity_id: this.activityId, // Use the activityId obtained from the route
+      activity_id: this.activityId, 
       student_id: 1,
       student_name: ''
     };
 
     this.addTask(newTask);
+  }
+
+  openGradingDialog(task: Task) {
+    const dialogRef = this.dialog.open(GradingDialogComponent, {
+      data: task
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const updatedTask: Task = {
+          id: task.id, 
+          comment: task.comment,
+          deadline:task.deadline, 
+          description: task.description, 
+          activity_id: task.activity_id, 
+          student_id: task.student_id,
+          student_name: task.student_name,
+          grade: result.grade,
+          attendance: result.attendance
+        };
+        
+        this.taskService.patchTask(result.id, task).subscribe(
+          updatedTask => {
+            // Perform any necessary actions with the updated task
+            console.log('Task updated:', updatedTask);
+          },
+          error => {
+            // Handle the error if necessary
+            console.error(error);
+          }
+        );
+      }
+    });
   }
 }

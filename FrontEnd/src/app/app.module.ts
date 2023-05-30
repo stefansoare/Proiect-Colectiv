@@ -40,6 +40,8 @@ import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { StudentGradesComponent } from './student-grades/student-grades.component';
 import { DialogRegisterComponent } from './dialog-register/dialog-register.component';
 import { GradingPageComponent } from './grading-page/grading-page.component';
+import { GradingDialogComponent } from './grading-dialog/grading-dialog.component';
+import { MentorListComponent } from './mentor-list/mentor-list.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { GradingPageComponent } from './grading-page/grading-page.component';
     DialogBoxComponent,
     StudentGradesComponent,
     DialogRegisterComponent,
-    GradingPageComponent
+    GradingPageComponent,
+    GradingDialogComponent,
+    MentorListComponent
     
     
   ],

@@ -1,6 +1,6 @@
 export interface Task {
     id: number;
-    attendence: number;
+    attendance: number;
     comment: string;
     deadline: string;
     description: string;

@@ -17,7 +17,7 @@ export class StudentGradesComponent implements OnInit {
   }
 
   loadTasks() {
-    const studentId = 1; // Replace with the actual student ID
+    const studentId = 1; 
     this.tasksService.getAllTasksOfAStudent(studentId).subscribe(
       tasks => {
         this.tasks = tasks;

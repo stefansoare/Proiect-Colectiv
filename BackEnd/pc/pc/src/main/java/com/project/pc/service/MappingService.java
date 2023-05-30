@@ -96,7 +96,7 @@ public class MappingService {
         task.setDeadline(taskDTO.getDeadline());
         task.setAttendance(taskDTO.getAttendance());
         task.setComment(taskDTO.getComment());
-        task.setActivity(convertDTOIntoActivity(taskDTO.getActivityDTO()));
+
         return task;
     }
     public TaskDTO convertTaskIntoDTO(Task task){
@@ -111,7 +111,7 @@ public class MappingService {
         taskDTO.setDeadline(task.getDeadline());
         taskDTO.setAttendance(task.getAttendance());
         taskDTO.setComment(task.getComment());
-        taskDTO.setActivityDTO(convertActivityIntoDTO(task.getActivity()));
+
         return taskDTO;
     }
 }
