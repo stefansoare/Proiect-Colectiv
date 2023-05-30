@@ -10,8 +10,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TasksComponent implements OnInit {
   tasks: Task[] = [];
+  task: Task | null = null;
   showTable: boolean = false;
   activityId: number = 0;
+  searchQuery: string = '';
+  students: { [studentId: number]: string } = {}; // Map to store student names by student ID
 
   constructor(
     private taskService: TasksService,
@@ -28,26 +31,44 @@ export class TasksComponent implements OnInit {
   loadTasks() {
     this.taskService.getTasksByActivity(this.activityId).subscribe(
       tasks => {
-        this.tasks = tasks;
+        this.tasks = tasks.map(task => {
+          const studentName = this.students[task.student_id];
+          return {
+            ...task,
+            student_name: studentName
+          };
+        });
+        this.loadStudents(); // Load student details after fetching tasks
       },
       error => {
         // Handle error if necessary
       }
     );
   }
-  getTasksByActivity(activityId: number) {
-    this.taskService.getTasksByActivity(activityId).subscribe(
-      tasks => {
-        this.tasks = tasks;
-      },
-      error => {
-        console.error(error);
-      }
-    );
+
+  loadStudents() {
+    for (const task of this.tasks) {
+      this.taskService.getStudent(task.student_id).subscribe(
+        student => {
+          task.student_name = student.name; // Populate student_name field for the task
+        },
+        error => {
+          console.error(error);
+          // Handle error, show error message, etc.
+        }
+      );
+    }
   }
 
-  toggleTableVisibility() {
-    this.showTable = !this.showTable;
+  get filteredTasks(): Task[] {
+    if (!this.searchQuery) {
+      return this.tasks; // If search query is empty, return all tasks
+    }
+
+    // Filter tasks based on the search query
+    return this.tasks.filter(task =>
+      task.student_name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
   }
 
   deleteTask(task: Task) {
@@ -83,8 +104,9 @@ export class TasksComponent implements OnInit {
       deadline: '', // Provide the desired deadline value
       description: '', // Provide the task description
       grade: 0,
-      activity_id: this.activityId ,// Use the activityId obtained from the route,
-      student_id: 1
+      activity_id: this.activityId, // Use the activityId obtained from the route
+      student_id: 1,
+      student_name: ''
     };
 
     this.addTask(newTask);

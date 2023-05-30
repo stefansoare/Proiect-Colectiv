@@ -104,6 +104,7 @@ public class MappingService {
             return null;
         }
         TaskDTO taskDTO = new TaskDTO();
+        taskDTO.setStudent_id(taskDTO.getStudent_id());
         taskDTO.setId(task.getId());
         taskDTO.setGrade(task.getGrade());
         taskDTO.setDescription(task.getDescription());

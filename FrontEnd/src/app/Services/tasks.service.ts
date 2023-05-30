@@ -3,12 +3,13 @@ import { Observable, of } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { Task} from '../Classes/Task';
+import { Student } from '../Classes/Student';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TasksService {
- 
+  private studentsUrl = 'http://localhost:8080/api/students/';
   private tasksUrl = 'http://localhost:8080/api/tasks/';
   constructor(private http: HttpClient) { }
   
@@ -21,7 +22,22 @@ export class TasksService {
   createTask(task: Task): Observable<Task> {
     return this.http.post<Task>(this.tasksUrl, task);
   }
-
+  getStudent(studentId: number): Observable<Student> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    const url = `${this.studentsUrl}id/${studentId}`;
+  
+    return this.http.get(url, { headers, observe: 'response' }).pipe(
+      map(response => {
+        // Extract the student details from the response body
+        const student = response.body as Student;
+        return student;
+      }),
+      catchError(error => {
+        console.error(error);
+        throw error;
+      })
+    );
+  }
   getTasksByActivity(aId: number): Observable<Task[]> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     const url = `${this.tasksUrl}activities/${aId}`; // Update the URL with the activity ID

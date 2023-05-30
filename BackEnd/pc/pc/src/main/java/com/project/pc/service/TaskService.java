@@ -76,6 +76,7 @@ public class TaskService {
             return task;
         }
         Task newTask = new Task();
+
         newTask.setDescription(task.getDescription());
         newTask.setDeadline(task.getDeadline());
         newTask.setActivity(task.getActivity());
