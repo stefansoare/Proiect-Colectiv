@@ -63,24 +63,24 @@ public class MentorService {
         mentorRepository.save(update);
         return update;
     }
-    public HttpStatus deleteAllMentors(){
+    public boolean deleteAllMentors(){
         mentorRepository.deleteAll();
-        return HttpStatus.OK;
+        return true;
     }
-    public HttpStatus deleteMentorByEmail(String email){
+    public boolean deleteMentorByEmail(String email){
         Optional<Mentor> mentor = mentorRepository.findMentorByEmail(email);
         if (mentor.isPresent()){
             mentorRepository.deleteById(mentor.get().getId());
-            return HttpStatus.OK;
+            return true;
         }
-        return HttpStatus.BAD_REQUEST;
+        return false;
     }
-    public HttpStatus deleteMentorById(Long id){
+    public boolean deleteMentorById(Long id){
         Optional<Mentor> mentor = mentorRepository.findMentorById(id);
         if (mentor.isPresent()){
             mentorRepository.deleteById(id);
-            return HttpStatus.OK;
+            return true;
         }
-        return HttpStatus.BAD_REQUEST;
+        return false;
     }
 }
