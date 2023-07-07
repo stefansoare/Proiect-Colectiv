@@ -54,14 +54,23 @@ public class ActivityController {
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllActivities(){
-        return new ResponseEntity<>(activityService.deleteAllActivities());
+        if (activityService.deleteAllActivities() == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("name/{name}")
     public ResponseEntity<HttpStatus> deleteActivityByName(@PathVariable("name") String name){
-        return new ResponseEntity<>(activityService.deleteActivityByName(name));
+        if (activityService.deleteActivityByName(name) == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("id/{id}")
     public ResponseEntity<HttpStatus> deleteActivityById(@PathVariable("id") Long id){
-        return new ResponseEntity<>(activityService.deleteActivityById(id));
+        if (activityService.deleteActivityById(id) == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

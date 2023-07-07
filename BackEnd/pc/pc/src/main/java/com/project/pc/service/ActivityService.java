@@ -60,24 +60,24 @@ public class ActivityService {
         activityRepository.save(update);
         return update;
     }
-    public HttpStatus deleteAllActivities(){
+    public boolean deleteAllActivities(){
         activityRepository.deleteAll();
-        return HttpStatus.OK;
+        return true;
     }
-    public HttpStatus deleteActivityByName(String name){
+    public boolean deleteActivityByName(String name){
         Optional<Activity> activity = activityRepository.findByName(name);
         if (activity.isPresent()){
             activityRepository.deleteById(activity.get().getId());
-            return HttpStatus.OK;
+            return true;
         }
-        return HttpStatus.BAD_REQUEST;
+        return false;
     }
-    public HttpStatus deleteActivityById(Long id){
+    public boolean deleteActivityById(Long id){
         Optional<Activity> activity = activityRepository.findById(id);
         if (activity.isPresent()){
             activityRepository.deleteById(id);
-            return HttpStatus.OK;
+            return true;
         }
-        return HttpStatus.BAD_REQUEST;
+        return false;
     }
 }
