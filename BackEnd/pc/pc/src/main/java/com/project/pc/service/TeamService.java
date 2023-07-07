@@ -90,17 +90,16 @@ public class TeamService {
         teamRepository.save(update);
         return update;
     }
-    public HttpStatus deleteAllTeams(){
+    public boolean deleteAllTeams(){
         teamRepository.deleteAll();
-        return HttpStatus.OK;
+        return true;
     }
-    public HttpStatus deleteTeamById(Long id){
+    public boolean deleteTeamById(Long id){
         Optional<Team> team = teamRepository.findById(id);
         if (team.isPresent()){
             teamRepository.deleteById(id);
-            return HttpStatus.OK;
-        }else {
-            return HttpStatus.BAD_REQUEST;
+            return true;
         }
+        return false;
     }
 }

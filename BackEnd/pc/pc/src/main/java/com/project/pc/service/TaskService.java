@@ -257,8 +257,7 @@ public class TaskService {
         if (task.isPresent()){
             taskRepository.deleteById(id);
             return true;
-        }else {
-            return false;
         }
+        return false;
     }
 }
