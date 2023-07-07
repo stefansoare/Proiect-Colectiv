@@ -6,7 +6,6 @@ import com.project.pc.model.Team;
 import com.project.pc.repository.StudentRepository;
 import com.project.pc.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -90,14 +89,14 @@ public class StudentService {
         studentRepository.save(update);
         return update;
     }
-    public HttpStatus deleteFromTeam(Long id, Long tId){
+    public boolean deleteFromTeam(Long id, Long tId){
         Student student = studentRepository.findStudentById(id).orElse(null);
         if (student == null ||student.getTeam() == null || student.getTeam().getId() != tId){
-            return HttpStatus.BAD_REQUEST;
+            return false;
         }
         student.setTeam(null);
         studentRepository.save(student);
-        return HttpStatus.OK;
+        return true;
     }
     public boolean deleteAllStudents(){
         studentRepository.deleteAll();

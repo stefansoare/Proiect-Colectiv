@@ -80,14 +80,14 @@ public class TeamController {
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllTeams(){
-        if (teamService.deleteAllTeams() == true) {
+        if (teamService.deleteAllTeams()) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteTeamById(@PathVariable("id") Long id){
-        if (teamService.deleteTeamById(id) == true) {
+        if (teamService.deleteTeamById(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

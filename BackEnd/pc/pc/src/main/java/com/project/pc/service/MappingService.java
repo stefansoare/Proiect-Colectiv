@@ -10,8 +10,7 @@ public class MappingService {
         if (activityDTO == null){
             return null;
         }
-        Activity activity = new Activity(activityDTO.getName(), activityDTO.getDescription());
-        return activity;
+        return new Activity(activityDTO.getName(), activityDTO.getDescription());
     }
     public ActivityDTO convertActivityIntoDTO(Activity activity){
         if (activity == null){
@@ -27,8 +26,7 @@ public class MappingService {
         if (mentorDTO == null){
             return null;
         }
-        Mentor mentor = new Mentor(mentorDTO.getName(), mentorDTO.getEmail());
-        return mentor;
+        return new Mentor(mentorDTO.getName(), mentorDTO.getEmail());
     }
     public MentorDTO convertMentorIntoDTO(Mentor mentor){
         if (mentor == null){
@@ -67,10 +65,6 @@ public class MappingService {
         }
         Team team = new Team();
         team.setTeamLeader(teamDTO.getTeamLeader());
-        //team.setId(teamDTO.getId());
-        //team.setActivity(convertDTOIntoActivity(teamDTO.getActivityDTO()));
-        //team.setMentor(convertDTOIntoMentor(teamDTO.getMentorDTO()));
-        //team.setTask(convertDTOIntoTask(teamDTO.getTaskDTO()));
         return team;
     }
     public TeamDTO convertTeamIntoDTO(Team team){
@@ -80,9 +74,6 @@ public class MappingService {
         TeamDTO teamDTO = new TeamDTO();
         teamDTO.setId(team.getId());
         teamDTO.setTeamLeader(team.getTeamLeader());
-        //teamDTO.setActivityDTO(convertActivityIntoDTO(team.getActivity()));
-        //teamDTO.setMentorDTO(convertMentorIntoDTO(team.getMentor()));
-        //teamDTO.setTaskDTO(convertTaskIntoDTO(team.getTask()));
         return teamDTO;
     }
     public Task convertDTOIntoTask(TaskDTO taskDTO){

@@ -1,6 +1,5 @@
 package com.project.pc.service;
 
-import com.project.pc.dto.StudentDTO;
 import com.project.pc.dto.TaskDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Student;
@@ -11,7 +10,6 @@ import com.project.pc.repository.StudentRepository;
 import com.project.pc.repository.TaskRepository;
 import com.project.pc.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -92,14 +90,6 @@ public class TaskService {
         }
         return taskDTOS;
     }
-    public List<TaskDTO> getActivityTasks(Long aId){
-        List<Task> tasks = taskRepository.findByActivityId(aId);
-        List<TaskDTO> taskDTOS = new ArrayList<>();
-        for (Task task : tasks){
-            taskDTOS.add(mappingService.convertTaskIntoDTO(task));
-        }
-        return taskDTOS;
-    }
     public TaskDTO getTaskById(Long id){
         return mappingService.convertTaskIntoDTO(taskRepository.findById(id).orElse(null));
     }
@@ -159,9 +149,7 @@ public class TaskService {
         List<Task> allTasks = new ArrayList<>();
         for (Student student : students){
             List<Task> tasks = getAllTasksOfAStudent(student.getId());
-            for (Task task : tasks){
-                allTasks.add(task);
-            }
+            allTasks.addAll(tasks);
         }
         return allTasks;
     }

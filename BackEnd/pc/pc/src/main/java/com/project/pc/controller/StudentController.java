@@ -76,25 +76,28 @@ public class StudentController {
     }
     @DeleteMapping("{id}/teams/{tId}")
     public ResponseEntity<HttpStatus> deleteFromTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
-        return new ResponseEntity<>(studentService.deleteFromTeam(id, tId));
+        if (studentService.deleteFromTeam(id, tId)){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllStudents(){
-        if (studentService.deleteAllStudents() == true) {
+        if (studentService.deleteAllStudents()) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("email/{email}")
     public ResponseEntity<HttpStatus> deleteStudentByEmail(@PathVariable("email") String email){
-        if (studentService.deleteStudentByEmail(email) == true) {
+        if (studentService.deleteStudentByEmail(email)) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("id/{id}")
     public ResponseEntity<HttpStatus> deleteStudentById(@PathVariable("id") Long id){
-        if (studentService.deleteStudentById(id) == true) {
+        if (studentService.deleteStudentById(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

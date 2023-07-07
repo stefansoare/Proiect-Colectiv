@@ -66,21 +66,21 @@ public class MentorController {
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllMentors(){
-        if (mentorService.deleteAllMentors() == true) {
+        if (mentorService.deleteAllMentors()) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("email/{email}")
     public ResponseEntity<HttpStatus> deleteMentorByEmail(@PathVariable("email") String email){
-        if (mentorService.deleteMentorByEmail(email) == true) {
+        if (mentorService.deleteMentorByEmail(email)) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("id/{id}")
     public ResponseEntity<HttpStatus> deleteMentorById(@PathVariable("id") Long id){
-        if (mentorService.deleteMentorById(id) == true) {
+        if (mentorService.deleteMentorById(id)) {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

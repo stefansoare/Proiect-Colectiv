@@ -4,7 +4,6 @@ import com.project.pc.dto.MentorDTO;
 import com.project.pc.model.Mentor;
 import com.project.pc.repository.MentorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

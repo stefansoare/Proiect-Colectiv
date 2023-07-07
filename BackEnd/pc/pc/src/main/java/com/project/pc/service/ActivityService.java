@@ -4,7 +4,6 @@ import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
 import com.project.pc.repository.ActivityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

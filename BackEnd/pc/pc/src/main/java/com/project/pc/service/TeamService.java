@@ -10,7 +10,6 @@ import com.project.pc.repository.MentorRepository;
 import com.project.pc.repository.TaskRepository;
 import com.project.pc.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -84,9 +83,6 @@ public class TeamService {
             return null;
         }
         update.setTeamLeader(teamDTO.getTeamLeader());
-        //update.setActivity(mappingService.convertDTOIntoActivity(teamDTO.getActivityDTO()));
-        //update.setMentor(mappingService.convertDTOIntoMentor(teamDTO.getMentorDTO()));
-        //update.setTask(mappingService.convertDTOIntoTask(teamDTO.getTaskDTO()));
         teamRepository.save(update);
         return update;
     }

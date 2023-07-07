@@ -6,11 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-import  java.util.List;
-
 public interface TaskRepository extends JpaRepository<Task, Long> {
     Optional<Task> findById(Long id);
     List<Task> findByActivityId(Long id);
     List<Task> findByStudentId(Long id);
-    List<Task> findByTeamId(Long id);
 }
