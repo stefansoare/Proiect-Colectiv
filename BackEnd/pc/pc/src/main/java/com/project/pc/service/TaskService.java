@@ -248,17 +248,17 @@ public class TaskService {
         }
         return null;
     }
-    public HttpStatus deleteAllTasks(){
+    public boolean deleteAllTasks(){
         taskRepository.deleteAll();
-        return HttpStatus.OK;
+        return true;
     }
-    public HttpStatus deleteTaskById(Long id){
+    public boolean deleteTaskById(Long id){
         Optional<Task> task = taskRepository.findById(id);
         if (task.isPresent()){
             taskRepository.deleteById(id);
-            return HttpStatus.OK;
+            return true;
         }else {
-            return HttpStatus.BAD_REQUEST;
+            return false;
         }
     }
 }

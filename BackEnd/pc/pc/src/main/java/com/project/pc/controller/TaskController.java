@@ -144,10 +144,16 @@ public class TaskController {
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllTasks(){
-        return new ResponseEntity<>(taskService.deleteAllTasks());
+        if (taskService.deleteAllTasks() == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteTaskById(@PathVariable("id") Long id){
-        return new ResponseEntity<>(taskService.deleteTaskById(id));
+        if (taskService.deleteTaskById(id) == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
