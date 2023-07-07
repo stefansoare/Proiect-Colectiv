@@ -80,14 +80,23 @@ public class StudentController {
     }
     @DeleteMapping
     public ResponseEntity<HttpStatus> deleteAllStudents(){
-        return new ResponseEntity<>(studentService.deleteAllStudents());
+        if (studentService.deleteAllStudents() == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("email/{email}")
     public ResponseEntity<HttpStatus> deleteStudentByEmail(@PathVariable("email") String email){
-        return new ResponseEntity<>(studentService.deleteStudentByEmail(email));
+        if (studentService.deleteStudentByEmail(email) == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("id/{id}")
     public ResponseEntity<HttpStatus> deleteStudentById(@PathVariable("id") Long id){
-        return new ResponseEntity<>(studentService.deleteStudentById(id));
+        if (studentService.deleteStudentById(id) == true) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

@@ -99,25 +99,25 @@ public class StudentService {
         studentRepository.save(student);
         return HttpStatus.OK;
     }
-    public HttpStatus deleteAllStudents(){
+    public boolean deleteAllStudents(){
         studentRepository.deleteAll();
-        return HttpStatus.OK;
+        return true;
     }
-    public HttpStatus deleteStudentByEmail(String email){
+    public boolean deleteStudentByEmail(String email){
         Optional<Student> student = studentRepository.findStudentByEmail(email);
         if (student.isPresent()){
             studentRepository.deleteById(student.get().getId());
-            return HttpStatus.OK;
+            return true;
         }
-        return HttpStatus.BAD_REQUEST;
+        return false;
     }
-    public HttpStatus deleteStudentById(long id){
+    public boolean deleteStudentById(long id){
         Optional<Student> student = studentRepository.findById(id);
         if (student.isPresent()){
             studentRepository.deleteById(id);
-            return HttpStatus.OK;
+            return true;
         }
-        return HttpStatus.BAD_REQUEST;
+        return false;
     }
 
 }
