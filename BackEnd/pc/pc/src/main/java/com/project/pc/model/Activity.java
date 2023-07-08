@@ -17,6 +17,12 @@ public class Activity {
         this.name = name;
         this.description = description;
     }
+
+    public Activity(long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public long getId() {
         return id;
     }
