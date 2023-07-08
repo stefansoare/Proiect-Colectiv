@@ -12,6 +12,7 @@ import { TasksComponent } from './tasks/tasks.component';
 import { RegisterActivityComponent } from './register-activity/register-activity.component';
 import { StudentGradesComponent } from './student-grades/student-grades.component';
 import { MentorListComponent } from './mentor-list/mentor-list.component';
+import { PieChartComponent } from './pie-chart/pie-chart.component';
 
 const routes: Routes = [
   { path: 'students', component: StudentsComponent },
@@ -26,7 +27,8 @@ const routes: Routes = [
   { path: 'tasks/:aId', component: TasksComponent},
   { path: 'activity', component: RegisterActivityComponent},
   { path: 'student-grades', component: StudentGradesComponent},
-  { path: 'mentor-list', component: MentorListComponent}
+  { path: 'mentor-list', component: MentorListComponent},
+  { path: 'chart', component: PieChartComponent}
 ];
 
 @NgModule({

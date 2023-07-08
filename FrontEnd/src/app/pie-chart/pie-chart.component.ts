@@ -10,31 +10,27 @@ import { Team } from '../Classes/Team';
 export class PieChartComponent implements OnInit {
   @ViewChild('myChart', { static: true }) myChartRef!: ElementRef;
 
-  teams: Team[] = []; // Array to store the teams and their student stats
+  teams: Team[] = [];
 
   constructor(private mentorService: MentorService) {}
 
   ngOnInit() {
     const ctx = this.myChartRef.nativeElement.getContext('2d');
     const myChart = new Chart(ctx, {
-      type: 'bar',
+      type: 'line', // Change the chart type to 'line'
       data: {
-        labels: [] as string[], // Type assertion
+        labels: [] as string[],
         datasets: [
           {
             label: 'Team activity',
-            data: [] as number[], // Type assertion
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-            ],
+            data: [] as number[],
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgba(54, 162, 235, 1)',
             borderWidth: 1,
+            pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgba(54, 162, 235, 1)',
           },
         ],
       },
@@ -46,18 +42,18 @@ export class PieChartComponent implements OnInit {
         },
       },
     });
-  
+
     // Fetch teams from MentorService
     this.mentorService.getTeams().subscribe(
       (teams: Team[]) => {
         this.teams = teams;
-  
+
         // Get team stats and insert them into the graph
         this.teams.forEach((team, index) => {
           this.mentorService.getTeamStats(team.id).subscribe(
             (teamStats: number) => {
-              (myChart.data.labels as string[]).push(`Team ${team.id}`); // Type assertion
-              (myChart.data.datasets[0].data as number[]).push(teamStats); // Type assertion
+              (myChart.data.labels as string[]).push(`Team ${team.id}`);
+              (myChart.data.datasets[0].data as number[]).push(teamStats);
               myChart.update();
             },
             (error: any) => {
@@ -71,5 +67,4 @@ export class PieChartComponent implements OnInit {
       }
     );
   }
-  
 }

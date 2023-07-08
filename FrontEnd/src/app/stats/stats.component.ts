@@ -6,10 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./stats.component.css']
 })
 export class StatsComponent {
-   // Pie
-   public pieChartLabels:string[] = ['Chrome', 'Safari', 'Firefox','Internet Explorer','Other'];
-   public pieChartData:number[] = [40, 20, 20 , 10,10];
-   public pieChartType:string = 'pie';
+  
   
    // events
    public chartClicked(e:any):void {
