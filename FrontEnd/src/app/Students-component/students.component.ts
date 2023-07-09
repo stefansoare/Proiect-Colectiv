@@ -45,7 +45,6 @@ addStudent(studentName: string) {
     email: email,
     team_id: id,
     leader: false,
-    stats: 0
   };
 
   this.studentService.createStudent(newStudent).subscribe(
