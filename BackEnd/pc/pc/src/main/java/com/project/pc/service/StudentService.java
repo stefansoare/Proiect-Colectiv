@@ -81,6 +81,20 @@ public class StudentService {
         }
         return studentDTOS;
     }
+    public List<StudentDTO> getAllStudentsFromAActivity(Long aId){
+        List<Team> teams = teamRepository.findByActivityId(aId);
+        if (teams.isEmpty()){
+            return null;
+        }
+        List<StudentDTO> students = new ArrayList<>();
+        for (Team team : teams){
+            List<StudentDTO> studentDTOS = getTeamMembers(team.getId());
+            for (StudentDTO studentDTO : studentDTOS){
+                students.add(studentDTO);
+            }
+        }
+        return students;
+    }
     public Student updateStudent (Long id, StudentDTO studentDTO){
         Student update = studentRepository.findStudentById(id).orElse(null);
         if (update == null){

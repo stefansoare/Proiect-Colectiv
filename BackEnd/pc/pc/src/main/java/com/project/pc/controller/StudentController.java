@@ -58,6 +58,13 @@ public class StudentController {
     public ResponseEntity<List<StudentDTO>> getTeamMembers(@PathVariable("tId") Long tId){
         return new ResponseEntity<>(studentService.getTeamMembers(tId), HttpStatus.OK);
     }
+    @GetMapping("activity/{id}")
+    public ResponseEntity<List<StudentDTO>> getAllStudentsFromAActivity(@PathVariable("id") Long id){
+        if (studentService.getAllStudentsFromAActivity(id) == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(studentService.getAllStudentsFromAActivity(id), HttpStatus.OK);
+    }
     @PutMapping("{id}")
     public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody StudentDTO studentDTO){
         Student update = studentService.updateStudent(id, studentDTO);
