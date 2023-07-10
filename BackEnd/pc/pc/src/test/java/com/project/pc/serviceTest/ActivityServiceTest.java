@@ -168,6 +168,7 @@ public class ActivityServiceTest {
 
     @Test
     public void testUpdateActivity() {
+        // Arrange
         Long activityId = 1L;
         String updatedName = "Updated Activity";
         String updatedDescription = "Updated Description";
@@ -182,20 +183,21 @@ public class ActivityServiceTest {
         existingActivity.setDescription("Existing Description");
 
         when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
-        when(mappingServiceMock.convertActivityIntoDTO(existingActivity)).thenReturn(activityDTO);
+        when(mappingServiceMock.convertDTOIntoActivity(activityDTO)).thenReturn(existingActivity);
 
+        // Act
+        Activity result = activityService.updateActivity(activityId, activityDTO);
 
-        Activity updatedActivity = activityService.updateActivity(activityId, activityDTO);
-
-
+        // Assert
         verify(activityRepositoryMock, times(1)).findById(activityId);
-        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(existingActivity);
+        verify(mappingServiceMock, times(1)).convertDTOIntoActivity(activityDTO);
         verify(activityRepositoryMock, times(1)).save(existingActivity);
 
-        Assert.assertEquals(Optional.of(activityId), updatedActivity.getId());
-        Assert.assertEquals(updatedName, updatedActivity.getName());
-        Assert.assertEquals(updatedDescription, updatedActivity.getDescription());
+        Assert.assertEquals(existingActivity, result);
+        Assert.assertEquals(updatedName, result.getName());
+        Assert.assertEquals(updatedDescription, result.getDescription());
     }
+
 
     @Test
     public void testUpdateActivityWithNonExistentId() {
@@ -264,10 +266,10 @@ public class ActivityServiceTest {
 
     @Test
     public void testDeleteAllActivities() {
-        HttpStatus result = activityService.deleteAllActivities();
+        boolean result = activityService.deleteAllActivities();
 
         verify(activityRepositoryMock, times(1)).deleteAll();
-        Assert.assertEquals(HttpStatus.OK, result);
+        Assert.assertTrue(result);
     }
 
     @Test
@@ -279,12 +281,12 @@ public class ActivityServiceTest {
         when(activityRepositoryMock.findByName(activityName)).thenReturn(existingActivity);
 
 
-        HttpStatus result = activityService.deleteActivityByName(activityName);
+        boolean result = activityService.deleteActivityByName(activityName);
 
 
         verify(activityRepositoryMock, times(1)).findByName(activityName);
         verify(activityRepositoryMock, times(1)).deleteById(activityId);
-        Assert.assertEquals(HttpStatus.OK, result);
+        Assert.assertTrue(result);
     }
 
     @Test
@@ -294,12 +296,12 @@ public class ActivityServiceTest {
         when(activityRepositoryMock.findByName(nonExistentName)).thenReturn(Optional.empty());
 
 
-        HttpStatus result = activityService.deleteActivityByName(nonExistentName);
+        boolean result = activityService.deleteActivityByName(nonExistentName);
 
 
         verify(activityRepositoryMock, times(1)).findByName(nonExistentName);
         verify(activityRepositoryMock, never()).deleteById(anyLong());
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, result);
+        Assert.assertFalse(result);
     }
 
     @Test
@@ -310,12 +312,12 @@ public class ActivityServiceTest {
         when(activityRepositoryMock.findById(activityId)).thenReturn(existingActivity);
 
 
-        HttpStatus result = activityService.deleteActivityById(activityId);
+        boolean result = activityService.deleteActivityById(activityId);
 
 
         verify(activityRepositoryMock, times(1)).findById(activityId);
         verify(activityRepositoryMock, times(1)).deleteById(activityId);
-        Assert.assertEquals(HttpStatus.OK, result);
+        Assert.assertTrue(result);
     }
 
     @Test
@@ -325,12 +327,12 @@ public class ActivityServiceTest {
         when(activityRepositoryMock.findById(nonExistentId)).thenReturn(Optional.empty());
 
 
-        HttpStatus result = activityService.deleteActivityById(nonExistentId);
+        boolean result = activityService.deleteActivityById(nonExistentId);
 
 
         verify(activityRepositoryMock, times(1)).findById(nonExistentId);
         verify(activityRepositoryMock, never()).deleteById(anyLong());
-        Assert.assertEquals(HttpStatus.BAD_REQUEST, result);
+        Assert.assertFalse(result);
     }
 }
 
