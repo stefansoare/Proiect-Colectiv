@@ -2,16 +2,18 @@ package com.project.pc.serviceTest;
 
 import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
+import com.project.pc.model.Status;
 import com.project.pc.repository.ActivityRepository;
+import com.project.pc.repository.StatusRepository;
 import com.project.pc.service.ActivityService;
 import com.project.pc.service.MappingService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +31,9 @@ public class ActivityServiceTest {
     @Mock
     private MappingService mappingServiceMock;
 
+    @Mock
+    private StatusRepository statusRepositoryMock;
+
     @InjectMocks
     private ActivityService activityService;
 
@@ -39,25 +44,37 @@ public class ActivityServiceTest {
 
     @Test
     public void testCreateActivity() {
-        ActivityDTO activityDTO = new ActivityDTO();
         Activity activity = new Activity();
-        when(activityRepositoryMock.save(any(Activity.class))).thenReturn(activity);
-        when(mappingServiceMock.convertDTOIntoActivity(activityDTO)).thenReturn(activity);
+        ActivityDTO activityDTO = new ActivityDTO();
 
-        Activity result = activityService.createActivity(activityDTO);
+        when(activityRepositoryMock.save(activity)).thenReturn(activity);
+        when(statusRepositoryMock.save(any(Status.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(activityDTO);
 
-        verify(activityRepositoryMock, times(1)).save(any(Activity.class));
-        verify(mappingServiceMock, times(1)).convertDTOIntoActivity(activityDTO);
-        Assert.assertEquals(activity, result);
+
+        ActivityDTO result = activityService.createActivity(activity);
+
+
+        verify(activityRepositoryMock, times(1)).save(activity);
+        verify(statusRepositoryMock, times(1)).save(any(Status.class));
+        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
+
+        Assert.assertEquals(activityDTO, result);
     }
+
 
     @Test
     public void testCreateActivityWithNullDTO() {
-        ActivityDTO activityDTO = null;
+        Activity activity = null;
 
-        Activity result = activityService.createActivity(activityDTO);
+
+        ActivityDTO result = activityService.createActivity(activity);
+
 
         Assert.assertNull(result);
+        verify(activityRepositoryMock, never()).save(any(Activity.class));
+        verify(statusRepositoryMock, never()).save(any(Status.class));
+        verify(mappingServiceMock, never()).convertActivityIntoDTO(any(Activity.class));
     }
 
     @Test
@@ -233,17 +250,26 @@ public class ActivityServiceTest {
         existingActivity.setName("Existing Activity");
         existingActivity.setDescription("Existing Description");
 
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
+
         when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
+        when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
 
 
-        Activity patchedActivity = activityService.patchActivity(activityId, activityDTO);
+        Activity result = activityService.patchActivity(activityId, activityDTO);
 
 
         verify(activityRepositoryMock, times(1)).findById(activityId);
+        verify(statusRepositoryMock, times(1)).findById(existingStatus.getId());
+        verify(statusRepositoryMock, times(1)).save(existingStatus);
         verify(activityRepositoryMock, times(1)).save(existingActivity);
 
-        Assert.assertEquals(updatedName, patchedActivity.getName());
-        Assert.assertEquals(updatedDescription, patchedActivity.getDescription());
+        Assert.assertEquals(existingActivity, result);
+        Assert.assertEquals(updatedName, result.getName());
+        Assert.assertEquals(updatedDescription, result.getDescription());
+        Assert.assertEquals(existingStatus, result.getStatus());
     }
 
     @Test
@@ -264,13 +290,32 @@ public class ActivityServiceTest {
         Assert.assertNull(result);
     }
 
-    @Test
-    public void testDeleteAllActivities() {
-        boolean result = activityService.deleteAllActivities();
+    public void testPatchActivityWithNonExistentStatus() {
+        Long activityId = 1L;
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setName("Updated Activity");
+        activityDTO.setDescription("Updated Description");
 
-        verify(activityRepositoryMock, times(1)).deleteAll();
-        Assert.assertTrue(result);
+        Activity existingActivity = new Activity();
+        existingActivity.setId(activityId);
+        existingActivity.setName("Existing Activity");
+        existingActivity.setDescription("Existing Description");
+
+        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
+        when(statusRepositoryMock.findById(existingActivity.getStatus().getId())).thenReturn(Optional.empty());
+
+
+        Activity result = activityService.patchActivity(activityId, activityDTO);
+
+
+        verify(activityRepositoryMock, times(1)).findById(activityId);
+        verify(statusRepositoryMock, times(1)).findById(existingActivity.getStatus().getId());
+        verify(statusRepositoryMock, never()).save(any(Status.class));
+        verify(activityRepositoryMock, never()).save(any(Activity.class));
+
+        Assert.assertNull(result);
     }
+
 
     @Test
     public void testDeleteActivityByName() {

@@ -38,6 +38,11 @@ public class Status {
         this.modifiedBy = this.modificationDate = "-";
     }
     public long getId() {return id;}
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
     public String getCreatedBy() {return createdBy;}
     public String getCreationDate() {return creationDate;}
     public String getModifiedBy() {return modifiedBy;}
