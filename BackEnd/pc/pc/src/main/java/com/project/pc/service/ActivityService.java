@@ -2,7 +2,9 @@ package com.project.pc.service;
 
 import com.project.pc.dto.ActivityDTO;
 import com.project.pc.model.Activity;
+import com.project.pc.model.Status;
 import com.project.pc.repository.ActivityRepository;
+import com.project.pc.repository.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,17 @@ public class ActivityService {
     @Autowired
     private ActivityRepository activityRepository;
     @Autowired
+    private StatusRepository statusRepository;
+    @Autowired
     private MappingService mappingService;
-    public Activity createActivity(ActivityDTO activityDTO){
-        if (activityDTO == null)
+    public ActivityDTO createActivity(Activity activity){
+        if (activity == null)
             return null;
-        return activityRepository.save(mappingService.convertDTOIntoActivity(activityDTO));
+        Status status = new Status();
+        statusRepository.save(status);
+        activity.setStatus(status);
+        activityRepository.save(activity);
+        return mappingService.convertActivityIntoDTO(activity);
     }
     public List<ActivityDTO> getAllActivities(){
         List<Activity> activities = activityRepository.findAll();
@@ -40,8 +48,16 @@ public class ActivityService {
         if (update == null){
             return null;
         }
+        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         update.setName(activityDTO.getName());
         update.setDescription(activityDTO.getDescription());
+        update.setStatus(status);
         activityRepository.save(update);
         return update;
     }
@@ -50,18 +66,22 @@ public class ActivityService {
         if (update == null) {
             return null;
         }
+        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         if (activityDTO.getName() != null) {
             update.setName(activityDTO.getName());
         }
         if (activityDTO.getDescription() != null) {
             update.setDescription(activityDTO.getDescription());
         }
+        update.setStatus(status);
         activityRepository.save(update);
         return update;
-    }
-    public boolean deleteAllActivities(){
-        activityRepository.deleteAll();
-        return true;
     }
     public boolean deleteActivityByName(String name){
         Optional<Activity> activity = activityRepository.findByName(name);

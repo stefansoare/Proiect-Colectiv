@@ -12,10 +12,17 @@ public class Activity {
     private String name;
     @Column
     private String description;
+    @OneToOne
+    @JoinColumn
+    private Status status;
     public Activity() {}
     public Activity(String name, String description) {
         this.name = name;
         this.description = description;
+    }
+    public Activity(long id, String name) {
+        this.id = id;
+        this.name = name;
     }
     public long getId() {
         return id;
@@ -35,4 +42,6 @@ public class Activity {
     public void setDescription(String description) {
         this.description = description;
     }
+    public Status getStatus(){return status;}
+    public void setStatus(Status status){this.status = status;}
 }

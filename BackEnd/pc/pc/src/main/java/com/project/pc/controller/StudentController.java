@@ -16,8 +16,8 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @PostMapping
-    public ResponseEntity<Student> createStudent(@RequestBody StudentDTO studentDTO){
-        Student createdStudent = studentService.createStudent(studentDTO);
+    public ResponseEntity<StudentDTO> createStudent(@RequestBody Student student){
+        StudentDTO createdStudent = studentService.createStudent(student);
         return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
     }
     @PostMapping("{tId}/teams/{id}")
@@ -76,17 +76,10 @@ public class StudentController {
     }
     @DeleteMapping("{id}/teams/{tId}")
     public ResponseEntity<HttpStatus> deleteFromTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
-        if (studentService.deleteFromTeam(id, tId)){
+        if (studentService.deleteFromTeam(id, tId) == false){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(HttpStatus.OK);
-    }
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllStudents(){
-        if (studentService.deleteAllStudents()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("email/{email}")
     public ResponseEntity<HttpStatus> deleteStudentByEmail(@PathVariable("email") String email){

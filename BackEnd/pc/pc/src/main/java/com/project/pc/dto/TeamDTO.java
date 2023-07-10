@@ -6,4 +6,5 @@ import lombok.Data;
 public class TeamDTO {
     private Long id;
     private Long teamLeader;
+    private String teamName;
 }

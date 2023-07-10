@@ -16,8 +16,8 @@ public class MentorController {
     @Autowired
     private MentorService mentorService;
     @PostMapping
-    public ResponseEntity<Mentor> createMentor(@RequestBody MentorDTO mentorDTO){
-        return new ResponseEntity<>(mentorService.createMentor(mentorDTO), HttpStatus.CREATED);
+    public ResponseEntity<MentorDTO> createMentor(@RequestBody Mentor mentor){
+        return new ResponseEntity<>(mentorService.createMentor(mentor), HttpStatus.CREATED);
     }
     @GetMapping
     public ResponseEntity<List<MentorDTO>> getAllMentors(){
@@ -63,13 +63,6 @@ public class MentorController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
-    }
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllMentors(){
-        if (mentorService.deleteAllMentors()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("email/{email}")
     public ResponseEntity<HttpStatus> deleteMentorByEmail(@PathVariable("email") String email){

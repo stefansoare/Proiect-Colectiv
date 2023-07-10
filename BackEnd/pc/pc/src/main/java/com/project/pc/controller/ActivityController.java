@@ -15,9 +15,9 @@ import java.util.List;
 public class ActivityController {
     @Autowired
     private ActivityService activityService;
-    @PostMapping
-    public ResponseEntity<Activity> createActivity(@RequestBody ActivityDTO activityDTO) {
-        return new ResponseEntity<>(activityService.createActivity(activityDTO), HttpStatus.CREATED);
+    @PostMapping        // return activitydto
+    public ResponseEntity<ActivityDTO> createActivity(@RequestBody Activity activity) {
+        return new ResponseEntity<>(activityService.createActivity(activity), HttpStatus.CREATED);
     }
     @GetMapping
     public ResponseEntity<List<ActivityDTO>> getAllActivities(){
@@ -51,13 +51,6 @@ public class ActivityController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(updated, HttpStatus.OK);
-    }
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllActivities(){
-        if (activityService.deleteAllActivities()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("name/{name}")
     public ResponseEntity<HttpStatus> deleteActivityByName(@PathVariable("name") String name){

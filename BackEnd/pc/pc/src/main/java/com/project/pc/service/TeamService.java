@@ -1,14 +1,8 @@
 package com.project.pc.service;
 
 import com.project.pc.dto.TeamDTO;
-import com.project.pc.model.Activity;
-import com.project.pc.model.Mentor;
-import com.project.pc.model.Task;
-import com.project.pc.model.Team;
-import com.project.pc.repository.ActivityRepository;
-import com.project.pc.repository.MentorRepository;
-import com.project.pc.repository.TaskRepository;
-import com.project.pc.repository.TeamRepository;
+import com.project.pc.model.*;
+import com.project.pc.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +19,17 @@ public class TeamService {
     @Autowired
     private MentorRepository mentorRepository;
     @Autowired
-    private TaskRepository taskRepository;
+    private StatusRepository statusRepository;
     @Autowired
     private MappingService mappingService;
-    public Team createTeam(TeamDTO teamDTO){
-        if (teamDTO == null)
+    public TeamDTO createTeam(Team team){
+        if (team == null)
             return null;
-        return teamRepository.save(mappingService.convertDTOIntoTeam(teamDTO));
+        Status status = new Status();
+        statusRepository.save(status);
+        team.setStatus(status);
+        teamRepository.save(team);
+        return mappingService.convertTeamIntoDTO(team);
     }
     public Team assignActivity(Long id, Long aId){
         Team team = teamRepository.findById(id).orElse(null);
@@ -39,7 +37,15 @@ public class TeamService {
         if (team == null || activity == null){
             return null;
         }
+        Status status = statusRepository.findById(team.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         team.setActivity(activity);
+        team.setStatus(status);
         teamRepository.save(team);
         return team;
     }
@@ -49,19 +55,17 @@ public class TeamService {
         if (team == null || mentor == null){
             return null;
         }
-        team.setMentor(mentor);
-        teamRepository.save(team);
-        return team;
-    }
-    public Task assignTask(Long id, Long tId){
-        Team team = teamRepository.findById(id).orElse(null);
-        Task task = taskRepository.findById(tId).orElse(null);
-        if (team == null || task == null){
+        Status status = statusRepository.findById(team.getStatus().getId()).orElse(null);
+        if (status == null) {
             return null;
         }
-        task.setTeam(team);
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
+        team.setMentor(mentor);
+        team.setStatus(status);
         teamRepository.save(team);
-        return task;
+        return team;
     }
     public List<TeamDTO> getAllTeams(){
         List<Team> teams = teamRepository.findAll();
@@ -82,13 +86,18 @@ public class TeamService {
         if (update == null){
             return null;
         }
+        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         update.setTeamLeader(teamDTO.getTeamLeader());
+        update.setTeamName(teamDTO.getTeamName());
+        update.setStatus(status);
         teamRepository.save(update);
         return update;
-    }
-    public boolean deleteAllTeams(){
-        teamRepository.deleteAll();
-        return true;
     }
     public boolean deleteTeamById(Long id){
         Optional<Team> team = teamRepository.findById(id);

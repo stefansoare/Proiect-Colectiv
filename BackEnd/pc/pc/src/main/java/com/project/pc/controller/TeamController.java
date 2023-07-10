@@ -21,9 +21,9 @@ public class TeamController {
     @Autowired
     private StudentService studentService;
     @PostMapping
-    public ResponseEntity<Team> createTeam(@RequestBody TeamDTO teamDTO){
-        Team newTeam = teamService.createTeam(teamDTO);
-        studentService.addToTeam(teamDTO.getTeamLeader(), newTeam.getId());
+    public ResponseEntity<TeamDTO> createTeam(@RequestBody Team team){
+        TeamDTO newTeam = teamService.createTeam(team);
+        studentService.addToTeam(team.getTeamLeader(), newTeam.getId());
         return new ResponseEntity<>(newTeam, HttpStatus.CREATED);
     }
     @PostMapping("{id}/activities/{aId}")
@@ -41,14 +41,6 @@ public class TeamController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(team, HttpStatus.OK);
-    }
-    @PostMapping("{id}/tasks/{tId}")
-    public ResponseEntity<Task> assignTask(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
-        Task task = teamService.assignTask(id, tId);
-        if (task == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity<>(task, HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<TeamDTO>> getAllTeams(){
@@ -77,13 +69,6 @@ public class TeamController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(update, HttpStatus.OK);
-    }
-    @DeleteMapping
-    public ResponseEntity<HttpStatus> deleteAllTeams(){
-        if (teamService.deleteAllTeams()) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
     @DeleteMapping("{id}")
     public ResponseEntity<HttpStatus> deleteTeamById(@PathVariable("id") Long id){

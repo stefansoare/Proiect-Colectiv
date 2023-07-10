@@ -1,8 +1,10 @@
 package com.project.pc.service;
 
 import com.project.pc.dto.StudentDTO;
+import com.project.pc.model.Status;
 import com.project.pc.model.Student;
 import com.project.pc.model.Team;
+import com.project.pc.repository.StatusRepository;
 import com.project.pc.repository.StudentRepository;
 import com.project.pc.repository.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +21,17 @@ public class StudentService {
     @Autowired
     private TeamRepository teamRepository;
     @Autowired
+    private StatusRepository statusRepository;
+    @Autowired
     private MappingService mappingService;
-    public Student createStudent(StudentDTO studentDTO){
-        if (studentDTO == null)
+    public StudentDTO createStudent(Student student){
+        if (student == null)
             return null;
-        return studentRepository.save(mappingService.convertDTOIntoStudent(studentDTO));
+        Status status = new Status();
+        statusRepository.save(status);
+        student.setStatus(status);
+        studentRepository.save(student);
+        return mappingService.convertStudentIntoDTO(student);
     }
     public Student addToTeam(Long id, Long tId){
         Student student = studentRepository.findById(id).orElse(null);
@@ -31,7 +39,15 @@ public class StudentService {
         if (student == null || team == null){
             return null;
         }
+        Status status = statusRepository.findById(student.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         student.setTeam(team);
+        student.setStatus(status);
         studentRepository.save(student);
         return student;
     }
@@ -70,8 +86,16 @@ public class StudentService {
         if (update == null){
             return null;
         }
+        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         update.setName(studentDTO.getName());
         update.setEmail(studentDTO.getEmail());
+        update.setStatus(status);
         studentRepository.save(update);
         return update;
     }
@@ -80,12 +104,20 @@ public class StudentService {
         if (update == null){
             return null;
         }
+        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         if (studentDTO.getName() != null) {
             update.setName(studentDTO.getName());
         }
         if (studentDTO.getEmail() != null) {
             update.setEmail(studentDTO.getEmail());
         }
+        update.setStatus(status);
         studentRepository.save(update);
         return update;
     }
@@ -96,10 +128,6 @@ public class StudentService {
         }
         student.setTeam(null);
         studentRepository.save(student);
-        return true;
-    }
-    public boolean deleteAllStudents(){
-        studentRepository.deleteAll();
         return true;
     }
     public boolean deleteStudentByEmail(String email){

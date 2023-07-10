@@ -2,7 +2,9 @@ package com.project.pc.service;
 
 import com.project.pc.dto.MentorDTO;
 import com.project.pc.model.Mentor;
+import com.project.pc.model.Status;
 import com.project.pc.repository.MentorRepository;
+import com.project.pc.repository.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +17,17 @@ public class MentorService {
     @Autowired
     private MentorRepository mentorRepository;
     @Autowired
+    private StatusRepository statusRepository;
+    @Autowired
     private MappingService mappingService;
-    public Mentor createMentor(MentorDTO mentorDTO){
-        if (mentorDTO == null)
+    public MentorDTO createMentor(Mentor mentor){
+        if (mentor == null)
             return null;
-        return mentorRepository.save(mappingService.convertDTOIntoMentor(mentorDTO));
+        Status status = new Status();
+        statusRepository.save(status);
+        mentor.setStatus(status);
+        mentorRepository.save(mentor);
+        return mappingService.convertMentorIntoDTO(mentor);
     }
     public List<MentorDTO> getAllMentors(){
         List<Mentor> mentors = mentorRepository.findAll();
@@ -43,8 +51,16 @@ public class MentorService {
         if (update == null){
             return null;
         }
+        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         update.setName(mentorDTO.getName());
         update.setEmail(mentorDTO.getEmail());
+        update.setStatus(status);
         mentorRepository.save(update);
         return update;
     }
@@ -53,18 +69,22 @@ public class MentorService {
         if (update == null){
             return null;
         }
+        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
+        if (status == null) {
+            return null;
+        }
+        status.setModifiedBy();
+        status.setModificationDate();
+        statusRepository.save(status);
         if (mentorDTO.getEmail() != null){
             update.setEmail(mentorDTO.getEmail());
         }
         if (mentorDTO.getName() != null){
             update.setName(mentorDTO.getName());
         }
+        update.setStatus(status);
         mentorRepository.save(update);
         return update;
-    }
-    public boolean deleteAllMentors(){
-        mentorRepository.deleteAll();
-        return true;
     }
     public boolean deleteMentorByEmail(String email){
         Optional<Mentor> mentor = mentorRepository.findMentorByEmail(email);

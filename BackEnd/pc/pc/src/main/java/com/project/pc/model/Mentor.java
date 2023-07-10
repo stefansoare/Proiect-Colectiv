@@ -1,6 +1,10 @@
 package com.project.pc.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "mentors")
@@ -12,6 +16,12 @@ public class Mentor {
     private String name;
     @Column
     private String email;
+    @JsonIdentityReference(alwaysAsId = true)
+    @OneToMany(mappedBy = "mentor")
+    private List<Grade> grades;
+    @OneToOne
+    @JoinColumn
+    private Status status;
     public Mentor(){}
     public Mentor(String name, String email) {
         this.name = name;
@@ -35,4 +45,15 @@ public class Mentor {
     public void setEmail(String email) {
         this.email = email;
     }
+    public List<Grade> getGrades() {
+        return grades;
+    }
+    public void setGrades(List<Grade> grades) {
+        this.grades = grades;
+    }
+    public void addToGrades(Grade grade){
+        this.grades.add(grade);
+    }
+    public Status getStatus(){return status;}
+    public void setStatus(Status status){this.status = status;}
 }

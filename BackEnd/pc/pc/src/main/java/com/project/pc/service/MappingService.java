@@ -65,6 +65,7 @@ public class MappingService {
         }
         Team team = new Team();
         team.setTeamLeader(teamDTO.getTeamLeader());
+        team.setTeamName(teamDTO.getTeamName());
         return team;
     }
     public TeamDTO convertTeamIntoDTO(Team team){
@@ -74,6 +75,7 @@ public class MappingService {
         TeamDTO teamDTO = new TeamDTO();
         teamDTO.setId(team.getId());
         teamDTO.setTeamLeader(team.getTeamLeader());
+        teamDTO.setTeamName(team.getTeamName());
         return teamDTO;
     }
     public Task convertDTOIntoTask(TaskDTO taskDTO){
@@ -82,12 +84,8 @@ public class MappingService {
         }
         Task task = new Task();
         task.setId(taskDTO.getId());
-        task.setGrade(taskDTO.getGrade());
         task.setDescription(taskDTO.getDescription());
         task.setDeadline(taskDTO.getDeadline());
-        task.setAttendance(taskDTO.getAttendance());
-        task.setComment(taskDTO.getComment());
-
         return task;
     }
     public TaskDTO convertTaskIntoDTO(Task task){
@@ -95,14 +93,30 @@ public class MappingService {
             return null;
         }
         TaskDTO taskDTO = new TaskDTO();
-        taskDTO.setStudent_id(task.getStudent().getId());
         taskDTO.setId(task.getId());
-        taskDTO.setGrade(task.getGrade());
         taskDTO.setDescription(task.getDescription());
         taskDTO.setDeadline(task.getDeadline());
-        taskDTO.setAttendance(task.getAttendance());
-        taskDTO.setComment(task.getComment());
-
         return taskDTO;
+    }
+    public Grade convetDTOIntoGrade(GradeDTO gradeDTO){
+        if (gradeDTO == null){
+            return null;
+        }
+        Grade grade = new Grade();
+        grade.setGrade(gradeDTO.getGrade());
+        grade.setAttendance(gradeDTO.isAttendance());
+        grade.setComment(gradeDTO.getComment());
+        return grade;
+    }
+    public GradeDTO convertGradeIntoDTO(Grade grade){
+        if (grade == null){
+            return null;
+        }
+        GradeDTO gradeDTO = new GradeDTO();
+        gradeDTO.setGrade(grade.getGrade());
+        gradeDTO.setAttendance(grade.isAttendance());
+        gradeDTO.setDate(grade.getDate());
+        gradeDTO.setComment(grade.getComment());
+        return gradeDTO;
     }
 }
