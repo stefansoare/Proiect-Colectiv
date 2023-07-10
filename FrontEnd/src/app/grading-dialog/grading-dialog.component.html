@@ -1,17 +1,34 @@
-<h2 mat-dialog-title>Grading</h2>
+<mat-label><h1 class="center">Grading area</h1></mat-label>
 <mat-dialog-content>
-  <p>{{ task }} - {{ task }}</p>
-  <p>{{ task.description }}</p>
+  <mat-table [dataSource]="students || []">
+    <!-- Student Name Column -->
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef>Student Name</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.name }}</mat-cell>
+    </ng-container>
 
-  <mat-form-field>
-    <mat-label>Grade</mat-label>
-    <input matInput type="number" [(ngModel)]="task" name="grade">
-  </mat-form-field>
+    <!-- Grade Column -->
+    <ng-container matColumnDef="grade">
+      <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.grade }}</mat-cell>
+    </ng-container>
 
-  <mat-form-field>
-    <mat-label>Attendance</mat-label>
-    <input matInput type="number" [(ngModel)]="task" name="attendance">
-  </mat-form-field>
+    <!-- Attendance Column -->
+    <ng-container matColumnDef="attendance">
+      <mat-header-cell *matHeaderCellDef>Attendance</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.attendance }}</mat-cell>
+    </ng-container>
+
+    <!-- Comment Column -->
+    <ng-container matColumnDef="comment">
+      <mat-header-cell *matHeaderCellDef>Comment</mat-header-cell>
+      <mat-cell *matCellDef="let student">{{ student.comment }}</mat-cell>
+    </ng-container>
+
+    <!-- Table Rows -->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </mat-table>
 </mat-dialog-content>
 <mat-dialog-actions>
   <button mat-button [mat-dialog-close]="task">Save</button>

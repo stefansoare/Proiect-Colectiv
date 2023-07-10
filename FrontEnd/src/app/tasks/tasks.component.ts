@@ -85,6 +85,7 @@ export class TasksComponent implements OnInit {
       deadline: '', 
       description: '', 
       activity_id: this.activityId, 
+      status_id:0
     };
 
     this.addTask(newTask);
@@ -95,25 +96,14 @@ export class TasksComponent implements OnInit {
       data: task
     });
 
+    dialogRef.afterOpened().subscribe(() => {
+      const gradingDialogInstance = dialogRef.componentInstance as GradingDialogComponent;
+      gradingDialogInstance.loadStudents(task.activity_id);
+    });
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const updatedTask: Task = {
-          id: task.id, 
-          deadline:task.deadline, 
-          description: task.description, 
-          activity_id: task.activity_id, 
-        };
-        
-        this.taskService.patchTask(result.id, task).subscribe(
-          updatedTask => {
-            // Perform any necessary actions with the updated task
-            console.log('Task updated:', updatedTask);
-          },
-          error => {
-            // Handle the error if necessary
-            console.error(error);
-          }
-        );
+        // Perform necessary actions with the result
       }
     });
   }

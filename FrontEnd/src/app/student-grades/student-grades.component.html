@@ -6,18 +6,14 @@
         <div class="icon-container">
             <i class="material-icons">school</i>
           </div>
-        <div class="task-cards">
-          <div class="task-card" *ngFor="let task of tasks">
-            <div class="task-card-header">
-              <span>Task ID: {{ task.id }}</span>
-              <span>Deadline: {{ task.deadline }}</span>
-            </div>
-            <div class="task-card-content">
-              <p>Grade: {{ task }}</p>
-              <p>Attendance: {{ task }}</p>
+          <div class="card-deck">
+            <div class="card" *ngFor="let task of tasks; let i = index">
+              <div class="card-body">
+                <h5 class="card-title">Task Deadline: {{ task.deadline }}</h5>
+                <p class="card-text">Your Grade: {{ grades[i] }}</p>
+              </div>
             </div>
           </div>
-        </div>
       </div>
     </div>
   </div>

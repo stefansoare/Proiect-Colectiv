@@ -3,4 +3,5 @@ export interface Task {
     deadline: string;
     description: string;
     activity_id: number;
+    status_id: number;
 }

@@ -40,6 +40,7 @@ export class RegisterActivityComponent {
       description: '', // Set the description
      
       activity_id: Number(activity.id),
+      status_id: 0
     };
 
     // Call the createTask method to create the task
