@@ -3,7 +3,6 @@ import { Task } from '../Classes/Task';
 import { Student } from '../Classes/Student'; 
 import { TasksService } from '../Services/tasks.service';
 import { ActivatedRoute } from '@angular/router';
-import { forkJoin } from 'rxjs';
 import { GradingDialogComponent } from '../grading-dialog/grading-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -14,13 +13,9 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class TasksComponent implements OnInit {
   tasks: Task[] = [];
-  student: Student |null=null;
   task: Task | null = null;
   showTable: boolean = false;
   activityId: number = 0;
-  studentId: number=0;
-  searchQuery: string = '';
-  students: { [studentId: number]: Student } = {}; 
 
   constructor(
     private taskService: TasksService,
@@ -39,44 +34,24 @@ export class TasksComponent implements OnInit {
     this.taskService.getTasksByActivity(this.activityId).subscribe(
       tasks => {
         this.tasks = tasks;
-        tasks.forEach(task => {
-          this.loadStudent(task.student_id);
-        });
       },
       error => {
         if (error.status === 302 && error.error) {
           this.task = error.error;
         }
 
-      }
-    );
-  }
-
-  loadStudent(studentId: number) {
-    this.taskService.getStudent(studentId).subscribe(
-      student => {
-        this.tasks.forEach(task => {
-          if (task.student_id === student.id) {
-            task.student_name = student.name;
-          }
-        });
-      },
-      error => {
-        if (error.status === 302 && error.error) {
-          this.task = error.error;
-        }
       }
     );
   }
   
-  get filteredTasks(): Task[] {
+  /*get filteredTasks(): Task[] {
     if (!this.searchQuery) {
       return this.tasks;
     }
     return this.tasks.filter(task =>
       task.student_name.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
-  }
+  }*/
 
   deleteTask(task: Task) {
     this.taskService.deleteTask(task.id).subscribe(
@@ -107,14 +82,9 @@ export class TasksComponent implements OnInit {
   createNewTask() {
     const newTask: Task = {
       id: 0, 
-      attendance: 0,
-      comment: '',
       deadline: '', 
       description: '', 
-      grade: 0,
       activity_id: this.activityId, 
-      student_id: 1,
-      student_name: ''
     };
 
     this.addTask(newTask);
@@ -129,14 +99,9 @@ export class TasksComponent implements OnInit {
       if (result) {
         const updatedTask: Task = {
           id: task.id, 
-          comment: task.comment,
           deadline:task.deadline, 
           description: task.description, 
           activity_id: task.activity_id, 
-          student_id: task.student_id,
-          student_name: task.student_name,
-          grade: result.grade,
-          attendance: result.attendance
         };
         
         this.taskService.patchTask(result.id, task).subscribe(

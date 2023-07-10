@@ -1,16 +1,16 @@
 <h2 mat-dialog-title>Grading</h2>
 <mat-dialog-content>
-  <p>{{ task.student_name }} - {{ task.student_id }}</p>
+  <p>{{ task }} - {{ task }}</p>
   <p>{{ task.description }}</p>
 
   <mat-form-field>
     <mat-label>Grade</mat-label>
-    <input matInput type="number" [(ngModel)]="task.grade" name="grade">
+    <input matInput type="number" [(ngModel)]="task" name="grade">
   </mat-form-field>
 
   <mat-form-field>
     <mat-label>Attendance</mat-label>
-    <input matInput type="number" [(ngModel)]="task.attendance" name="attendance">
+    <input matInput type="number" [(ngModel)]="task" name="attendance">
   </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>

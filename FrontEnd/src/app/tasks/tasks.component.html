@@ -1,14 +1,13 @@
 <div class="page-container">
     <app-sidebar-tasks></app-sidebar-tasks>
     <div class="content-container">
-        <input type="text" [(ngModel)]="searchQuery" placeholder="Search by student's name">
         <div class="card-container">
-            <div class="horizontal-card" *ngFor="let task of filteredTasks">
+            <div class="horizontal-card" *ngFor="let task of tasks">
                 <mat-card class="example-card">
                     <mat-card-header>
-                        <mat-card-title>Student's name: {{ task.student_name }}</mat-card-title>
-                        <mat-card-subtitle>student's ID{{ task.student_id }}</mat-card-subtitle>
-                        <mat-card-subtitle>{{ task.deadline }}</mat-card-subtitle>
+                        <mat-card-title>Task description: {{ task.description }}</mat-card-title>
+                        <mat-card-subtitle>Deadline : {{ task.deadline }}</mat-card-subtitle>
+                        
                     </mat-card-header>
                     <mat-card-content>
                         <p>{{ task.description }}</p>

@@ -35,14 +35,11 @@ export class RegisterActivityComponent {
     // Create a new task with the activity ID and student ID = 1
     const newTask: Task = {
       id: 0, // The actual ID will be assigned by the server
-      attendance: 0, // Set the attendence value as needed
-      comment: '', // Set the comment value as needed
+  
       deadline: '', // Set the deadline value as needed
       description: '', // Set the description
-      grade: 0, // Set the grade value as needed
+     
       activity_id: Number(activity.id),
-      student_id: 1, // Assuming student ID 1
-      student_name:''
     };
 
     // Call the createTask method to create the task
