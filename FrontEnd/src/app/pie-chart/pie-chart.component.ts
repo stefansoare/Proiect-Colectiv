@@ -15,7 +15,7 @@ export class PieChartComponent implements OnInit {
   @ViewChild('myChart', { static: true }) myChartRef!: ElementRef;
 
   students: Student[] = [];
-  activityId=5;
+  activityId=1;
   tasks: Task[]=[];
   constructor(private mentorService: MentorService, private taskService: TasksService, private studentService: StudentService, private gradeService: GradeService) {}
 

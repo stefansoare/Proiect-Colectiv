@@ -23,15 +23,18 @@ export class GradingDialogComponent implements OnInit {
   displayedColumns: string[] = ['name', 'grade', 'attendance', 'comment'];
 
   ngOnInit(): void {
-    this.loadStudents(this.task.activity_id);
+    if (this.task && this.task.activity_id) {
+      this.loadStudents(this.task.activity_id);
+    }
   }
+  
 
   loadStudents(activityId: number): void {
     this.studentService.getActivityStudents(activityId).subscribe(
-      students => {
+      (students: Student[]) => {
         this.students = students;
       },
-      error => {
+      (error: any) => {
         console.error('Error loading students:', error);
       }
     );

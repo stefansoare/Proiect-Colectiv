@@ -66,7 +66,7 @@ export class StudentService {
 
   getActivityStudents(id: number): Observable<Student[]> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    return this.http.get<Student[]>(`${this.studentsUrl}${id}`, { headers });
+    return this.http.get<Student[]>(`${this.studentsUrl}activity/${id}`, { headers });
   }
   
 }

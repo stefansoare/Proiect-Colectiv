@@ -1,4 +1,40 @@
-.center{
+.center {
     text-align: center;
-    color: black;
-}
+  }
+  
+  .mat-dialog-content {
+    margin-bottom: 20px;
+  }
+  
+  .mat-table {
+    width: 100%;
+  }
+  
+  .mat-cell,
+  .mat-header-cell {
+    padding: 8px;
+  }
+  
+  textarea.mat-input-element {
+    resize: vertical;
+  }
+  
+  .mat-dialog-actions {
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  button.mat-button {
+    margin-left: 10px;
+  }
+  
+  .center-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .center-cell input {
+    text-align: center;
+  }
+  

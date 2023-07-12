@@ -39,20 +39,10 @@ export class TasksComponent implements OnInit {
         if (error.status === 302 && error.error) {
           this.task = error.error;
         }
-
       }
     );
   }
   
-  /*get filteredTasks(): Task[] {
-    if (!this.searchQuery) {
-      return this.tasks;
-    }
-    return this.tasks.filter(task =>
-      task.student_name.toLowerCase().includes(this.searchQuery.toLowerCase())
-    );
-  }*/
-
   deleteTask(task: Task) {
     this.taskService.deleteTask(task.id).subscribe(
       () => {
@@ -63,7 +53,6 @@ export class TasksComponent implements OnInit {
       },
       (error: any) => {
         console.error(error);
-
       }
     );
   }
@@ -75,36 +64,43 @@ export class TasksComponent implements OnInit {
       },
       (error: any) => {
         console.error(error);
-        
       }
     );
   }
+
   createNewTask() {
     const newTask: Task = {
       id: 0, 
       deadline: '', 
       description: '', 
       activity_id: this.activityId, 
-      status_id:0
+      status_id: 0
     };
 
     this.addTask(newTask);
   }
 
   openGradingDialog(task: Task) {
+    task.activity_id = this.activityId; 
+  
     const dialogRef = this.dialog.open(GradingDialogComponent, {
       data: task
     });
-
+  
     dialogRef.afterOpened().subscribe(() => {
       const gradingDialogInstance = dialogRef.componentInstance as GradingDialogComponent;
       gradingDialogInstance.loadStudents(task.activity_id);
     });
-
+  
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // Perform necessary actions with the result
       }
     });
   }
-}
+  
+  }
+  
+  
+  
+
