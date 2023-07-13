@@ -13,9 +13,13 @@ import com.project.pc.service.GradeService;
 import com.project.pc.service.MappingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@ExtendWith(MockitoExtension.class)
+@Rollback
 class GradeServiceTest {
     @InjectMocks
     private GradeService gradeService;
@@ -54,9 +61,9 @@ class GradeServiceTest {
         Long studentId = 2L;
         Long taskId = 3L;
         Grade grade = new Grade();
-        Mentor mentor = new Mentor();
-        Student student = new Student();
-        Task task = new Task();
+        Mentor mentor = new Mentor(mentorId);
+        Student student = new Student(studentId);
+        Task task = new Task(taskId);
 
         when(mentorRepository.findMentorById(mentorId)).thenReturn(Optional.of(mentor));
         when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
@@ -233,7 +240,7 @@ class GradeServiceTest {
 
 
         assertEquals(expectedGradeDTOS, result);
-        
+
         verify(gradeRepository).findByTaskIdAndStudentId(taskId, studentId);
         verifyNoMoreInteractions(gradeRepository);
         verifyNoInteractions(mappingService);

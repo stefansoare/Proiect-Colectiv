@@ -27,6 +27,11 @@ public class Mentor {
         this.name = name;
         this.email = email;
     }
+
+    public Mentor(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

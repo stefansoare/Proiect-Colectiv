@@ -38,6 +38,11 @@ public class Student {
         this.name = name;
         this.email = email;
     }
+
+    public Student(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
