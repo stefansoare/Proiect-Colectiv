@@ -40,6 +40,11 @@ public class Task {
         this.description = description;
         this.deadline = deadline;
     }
+
+    public Task(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }

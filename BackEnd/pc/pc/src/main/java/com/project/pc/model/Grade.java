@@ -42,6 +42,12 @@ public class Grade {
         this.attendance = attendance;
         this.comment = comment;
     }
+
+    public Grade(boolean attendance, Task task) {
+        this.attendance = attendance;
+        this.task = task;
+    }
+
     public long getId() {
         return id;
     }

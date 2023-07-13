@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -441,7 +440,7 @@ class MappingServiceTest {
         assertEquals(attendance, result.isAttendance());
         assertEquals(date, result.getDate());
         assertEquals(comment, result.getComment());
-        
+
         verify(grade).getGrade();
         verify(grade).isAttendance();
         verify(grade).getDate();
