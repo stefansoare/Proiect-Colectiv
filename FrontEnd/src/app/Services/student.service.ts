@@ -54,6 +54,12 @@ export class StudentService {
   
     return this.http.delete<void>(url, { headers });
   }
+
+  getAllTeams(): Observable<Team[]> {
+    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
+    return this.http.get<Team[]>(this.teamsUrl, { headers });
+  }
+  
   getTeams(): Observable<Team[]> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     return this.http.get<Team[]>(this.teamsUrl);
