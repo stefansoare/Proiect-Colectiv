@@ -70,8 +70,8 @@ class GradeServiceTest {
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
 
 
-        Grade result = gradeService.giveGrade(mentorId, studentId, taskId, grade);
-
+        GradeDTO result1 = gradeService.giveGrade(mentorId, studentId, taskId, grade);
+        Grade result = mappingService.convetDTOIntoGrade(result1);
 
         assertNotNull(result);
         assertSame(mentor, result.getMentor());
@@ -105,8 +105,8 @@ class GradeServiceTest {
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
 
 
-        Grade result = gradeService.giveGrade(mentorId, studentId, taskId, grade);
-
+        GradeDTO result1 = gradeService.giveGrade(mentorId, studentId, taskId, grade);
+        Grade result = mappingService.convetDTOIntoGrade(result1);
 
         assertNull(result);
 

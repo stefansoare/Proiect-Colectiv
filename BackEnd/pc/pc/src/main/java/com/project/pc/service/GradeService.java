@@ -29,7 +29,7 @@ public class GradeService {
     private TaskRepository taskRepository;
     @Autowired
     private MappingService mappingService;
-    public Grade giveGrade(Long mId, Long sId, Long tId, Grade grade){
+    public GradeDTO giveGrade(Long mId, Long sId, Long tId, Grade grade){
         Mentor mentor = mentorRepository.findMentorById(mId).orElse(null);
         Student student = studentRepository.findStudentById(sId).orElse(null);
         Task task = taskRepository.findById(tId).orElse(null);
@@ -47,7 +47,7 @@ public class GradeService {
         mentorRepository.save(mentor);
         studentRepository.save(student);
         taskRepository.save(task);
-        return grade;
+        return mappingService.convertGradeIntoDTO(grade);
     }
     // media
     public Long getStudentGradesMean(Long tId, Long sId){
@@ -83,5 +83,15 @@ public class GradeService {
             gradeDTOS.add(mappingService.convertGradeIntoDTO(grade));
         }
         return gradeDTOS;
+    }
+
+    public boolean getAttendanceForTask(Long tId, Long sId){
+        List<Grade> grades = gradeRepository.findByTaskIdAndStudentId(tId, sId);
+        for (Grade grade : grades){
+            if (grade.isAttendance()){
+                return true;
+            }
+        }
+        return false;
     }
 }
