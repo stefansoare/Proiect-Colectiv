@@ -1,20 +1,25 @@
 <div class="page-container">
-    <app-sidebar-student></app-sidebar-student>
-    <div class="content-container">
-      <div class="task-list">
-        <h2>Student Tasks and Grades</h2>
-        <div class="icon-container">
-            <i class="material-icons">school</i>
+  <app-sidebar-student></app-sidebar-student>
+  <div class="content-container">
+    <div class="task-list">
+      <h2>Student attendance and grades</h2>
+      <div class="icon-container">
+        <i class="material-icons">school</i>
+      </div>
+      <div class="card-deck">
+        <div class="card" *ngFor="let task of tasks; let i = index">
+          <div class="card-body">
+            <h5 class="card-title">Task Description: {{ task.description }}</h5>
+            <h5 class="card-title">Task Deadline: {{ task.deadline }}</h5>
+            <p class="card-text">Your Grade: {{ grades[i] }}</p>
+            <p class="card-text">
+              Your Attendance:
+              <span *ngIf="attendances[i]; else absent">Present</span>
+              <ng-template #absent>Absent</ng-template>
+            </p>
           </div>
-          <div class="card-deck">
-            <div class="card" *ngFor="let task of tasks; let i = index">
-              <div class="card-body">
-                <h5 class="card-title">Task Deadline: {{ task.deadline }}</h5>
-                <p class="card-text">Your Grade: {{ grades[i] }}</p>
-              </div>
-            </div>
-          </div>
+        </div>
       </div>
     </div>
   </div>
-  
+</div>

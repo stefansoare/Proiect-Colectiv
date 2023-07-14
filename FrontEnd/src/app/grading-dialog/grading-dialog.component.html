@@ -9,37 +9,38 @@
       <mat-cell *matCellDef="let student">{{ student.name }}</mat-cell>
     </ng-container>
 
-    <!-- Grade Column -->
-    <ng-container matColumnDef="grade">
-      <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
-      <mat-cell *matCellDef="let student" class="center-cell">
-        <input matInput type="text" [(ngModel)]="student.grade">
-      </mat-cell>
-    </ng-container>
+<!-- Grade Column -->
+<ng-container matColumnDef="grade">
+  <mat-header-cell *matHeaderCellDef>Grade</mat-header-cell>
+  <mat-cell *matCellDef="let grade" class="center-cell">
+    <input matInput type="text" [(ngModel)]="grade.grade">
+  </mat-cell>
+</ng-container>
+
+<!-- Attendance Column -->
+<ng-container matColumnDef="attendance">
+  <mat-header-cell *matHeaderCellDef>Attendance</mat-header-cell>
+  <mat-cell *matCellDef="let grade" class="center-cell">
+    <mat-checkbox [(ngModel)]="grade.attendance"></mat-checkbox>
+  </mat-cell>
+</ng-container>
+
+<!-- Comment Column -->
+<ng-container matColumnDef="comment">
+  <mat-header-cell *matHeaderCellDef>Comment</mat-header-cell>
+  <mat-cell *matCellDef="let grade">
+    <textarea matInput [(ngModel)]="grade.comment" rows="2"></textarea>
+  </mat-cell>
+</ng-container>
 
 
-    <!-- Attendance Column -->
-    <ng-container matColumnDef="attendance">
-      <mat-header-cell *matHeaderCellDef>Attendance</mat-header-cell>
-      <mat-cell *matCellDef="let student" class="center-cell">
-        <mat-checkbox [(ngModel)]="student.attendance"></mat-checkbox>
-      </mat-cell>
-    </ng-container>
+<!-- Table Rows -->
+<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
-    <!-- Comment Column -->
-    <ng-container matColumnDef="comment">
-      <mat-header-cell *matHeaderCellDef>Comment</mat-header-cell>
-      <mat-cell *matCellDef="let student">
-        <textarea matInput [(ngModel)]="student.comment" rows="2"></textarea>
-      </mat-cell>
-    </ng-container>
-
-    <!-- Table Rows -->
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button [mat-dialog-close]="task">Save</button>
+  <button mat-button (click)="saveGrades()">Save</button>
   <button mat-button [mat-dialog-close]="false">Cancel</button>
 </mat-dialog-actions>

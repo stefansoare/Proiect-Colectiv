@@ -1,5 +1,5 @@
 export interface Grade {
-    date: string;
+    comment: string;
     grade: number;
     attendance: boolean;
 }
