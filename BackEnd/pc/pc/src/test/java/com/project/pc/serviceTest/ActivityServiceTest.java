@@ -61,6 +61,9 @@ public class ActivityServiceTest {
         verify(activityRepositoryMock, times(1)).save(activity);
         verify(statusRepositoryMock, times(1)).save(any(Status.class));
         verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(statusRepositoryMock);
+        verifyNoMoreInteractions(mappingServiceMock);
 
         Assert.assertEquals(activityDTO, result);
     }
@@ -78,6 +81,9 @@ public class ActivityServiceTest {
         verify(activityRepositoryMock, never()).save(any(Activity.class));
         verify(statusRepositoryMock, never()).save(any(Status.class));
         verify(mappingServiceMock, never()).convertActivityIntoDTO(any(Activity.class));
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(statusRepositoryMock);
+        verifyNoMoreInteractions(mappingServiceMock);
     }
 
     @Test
@@ -113,6 +119,8 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findAll();
         verify(mappingServiceMock, times(2)).convertActivityIntoDTO(any(Activity.class));
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(mappingServiceMock);
         Assert.assertEquals(2, result.size());
         Assert.assertEquals(activityDTO1, result.get(0));
         Assert.assertEquals(activityDTO2, result.get(1));
@@ -135,6 +143,8 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findById(activityId);
         verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(mappingServiceMock);
         Assert.assertEquals(activityDTO, result);
     }
 
@@ -169,6 +179,8 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findByName(activityName);
         verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(mappingServiceMock);
         Assert.assertEquals(activityDTO, result);
     }
 
@@ -188,7 +200,6 @@ public class ActivityServiceTest {
 
     @Test
     public void testUpdateActivity() {
-        // Arrange
         Long activityId = 1L;
         String updatedName = "Updated Activity";
         String updatedDescription = "Updated Description";
@@ -205,10 +216,8 @@ public class ActivityServiceTest {
         when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
         when(mappingServiceMock.convertDTOIntoActivity(activityDTO)).thenReturn(existingActivity);
 
-        // Act
         Activity result = activityService.updateActivity(activityId, activityDTO);
 
-        // Assert
         verify(activityRepositoryMock, times(1)).findById(activityId);
         verify(mappingServiceMock, times(1)).convertDTOIntoActivity(activityDTO);
         verify(activityRepositoryMock, times(1)).save(existingActivity);
@@ -235,6 +244,8 @@ public class ActivityServiceTest {
         verify(activityRepositoryMock, times(1)).findById(nonExistentId);
         verify(mappingServiceMock, never()).convertActivityIntoDTO(any(Activity.class));
         verify(activityRepositoryMock, never()).save(any(Activity.class));
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(mappingServiceMock);
         Assert.assertNull(result);
     }
 
@@ -268,6 +279,8 @@ public class ActivityServiceTest {
         verify(statusRepositoryMock, times(1)).findById(existingStatus.getId());
         verify(statusRepositoryMock, times(1)).save(existingStatus);
         verify(activityRepositoryMock, times(1)).save(existingActivity);
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(statusRepositoryMock);
 
         Assert.assertEquals(existingActivity, result);
         Assert.assertEquals(updatedName, result.getName());
@@ -290,6 +303,7 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findById(nonExistentId);
         verify(activityRepositoryMock, never()).save(any(Activity.class));
+        verifyNoMoreInteractions(activityRepositoryMock);
         Assert.assertNull(result);
     }
 
@@ -315,6 +329,8 @@ public class ActivityServiceTest {
         verify(statusRepositoryMock, times(1)).findById(existingActivity.getStatus().getId());
         verify(statusRepositoryMock, never()).save(any(Status.class));
         verify(activityRepositoryMock, never()).save(any(Activity.class));
+        verifyNoMoreInteractions(activityRepositoryMock);
+        verifyNoMoreInteractions(statusRepositoryMock);
 
         Assert.assertNull(result);
     }
@@ -334,6 +350,7 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findByName(activityName);
         verify(activityRepositoryMock, times(1)).deleteById(activityId);
+        verifyNoMoreInteractions(activityRepositoryMock);
         Assert.assertTrue(result);
     }
 
@@ -349,6 +366,7 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findByName(nonExistentName);
         verify(activityRepositoryMock, never()).deleteById(anyLong());
+        verifyNoMoreInteractions(activityRepositoryMock);
         Assert.assertFalse(result);
     }
 
@@ -365,6 +383,7 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findById(activityId);
         verify(activityRepositoryMock, times(1)).deleteById(activityId);
+        verifyNoMoreInteractions(activityRepositoryMock);
         Assert.assertTrue(result);
     }
 
@@ -380,6 +399,7 @@ public class ActivityServiceTest {
 
         verify(activityRepositoryMock, times(1)).findById(nonExistentId);
         verify(activityRepositoryMock, never()).deleteById(anyLong());
+        verifyNoMoreInteractions(activityRepositoryMock);
         Assert.assertFalse(result);
     }
 }

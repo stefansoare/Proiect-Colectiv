@@ -10,7 +10,6 @@ import com.project.pc.service.MentorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -91,6 +90,8 @@ class MentorServiceTest {
 
         verify(mentorRepository).findAll();
         verify(mappingService, times(mentors.size())).convertMentorIntoDTO(any(Mentor.class));
+        verifyNoMoreInteractions(mentorRepository);
+        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
@@ -104,13 +105,13 @@ class MentorServiceTest {
         assertTrue(result.isEmpty());
 
         verify(mentorRepository).findAll();
+        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
     void testGetMentorById_ValidId_ReturnsMentorDTO() {
-        Long mentorId = 1L;
-        Mentor mentor = new Mentor();
-        mentor.setId(mentorId);
+        Mentor mentor = new Mentor(1L);
+        Long mentorId = mentor.getId();
 
         when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
         when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(new MentorDTO());
@@ -121,6 +122,8 @@ class MentorServiceTest {
 
         verify(mentorRepository).findById(mentorId);
         verify(mappingService).convertMentorIntoDTO(mentor);
+        verifyNoMoreInteractions(mentorRepository);
+        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
@@ -134,6 +137,7 @@ class MentorServiceTest {
         assertNull(result);
 
         verify(mentorRepository).findById(mentorId);
+        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
@@ -151,6 +155,8 @@ class MentorServiceTest {
 
         verify(mentorRepository).findMentorByName(mentorName);
         verify(mappingService).convertMentorIntoDTO(mentor);
+        verifyNoMoreInteractions(mentorRepository);
+        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
@@ -164,6 +170,7 @@ class MentorServiceTest {
         assertNull(result);
 
         verify(mentorRepository).findMentorByName(mentorName);
+        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
@@ -181,6 +188,8 @@ class MentorServiceTest {
 
         verify(mentorRepository).findMentorByEmail(mentorEmail);
         verify(mappingService).convertMentorIntoDTO(mentor);
+        verifyNoMoreInteractions(mentorRepository);
+        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
@@ -194,6 +203,7 @@ class MentorServiceTest {
         assertNull(result);
 
         verify(mentorRepository).findMentorByEmail(mentorEmail);
+        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
@@ -229,6 +239,8 @@ class MentorServiceTest {
         verify(statusRepository).findById(existingStatus.getId());
         verify(statusRepository).save(existingStatus);
         verify(mentorRepository).save(existingMentor);
+        verifyNoMoreInteractions(mentorRepository);
+        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
@@ -245,6 +257,7 @@ class MentorServiceTest {
         assertNull(result);
 
         verify(mentorRepository).findMentorById(mentorId);
+        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
@@ -279,6 +292,8 @@ class MentorServiceTest {
         verify(statusRepository).findById(existingStatus.getId());
         verify(statusRepository).save(existingStatus);
         verify(mentorRepository).save(existingMentor);
+        verifyNoMoreInteractions(mentorRepository);
+        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
@@ -294,6 +309,7 @@ class MentorServiceTest {
         assertNull(result);
 
         verify(mentorRepository).findMentorById(mentorId);
+        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
@@ -313,6 +329,7 @@ class MentorServiceTest {
 
         verify(mentorRepository).findMentorByEmail(email);
         verify(mentorRepository).deleteById(existingMentor.getId());
+        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
@@ -326,6 +343,7 @@ class MentorServiceTest {
         assertFalse(result);
 
         verify(mentorRepository).findMentorByEmail(email);
+        verifyNoMoreInteractions(mentorRepository);
     }
 
 }

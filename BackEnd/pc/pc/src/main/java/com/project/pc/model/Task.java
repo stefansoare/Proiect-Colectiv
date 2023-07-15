@@ -41,6 +41,17 @@ public class Task {
         this.deadline = deadline;
     }
 
+    public Task(long id, String description, String deadline) {
+        this.id = id;
+        this.description = description;
+        this.deadline = deadline;
+    }
+
+    public Task(long id, Activity activity) {
+        this.id = id;
+        this.activity = activity;
+    }
+
     public Task(long id) {
         this.id = id;
     }

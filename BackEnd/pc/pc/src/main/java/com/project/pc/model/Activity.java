@@ -24,6 +24,11 @@ public class Activity {
         this.id = id;
         this.name = name;
     }
+
+    public Activity(long id) {
+        this.id = id;
+    }
+
     public long getId() {
         return id;
     }
