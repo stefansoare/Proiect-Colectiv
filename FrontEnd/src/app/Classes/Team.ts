@@ -8,5 +8,5 @@ export interface Team {
     leader: String;
     mentorID: number;
     activityID: number;
-    stats: number;
+    status: number;
 }

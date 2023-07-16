@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError } from 'rxjs';
+import { Observable, catchError, map } from 'rxjs';
 import { Grade } from '../Classes/Grade';
 
 @Injectable({
@@ -28,11 +28,14 @@ export class GradeService {
     return this.http.get<any>(url, { headers });
   }
 
-  getAllStudentGradesFromATask(tId: number, sId: number): Observable<any> {
+  getAllStudentGradesFromATask(tId: number, sId: number): Observable<number> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     const url = `http://localhost:8080/api/grades/grades/${tId}/for/${sId}`;
-    return this.http.get<any>(url, { headers });
+    return this.http.get<any>(url, { headers }).pipe(
+      map((response: any) => response.grade) // Extract the 'grade' property from the response
+    );
   }
+  
 
   getAttendanceForTask(tId: number, sId: number): Observable<any> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');

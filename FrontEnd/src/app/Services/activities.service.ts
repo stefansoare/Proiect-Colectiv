@@ -18,9 +18,12 @@ export class ActivitiesService {
   assignActivity(id: number, aId: number): Observable<Team> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     const url = `http://localhost:8080/api/teams/${id}/activities/${aId}`;
-    return this.http.post<Team>(url, null, { headers });
+    
+    // Set the status_id in the request body
+    const requestBody = { status: 0 };
+    
+    return this.http.post<Team>(url, requestBody, { headers });
   }
-
   getActivities(): Observable<Activity[]> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     return this.http.get<Activity[]>(this.activitiesUrl);

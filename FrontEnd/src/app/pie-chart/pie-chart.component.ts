@@ -37,7 +37,6 @@ export class PieChartComponent implements OnInit {
       },
     });
   
-    // Fetch teams from MentorService
     this.studentService.getAllTeams().subscribe(
       (teams: Team[]) => {
         const teamMembersObservables: Observable<Student[]>[] = [];
@@ -54,15 +53,13 @@ export class PieChartComponent implements OnInit {
   
             this.students = allStudents;
   
-            // Get task deadlines
             this.taskService.getTasks().subscribe(
               (tasks: Task[]) => {
-                tasks.sort((a, b) => a.deadline.localeCompare(b.deadline)); // Sort tasks by deadline in ascending order
+                tasks.sort((b, a) => a.deadline.localeCompare(b.deadline)); // Sort
                 tasks.forEach((task) => {
                   (myChart.data.labels as string[]).push(task.deadline);
                 });
                 myChart.data.labels = (myChart.data.labels as string[]).reverse();
-                // Get student mean grades for each task
                 this.students.forEach((student) => {
                   const color = this.getRandomColor();
                   const dataset = {
@@ -80,7 +77,7 @@ export class PieChartComponent implements OnInit {
                   tasks.forEach((task, index) => {
                     this.gradeService.getStudentMeanGrade(task.id, student.id).subscribe(
                       (studentGrade: number) => {
-                        dataset.data[index] = studentGrade; // Store grade at the corresponding index
+                        dataset.data[index] = studentGrade;
                         myChart.update();
                       },
                       (error: any) => {
@@ -109,8 +106,6 @@ export class PieChartComponent implements OnInit {
     );
   }
   
-  
-  // Utility method to generate random color
   getRandomColor(): string {
     const letters = '0123456789ABCDEF';
     let color = '#';

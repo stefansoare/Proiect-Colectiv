@@ -31,14 +31,12 @@ export class RegisterActivityComponent {
       }
     );
   }
+  
 
   openDialog(activity: Activity, teamId: number) {
     this.dialogRef = this.matDialog.open(DialogRegisterComponent);
-  
-    // Call the assignActivity method instead of createTask
-    this.activitiesService.assignActivity(this.studentId,activity.id).subscribe(
+    this.activitiesService.assignActivity(1,activity.id).subscribe(
       (error: any) => {
-        // Handle error if necessary
         console.error(error);
       }
     );
