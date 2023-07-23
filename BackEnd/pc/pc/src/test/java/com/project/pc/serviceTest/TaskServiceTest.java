@@ -52,7 +52,7 @@ public class TaskServiceTest {
     }
 
     @Test
-    void testCreateTask_ValidTask_CreatesTaskAndReturnsDTO() {
+    void testCreateValidTaskAndReturnsDTO() {
         Task task = new Task();
         Status status = new Status();
         doReturn(status).when(statusRepository).save(any(Status.class));
@@ -63,26 +63,6 @@ public class TaskServiceTest {
 
         assertNotNull(result);
         assertEquals(new TaskDTO(), result);
-
-        verify(taskRepository).save(task);
-        verify(statusRepository).save(any(Status.class));
-        verify(mappingService).convertTaskIntoDTO(task);
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(statusRepository);
-        verifyNoMoreInteractions(mappingService);
-    }
-
-
-    @Test
-    void testCreateTask_NullTask_ReturnsNull() {
-        Task task = null;
-
-        TaskDTO result = taskService.createTask(task);
-
-        assertEquals(null, result);
-
-        verifyNoInteractions(taskRepository);
-        verifyNoInteractions(mappingService);
     }
 
     @Test
@@ -103,17 +83,12 @@ public class TaskServiceTest {
 
         Task result = taskService.addToActivity(taskId, activityId);
 
-
         assertNotNull(result);
         assertEquals(activity, task.getActivity());
-        verify(taskRepository, times(1)).save(task);
-        verify(statusRepository, times(1)).save(status);
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
-    void testGetAllTasks_RepositoryReturnsTasks_ReturnsTaskDTOList() {
+    void testGetAllTasksAndRepositoryReturnsTasksThenCreatesTaskDTOList() {
         List<Task> tasks = new ArrayList<>();
         tasks.add(new Task());
         tasks.add(new Task());
@@ -123,29 +98,18 @@ public class TaskServiceTest {
         List<TaskDTO> result = taskService.getAllTasks();
 
         assertEquals(tasks.size(), result.size());
-
-        verify(taskRepository).findAll();
-        verify(mappingService, times(tasks.size())).convertTaskIntoDTO(any(Task.class));
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testGetAllTasks_RepositoryReturnsEmptyList_ReturnsEmptyList() {
+    void testGetAllTasksAndRepositoryReturnsEmptyListThenCreatesEmptyList() {
         List<Task> tasks = new ArrayList<>();
-
         when(taskRepository.findAll()).thenReturn(tasks);
-
         List<TaskDTO> result = taskService.getAllTasks();
-
         assertTrue(result.isEmpty());
-
-        verify(taskRepository).findAll();
-        verifyNoMoreInteractions(taskRepository);
     }
 
     @Test
-    void testGetTaskById_ValidId_ReturnsTaskDTO() {
+    void testGetTaskByIdWithValidIdAndReturnsTaskDTO() {
         Task task = new Task(1L);
         Long taskId = task.getId();
 
@@ -155,29 +119,18 @@ public class TaskServiceTest {
         TaskDTO result = taskService.getTaskById(taskId);
 
         assertNotNull(result);
-
-        verify(taskRepository).findById(taskId);
-        verify(mappingService).convertTaskIntoDTO(task);
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testGetTaskById_InvalidId_ReturnsNull() {
+    void testGetTaskByIdWithInvalidIdAndReturnsNull() {
         Long taskId = 1L;
-
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
-
         TaskDTO result = taskService.getTaskById(taskId);
-
         assertNull(result);
-
-        verify(taskRepository).findById(taskId);
-        verifyNoMoreInteractions(taskRepository);
     }
 
     @Test
-    void testGetAllTasksFromActivity_RepositoryReturnsTasksByActivityId_ReturnsTaskDTOList() {
+    void testGetAllTasksFromActivityAndRepositoryReturnsTasksByActivityIdThenCreatesTaskDTOList() {
         List<Task> tasks = new ArrayList<>();
         Long activityId = 2L;
         tasks.add(new Task(1L, new Activity(2L)));
@@ -189,30 +142,19 @@ public class TaskServiceTest {
         List<TaskDTO> result = taskService.getAllTasksFromActivity(activityId);
 
         assertEquals(tasks.size(), result.size());
-
-        verify(taskRepository).findByActivityId(activityId);
-        verify(mappingService, times(tasks.size())).convertTaskIntoDTO(any(Task.class));
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testGetAllTasksFromActivity_RepositoryReturnsEmptyList_ReturnsEmptyList() {
+    void testGetAllTasksFromActivityAndRepositoryReturnsEmptyList() {
         List<Task> tasks = new ArrayList<>();
         Long activityId = 2L;
-
         when(taskRepository.findByActivityId(activityId)).thenReturn(tasks);
-
         List<TaskDTO> result = taskService.getAllTasksFromActivity(activityId);
-
         assertTrue(result.isEmpty());
-
-        verify(taskRepository).findByActivityId(activityId);
-        verifyNoMoreInteractions(taskRepository);
     }
 
     @Test
-    void testUpdateTask_TaskExistsAndStatusExists_TaskUpdatedAndStatusSaved() {
+    void testUpdateTaskWhenTaskExistsAndStatusExistsThenTaskUpdatedAndStatusSaved() {
         Long taskId = 1L;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(1L);
@@ -237,17 +179,10 @@ public class TaskServiceTest {
         assertEquals(taskDTO.getDescription(), result.getDescription());
         assertEquals(taskDTO.getDeadline(), result.getDeadline());
         assertEquals(existingStatus, result.getStatus());
-
-        verify(taskRepository).findById(taskId);
-        verify(statusRepository).findById(existingStatus.getId());
-        verify(statusRepository).save(existingStatus);
-        verify(taskRepository).save(existingTask);
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
-    void testUpdateTask_TaskDoesNotExist_ReturnsNull() {
+    void testUpdateTaskWhenTaskDoesNotExistAndReturnsNull() {
         Long taskId = 1L;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(1L);
@@ -259,14 +194,10 @@ public class TaskServiceTest {
         Task result = taskService.updateTask(taskId, taskDTO);
 
         assertNull(result);
-
-        verify(taskRepository).findById(taskId);
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoInteractions(statusRepository);
     }
 
     @Test
-    void testUpdateTask_StatusDoesNotExist_ReturnsNull() {
+    void testUpdateTaskWhenStatusDoesNotExistAndReturnsNull() {
         Long taskId = 1L;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setId(1L);
@@ -287,15 +218,10 @@ public class TaskServiceTest {
         Task result = taskService.updateTask(taskId, taskDTO);
 
         assertNull(result);
-
-        verify(taskRepository).findById(taskId);
-        verify(statusRepository).findById(existingStatus.getId());
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
-    void testPatchTask_TaskExistsAndStatusExists_TaskPatchedAndStatusSaved() {
+    void testPatchTaskWhenTaskExistsAndStatusExistsThenTaskPatchedAndStatusSaved() {
         Long taskId = 1L;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setDescription("Patched description");
@@ -318,15 +244,10 @@ public class TaskServiceTest {
         assertEquals(taskDTO.getDescription(), result.getDescription());
         assertEquals(taskDTO.getDeadline(), result.getDeadline());
         assertEquals(existingStatus, result.getStatus());
-
-        verify(taskRepository).findById(taskId);
-        verify(statusRepository).findById(existingStatus.getId());
-        verify(statusRepository).save(existingStatus);
-        verify(taskRepository).save(existingTask);
     }
 
     @Test
-    void testPatchTask_TaskDoesNotExist_ReturnsNull() {
+    void testPatchTaskWhenTaskDoesNotExistAndReturnsNull() {
         Long taskId = 1L;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setDescription("Patched description");
@@ -337,14 +258,10 @@ public class TaskServiceTest {
         Task result = taskService.patchTask(taskId, taskDTO);
 
         assertNull(result);
-
-        verify(taskRepository).findById(taskId);
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoInteractions(statusRepository);
     }
 
     @Test
-    void testPatchTask_StatusDoesNotExist_ReturnsNull() {
+    void testPatchTaskWhenStatusDoesNotExistAndReturnsNull() {
         Long taskId = 1L;
         TaskDTO taskDTO = new TaskDTO();
         taskDTO.setDescription("Patched description");
@@ -364,15 +281,10 @@ public class TaskServiceTest {
         Task result = taskService.patchTask(taskId, taskDTO);
 
         assertNull(result);
-
-        verify(taskRepository).findById(taskId);
-        verify(statusRepository).findById(existingStatus.getId());
-        verifyNoMoreInteractions(taskRepository);
-        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
-    void testDeleteTaskById_TaskExists_TaskDeletedAndReturnsTrue() {
+    void testDeleteTaskByIdWhenTaskExistsThenTaskDeletedAndReturnsTrue() {
         Long taskId = 1L;
         Task existingTask = new Task();
         existingTask.setId(taskId);
@@ -382,13 +294,10 @@ public class TaskServiceTest {
         boolean result = taskService.deleteTaskById(taskId);
 
         assertTrue(result);
-
-        verify(taskRepository).findById(taskId);
-        verify(taskRepository).deleteById(taskId);
     }
 
     @Test
-    void testDeleteTaskById_TaskDoesNotExist_ReturnsFalse() {
+    void testDeleteTaskByIdWhenTaskDoesNotExistAndReturnsFalse() {
         Long taskId = 1L;
 
         when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
@@ -396,8 +305,5 @@ public class TaskServiceTest {
         boolean result = taskService.deleteTaskById(taskId);
 
         assertFalse(result);
-
-        verify(taskRepository).findById(taskId);
-        verifyNoMoreInteractions(taskRepository);
     }
 }

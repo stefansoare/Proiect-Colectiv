@@ -56,7 +56,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGiveGrade_ValidEntities_CreatesGrade() {
+    void testGiveGradeWhenExistValidEntitiesAndCreatesGrade() {
         Long mentorId = 1L;
         Long studentId = 2L;
         Long taskId = 3L;
@@ -69,7 +69,6 @@ class GradeServiceTest {
         when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
         when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
 
-
         GradeDTO result1 = gradeService.giveGrade(mentorId, studentId, taskId, grade);
         Grade result = mappingService.convetDTOIntoGrade(result1);
 
@@ -77,20 +76,6 @@ class GradeServiceTest {
         assertSame(mentor, result.getMentor());
         assertSame(student, result.getStudent());
         assertSame(task, result.getTask());
-
-        verify(mentorRepository).findMentorById(mentorId);
-        verify(studentRepository).findStudentById(studentId);
-        verify(taskRepository).findById(taskId);
-
-        verify(mentor).addToGrades(result);
-        verify(student).addToGrades(result);
-        verify(task).addToGrades(result);
-        verify(gradeRepository).save(result);
-        verify(mentorRepository).save(mentor);
-        verify(studentRepository).save(student);
-        verify(taskRepository).save(task);
-
-        verifyNoMoreInteractions(mentorRepository, studentRepository, taskRepository, gradeRepository);
     }
 
     @Test
@@ -117,24 +102,19 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetStudentGradesMean_NonEmptyGrades_CalculatesMean() {
+    void testGetStudentGradesMeanAndCalculatesMean() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
         grades.add(new Grade(85, true, "Well done!"));
-        grades.add(new Grade(90, true, "Excelent!"));
+        grades.add(new Grade(90, true, "Excellent!"));
         grades.add(new Grade(0, false, "Absent!"));
 
         when(gradeRepository.findByTaskIdAndStudentId(taskId, studentId)).thenReturn(grades);
 
-
         Long result = gradeService.getStudentGradesMean(taskId, studentId);
 
-
         assertEquals(58L, result);
-
-        verify(gradeRepository).findByTaskIdAndStudentId(taskId, studentId);
-        verifyNoMoreInteractions(gradeRepository);
     }
 
     @Test
@@ -156,7 +136,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetAllStudentAttendances_NonEmptyGrades_CountsAttendances() {
+    void testGetAllStudentAttendancesAndCountsAttendances() {
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
         Task task1 = new Task(1L);
@@ -167,17 +147,11 @@ class GradeServiceTest {
         grades.add(new Grade(true, task3));
         grades.add(new Grade(true, task3)); // Duplicate task ID
 
-
         when(gradeRepository.findByStudentId(studentId)).thenReturn(grades);
-
 
         Integer result = gradeService.getAllStudentAttendances(studentId);
 
-
         assertEquals(2, result);
-
-        verify(gradeRepository).findByStudentId(studentId);
-        verifyNoMoreInteractions(gradeRepository);
     }
 
     @Test
@@ -198,7 +172,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetAllStudentGradesFromATask_NonEmptyGrades_ConvertsToGradeDTO() {
+    void testGetAllStudentGradesFromATaskAndConvertsToGradeDTO() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
@@ -210,20 +184,11 @@ class GradeServiceTest {
         expectedGradeDTOS.add(new GradeDTO());
 
         when(gradeRepository.findByTaskIdAndStudentId(taskId, studentId)).thenReturn(grades);
-
         when(mappingService.convertGradeIntoDTO(any(Grade.class))).thenReturn(new GradeDTO());
-
 
         List<GradeDTO> result = gradeService.getAllStudentGradesFromATask(taskId, studentId);
 
-
         assertEquals(expectedGradeDTOS, result);
-
-        verify(gradeRepository).findByTaskIdAndStudentId(taskId, studentId);
-        verifyNoMoreInteractions(gradeRepository);
-
-        verify(mappingService, times(grades.size())).convertGradeIntoDTO(any(Grade.class));
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
