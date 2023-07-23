@@ -1,6 +1,8 @@
 package com.project.pc.service;
 
 import com.project.pc.dto.GradeDTO;
+import com.project.pc.exceptions.NoGradesFoundException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Grade;
 import com.project.pc.model.Mentor;
 import com.project.pc.model.Student;
@@ -29,12 +31,12 @@ public class GradeService {
     private TaskRepository taskRepository;
     @Autowired
     private MappingService mappingService;
-    public GradeDTO giveGrade(Long mId, Long sId, Long tId, Grade grade){
+    public GradeDTO giveGrade(Long mId, Long sId, Long tId, Grade grade) throws NotFoundException {
         Mentor mentor = mentorRepository.findMentorById(mId).orElse(null);
         Student student = studentRepository.findStudentById(sId).orElse(null);
         Task task = taskRepository.findById(tId).orElse(null);
         if (mentor == null || student == null || task == null){
-            return null;
+            throw new NotFoundException("Invalid IDs. Check again!");
         }
         grade.setDate();
         grade.setMentor(mentor);
@@ -49,11 +51,10 @@ public class GradeService {
         taskRepository.save(task);
         return mappingService.convertGradeIntoDTO(grade);
     }
-    // media
-    public Long getStudentGradesMean(Long tId, Long sId){
+    public Long getStudentGradesMean(Long tId, Long sId) throws NoGradesFoundException {
         List<Grade> grades = gradeRepository.findByTaskIdAndStudentId(tId, sId);
         if (grades.isEmpty()){
-            return null;
+            throw new NoGradesFoundException("No grades found.");
         }
         Long sum = 0L;
         int length = grades.size();
@@ -62,10 +63,10 @@ public class GradeService {
         }
         return sum/length;
     }
-    public Integer getAllStudentAttendances(Long sId) {
+    public Integer getAllStudentAttendances(Long sId) throws NoGradesFoundException{
         List<Grade> grades = gradeRepository.findByStudentId(sId);
         if (grades.isEmpty()) {
-            return null;
+            throw new NoGradesFoundException("No grades found.");
         }
         Set<Long> taskIds = new HashSet<>();
         int count = 0;

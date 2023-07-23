@@ -1,6 +1,8 @@
 package com.project.pc.service;
 
 import com.project.pc.dto.StudentDTO;
+import com.project.pc.exceptions.IncompleteStudentException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Status;
 import com.project.pc.model.Student;
 import com.project.pc.model.Team;
@@ -24,25 +26,23 @@ public class StudentService {
     private StatusRepository statusRepository;
     @Autowired
     private MappingService mappingService;
-    public StudentDTO createStudent(Student student){
-        if (student == null)
-            return null;
+    public StudentDTO createStudent(Student student) throws IncompleteStudentException, IllegalArgumentException {
+        if (student == null) {
+            throw new IllegalArgumentException("Student cannot be null");
+        }
+        if (student.getName() == null || student.getEmail() == null) {
+            throw new IncompleteStudentException("Student is missing some required fields");
+        }
         Status status = new Status();
         statusRepository.save(status);
         student.setStatus(status);
         studentRepository.save(student);
         return mappingService.convertStudentIntoDTO(student);
     }
-    public Student addToTeam(Long id, Long tId){
-        Student student = studentRepository.findById(id).orElse(null);
-        Team team = teamRepository.findById(tId).orElse(null);
-        if (student == null || team == null){
-            return null;
-        }
-        Status status = statusRepository.findById(student.getStatus().getId()).orElse(null);
-        if (status == null) {
-            return null;
-        }
+    public Student addToTeam(Long id, Long tId) throws NotFoundException{
+        Student student = studentRepository.findById(id).orElseThrow(() -> new NotFoundException("Student not found with ID: " + id));
+        Team team = teamRepository.findById(tId).orElseThrow(() -> new NotFoundException("Team not found with ID: " + id));
+        Status status = statusRepository.findById(student.getStatus().getId()).orElseThrow(() -> new NotFoundException("Status not found with ID: " + id));
         status.setModifiedBy();
         status.setModificationDate();
         statusRepository.save(status);
@@ -59,8 +59,8 @@ public class StudentService {
         }
         return studentDTOS;
     }
-    public StudentDTO getStudentById (Long id) {
-        return mappingService.convertStudentIntoDTO(studentRepository.findStudentById(id).orElse(null));
+    public StudentDTO getStudentById (Long id) throws NotFoundException {
+        return mappingService.convertStudentIntoDTO(studentRepository.findStudentById(id).orElseThrow(() -> new NotFoundException("Student not found with ID: " + id)));
     }
     public List<StudentDTO> getStudentByName(String name){
         List<Student> students =  studentRepository.findStudentByName(name);
@@ -70,8 +70,8 @@ public class StudentService {
         }
         return studentsByName;
     }
-    public StudentDTO getStudentByEmail(String email){
-        return mappingService.convertStudentIntoDTO(studentRepository.findStudentByEmail(email).orElse(null));
+    public StudentDTO getStudentByEmail(String email) throws NotFoundException{
+        return mappingService.convertStudentIntoDTO(studentRepository.findStudentByEmail(email).orElseThrow(() -> new NotFoundException("Student not found with email: " + email)));
     }
     public List<StudentDTO> getTeamMembers(Long tId){
         List<Student> students = studentRepository.findByTeamId(tId);
@@ -95,14 +95,11 @@ public class StudentService {
         }
         return students;
     }
-    public Student updateStudent (Long id, StudentDTO studentDTO){
-        Student update = studentRepository.findStudentById(id).orElse(null);
-        if (update == null){
-            return null;
-        }
-        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
-        if (status == null) {
-            return null;
+    public Student updateStudent (Long id, StudentDTO studentDTO) throws NotFoundException, IncompleteStudentException{
+        Student update = studentRepository.findStudentById(id).orElseThrow(() -> new NotFoundException("Student not found with ID: " + id));
+        Status status = statusRepository.findById(update.getStatus().getId()).orElseThrow(() -> new NotFoundException("Activity not found with ID: " + id));
+        if (studentDTO.getName() == null || studentDTO.getEmail() == null) {
+            throw new IncompleteStudentException("Student is missing some required fields");
         }
         status.setModifiedBy();
         status.setModificationDate();
@@ -113,15 +110,9 @@ public class StudentService {
         studentRepository.save(update);
         return update;
     }
-    public Student patchStudent(long id, StudentDTO studentDTO) {
-        Student update = studentRepository.findById(id).orElse(null);
-        if (update == null){
-            return null;
-        }
-        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
-        if (status == null) {
-            return null;
-        }
+    public Student patchStudent(long id, StudentDTO studentDTO) throws NotFoundException{
+        Student update = studentRepository.findStudentById(id).orElseThrow(() -> new NotFoundException("Student not found with ID: " + id));
+        Status status = statusRepository.findById(update.getStatus().getId()).orElseThrow(() -> new NotFoundException("Activity not found with ID: " + id));
         status.setModifiedBy();
         status.setModificationDate();
         statusRepository.save(status);

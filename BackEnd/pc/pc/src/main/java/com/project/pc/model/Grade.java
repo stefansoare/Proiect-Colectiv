@@ -25,7 +25,6 @@ public class Grade {
     private String comment;
     @Column
     private String date;
-    // give grade from mentor to student for task, fill mentor id, student id, task id
     @ManyToOne
     @JoinColumn(name = "mentor_id")
     private Mentor mentor;

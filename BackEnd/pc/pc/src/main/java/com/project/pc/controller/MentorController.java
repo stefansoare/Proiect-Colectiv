@@ -1,6 +1,11 @@
 package com.project.pc.controller;
 
+import com.project.pc.dto.ActivityDTO;
 import com.project.pc.dto.MentorDTO;
+import com.project.pc.exceptions.IncompleteActivityException;
+import com.project.pc.exceptions.IncompleteMentorException;
+import com.project.pc.exceptions.NotFoundException;
+import com.project.pc.model.Activity;
 import com.project.pc.model.Mentor;
 import com.project.pc.service.MentorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +21,15 @@ public class MentorController {
     @Autowired
     private MentorService mentorService;
     @PostMapping
-    public ResponseEntity<MentorDTO> createMentor(@RequestBody Mentor mentor){
-        return new ResponseEntity<>(mentorService.createMentor(mentor), HttpStatus.CREATED);
+    public ResponseEntity<?> createMentor(@RequestBody Mentor mentor){
+        try {
+            MentorDTO createdMentor = mentorService.createMentor(mentor);
+            return new ResponseEntity<>(createdMentor, HttpStatus.CREATED);
+        } catch (IncompleteMentorException | IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping
     public ResponseEntity<List<MentorDTO>> getAllMentors(){
@@ -25,44 +37,53 @@ public class MentorController {
         return new ResponseEntity<>(mentorsDTOS, HttpStatus.OK);
     }
     @GetMapping("id/{id}")
-    public ResponseEntity<MentorDTO> getMentorById(@PathVariable("id") Long id){
-        MentorDTO mentorDTO = mentorService.getMentorById(id);
-        if (mentorDTO == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getMentorById(@PathVariable("id") Long id) {
+        try {
+            MentorDTO mentorDTO = mentorService.getMentorById(id);
+            return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
     }
     @GetMapping("name/{name}")
-    public ResponseEntity<MentorDTO> getMentorByName(@PathVariable("name") String name){
-        MentorDTO mentorDTO = mentorService.getMentorByName(name);
-        if (mentorDTO == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getMentorByName(@PathVariable("name") String name){
+        try {
+            MentorDTO mentorDTO = mentorService.getMentorByName(name);
+            return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
     }
     @GetMapping("email/{email}")
-    public ResponseEntity<MentorDTO> getMentorByEmail(@PathVariable("email") String email){
-        MentorDTO mentorDTO = mentorService.getMentorByEmail(email);
-        if (mentorDTO == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getMentorByEmail(@PathVariable("email") String email){
+        try {
+            MentorDTO mentorDTO = mentorService.getMentorByEmail(email);
+            return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(mentorDTO, HttpStatus.OK);
     }
     @PutMapping("{id}")
-    public ResponseEntity<Mentor> updateMentor(@PathVariable("id") Long id, @RequestBody MentorDTO mentorDTO){
-        Mentor update = mentorService.updateMentor(id, mentorDTO);
-        if (update == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> updateMentor(@PathVariable("id") Long id, @RequestBody MentorDTO mentorDTO){
+        try {
+            Mentor updated = mentorService.updateMentor(id, mentorDTO);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (NotFoundException | IncompleteMentorException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
         }
-        return new ResponseEntity<>(update, HttpStatus.OK);
     }
     @PatchMapping("{id}")
-    public ResponseEntity<Mentor> patchMentor(@PathVariable("id") Long id, @RequestBody MentorDTO mentorDTO){
-        Mentor update = mentorService.patchMentor(id, mentorDTO);
-        if (update == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> patchMentor(@PathVariable("id") Long id, @RequestBody MentorDTO mentorDTO){
+        try {
+            Mentor updated = mentorService.patchMentor(id, mentorDTO);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
         }
-        return new ResponseEntity<>(update, HttpStatus.OK);
     }
     @DeleteMapping("email/{email}")
     public ResponseEntity<HttpStatus> deleteMentorByEmail(@PathVariable("email") String email){
