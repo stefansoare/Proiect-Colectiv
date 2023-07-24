@@ -18,10 +18,8 @@ export class MentorPageComponent {
     this.router.navigate([componentName]);
   }
 
-  // Add the showTable property
   showTable: boolean = false;
 
-  // Method to toggle the visibility of the table
   toggleTableVisibility() {
     this.showTable = !this.showTable;
   }
@@ -36,7 +34,7 @@ export class MentorPageComponent {
   private filterSubject = new Subject<string>();
   filterValue = '';
   expandedElement: any;
-  dataSource: MatTableDataSource<Activity>; // Adjust the type to 'Team' if it contains the required properties
+  dataSource: MatTableDataSource<Activity>; 
   students: Student[] = [];
   teams: Team[]=[];
   activities: Activity[]=[];
@@ -48,13 +46,6 @@ export class MentorPageComponent {
   }
 
   ngOnInit() {
-   /* this.studentService.getTeams().subscribe(
-      teams => {
-        this.teams = teams;
-        this.dataSource.data = this.teams;
-        this.populateTeamMembersNames(); // Add this line to populate the member names
-      }
-    );*/
     this.activitiesService.getActivities().subscribe(
       activities => {
         this.activities = activities;
@@ -62,48 +53,4 @@ export class MentorPageComponent {
       }
     );
   }
-  /*populateTeamMembersNames() {
-    this.teams.forEach(team => {
-      this.studentService.getTeamMembers(team.id).subscribe(
-        members => {
-          team.students = members;
-        }
-      );
-    });
-  }
-  onSelect(team: any) {
-    if (this.selectedTeam === team) {
-      // If the selected button is clicked again, clear the selectedTeam
-      this.selectedTeam = null;
-    } else {
-      // Otherwise, set the selectedTeam to the clicked team
-      this.selectedTeam = team;
-    }
-  }
-  onSelectStudent(student: any) {
-    if (this.selectedStudent === student) {
-      // If the selected button is clicked again, clear the selectedStudent
-      this.selectedStudent = null;
-    } else {
-      // Otherwise, set the selectedStudent to the clicked student
-      this.selectedStudent = student;
-    }
-  }
-
-  applyFilter(filterValue: string) {
-    this.filterValue = filterValue.trim().toLowerCase();
-  
-    this.dataSource.data = this.teams.filter(team => {
-      // Check if the team id or any of the team members' names contains the filter value
-      return (
-        team.id.toString().includes(this.filterValue) ||
-        team.students.some(student => student.name.toLowerCase().includes(this.filterValue))
-      );
-    });
-  }
-
-  onFilterKeyUp(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.applyFilter(filterValue);
-  }*/
 }

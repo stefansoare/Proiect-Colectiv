@@ -1,54 +1,39 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatTableModule } from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MentorPageComponent } from './mentor-page.component';
-import { MentorAccountComponent } from '../mentor-account/mentor-account.component';
-import { MentorListComponent } from '../mentor-list/mentor-list.component';
-import { MentorService } from '../Services/mentor.service';
-import { SidebarMentorComponent } from '../Sidebars/sidebar-mentor/sidebar-mentor.component';
-import { ActivitiesService } from '../Services/activities.service';
+import { MatTableDataSource } from '@angular/material/table';
 import { StudentService } from '../Services/student.service';
+import { ActivitiesService } from '../Services/activities.service';
+import { Router } from '@angular/router';
 import { of } from 'rxjs';
-import { Student } from '../Classes/Student';
-import { Team } from '../Classes/Team';
 import { Activity } from '../Classes/Activity';
-
-class MockMentorService {
-  getMentors() {
-    return of([
-      { id: 1, name: 'Mentor 1', email: 'mentor1@example.com' },
-      { id: 2, name: 'Mentor 2', email: 'mentor2@example.com' }
-    ]);
-  }
-
-  getMentor(id: number) {
-    return of({ id: 1, name: 'Mentor 1', email: 'mentor1@example.com' });
-  }
-}
 
 describe('MentorPageComponent', () => {
   let component: MentorPageComponent;
   let fixture: ComponentFixture<MentorPageComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule,
-        MatExpansionModule,
-        MatTableModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        HttpClientTestingModule
+ 
+  const studentServiceMock = {
+    getStudents: () => of([]), 
+  };
+
+  const activitiesServiceMock = {
+    getActivities: () => of([]), 
+  };
+
+  const routerMock = {
+    navigate: jasmine.createSpy('navigate'),
+  };
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [MentorPageComponent],
+      providers: [
+        { provide: StudentService, useValue: studentServiceMock },
+        { provide: ActivitiesService, useValue: activitiesServiceMock },
+        { provide: Router, useValue: routerMock },
       ],
-      declarations: [MentorPageComponent, MentorListComponent, MentorAccountComponent, SidebarMentorComponent],
-      providers: [ActivitiesService, StudentService, MentorService] // Add any additional services here
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MentorPageComponent);
@@ -56,27 +41,43 @@ describe('MentorPageComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
+  it('should create the MentorPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should toggle table visibility when toggleTableVisibility is called', () => {
-    
+  it('should initialize with showTable set to false', () => {
     expect(component.showTable).toBeFalse();
+  });
 
+  it('should toggle showTable value when calling toggleTableVisibility()', () => {
+    expect(component.showTable).toBeFalse();
     component.toggleTableVisibility();
     expect(component.showTable).toBeTrue();
-
     component.toggleTableVisibility();
     expect(component.showTable).toBeFalse();
   });
 
-  it('should navigate to the specified component when navigateToComponent is called', () => {
-    const routerSpy = spyOn(component['router'], 'navigate');
-
-    const componentName = 'some-component';
+  it('should navigate to the specified component name', () => {
+    const componentName = 'example-component';
     component.navigateToComponent(componentName);
+    expect(routerMock.navigate).toHaveBeenCalledWith([componentName]);
+  });
 
-    expect(routerSpy).toHaveBeenCalledWith([componentName]);
+  it('should initialize dataSource with empty activities array', () => {
+    expect(component.dataSource).toBeTruthy();
+    expect(component.dataSource.data.length).toBe(0);
+  });
+
+  it('should update dataSource when activities are fetched', () => {
+    const activities: Activity[] = [
+      {id: 1, name: 'Activity 1', description: 'Description 1' },
+      {id: 1, name: 'Activity 1', description: 'Description 1'},
+    ];
+  
+    spyOn(activitiesServiceMock, 'getActivities').and.returnValue(of(activities as never[]));
+  
+    component.ngOnInit();
+    expect(component.activities).toEqual(activities);
+    expect(component.dataSource.data).toEqual(activities);
   });
 });
