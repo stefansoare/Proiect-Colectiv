@@ -50,12 +50,6 @@ export class TasksService {
     return this.http.get<Task[]>(url, { headers });
   }
   
-  getAllTasksOfAStudent(sId: number): Observable<Task[]> {
-    const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
-    const url = `${this.tasksUrl}${sId}/alltasks`;
-    return this.http.get<Task[]>(url, { headers });
-  }
-
   getTask(taskId: number): Observable<Task> {
     const headers = new HttpHeaders().set('Access-Control-Allow-Origin', '*');
     const url = `${this.tasksUrl}id/${taskId}`;

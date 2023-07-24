@@ -35,7 +35,7 @@ import { SidebarMentorComponent } from './Sidebars/sidebar-mentor/sidebar-mentor
 import { SidebarTeamleaderComponent } from './Sidebars/sidebar-teamleader/sidebar-teamleader.component';
 import { SidebarStudentComponent } from './Sidebars/sidebar-student/sidebar-student.component';
 import { RegisterActivityComponent } from './register-activity/register-activity.component';
-import {MatDialogModule} from '@angular/material/dialog';
+import { MatDialogModule} from '@angular/material/dialog';
 import { DialogBoxComponent } from './dialog-box/dialog-box.component';
 import { StudentGradesComponent } from './student-grades/student-grades.component';
 import { DialogRegisterComponent } from './dialog-register/dialog-register.component';
