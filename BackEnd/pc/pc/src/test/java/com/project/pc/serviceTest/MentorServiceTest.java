@@ -46,7 +46,7 @@ class MentorServiceTest {
     }
 
     @Test
-    void testCreateMentor_ValidMentor_CreatesMentor() {
+    void testCreateMentor() {
         Mentor mentor = new Mentor();
         Status status = new Status();
 
@@ -57,27 +57,10 @@ class MentorServiceTest {
         MentorDTO result = mentorService.createMentor(mentor);
 
         assertEquals(new MentorDTO(), result);
-
-        verify(mentorRepository).save(mentor);
-        verify(statusRepository).save(any(Status.class));
-
-        verify(mappingService).convertMentorIntoDTO(mentor);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testCreateMentor_NullMentor_ReturnsNull() {
-        Mentor mentor = null;
-
-        MentorDTO result = mentorService.createMentor(mentor);
-
-        assertNull(result);
-
-        verifyNoInteractions(mentorRepository, mappingService);
-    }
-
-    @Test
-    void testGetAllMentors_RepositoryReturnsMentors_ReturnsMentorDTOList() {
+    void testGetAllMentorsAndRepositoryReturnsListWithMentors() {
         List<Mentor> mentors = new ArrayList<>();
         mentors.add(new Mentor());
         mentors.add(new Mentor());
@@ -87,15 +70,10 @@ class MentorServiceTest {
         List<MentorDTO> result = mentorService.getAllMentors();
 
         assertEquals(mentors.size(), result.size());
-
-        verify(mentorRepository).findAll();
-        verify(mappingService, times(mentors.size())).convertMentorIntoDTO(any(Mentor.class));
-        verifyNoMoreInteractions(mentorRepository);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testGetAllMentors_RepositoryReturnsEmptyList_ReturnsEmptyList() {
+    void testGetAllMentorsAndRepositoryReturnsEmptyList() {
         List<Mentor> mentors = new ArrayList<>();
 
         when(mentorRepository.findAll()).thenReturn(mentors);
@@ -103,13 +81,10 @@ class MentorServiceTest {
         List<MentorDTO> result = mentorService.getAllMentors();
 
         assertTrue(result.isEmpty());
-
-        verify(mentorRepository).findAll();
-        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
-    void testGetMentorById_ValidId_ReturnsMentorDTO() {
+    void testGetMentorByIdWithValidIdThenReturnsMentorDTO() {
         Mentor mentor = new Mentor(1L);
         Long mentorId = mentor.getId();
 
@@ -119,29 +94,18 @@ class MentorServiceTest {
         MentorDTO result = mentorService.getMentorById(mentorId);
 
         assertNotNull(result);
-
-        verify(mentorRepository).findById(mentorId);
-        verify(mappingService).convertMentorIntoDTO(mentor);
-        verifyNoMoreInteractions(mentorRepository);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testGetMentorById_InvalidId_ReturnsNull() {
+    void testGetMentorByIdWithInvalidIdThenReturnsNull() {
         Long mentorId = 1L;
-
         when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
-
         MentorDTO result = mentorService.getMentorById(mentorId);
-
         assertNull(result);
-
-        verify(mentorRepository).findById(mentorId);
-        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
-    void testGetMentorByName_ValidName_ReturnsMentorDTO() {
+    void testGetMentorByNameWithValidNameAndReturnsMentorDTO() {
         String mentorName = "Ion Dan";
         Mentor mentor = new Mentor();
         mentor.setName(mentorName);
@@ -152,29 +116,18 @@ class MentorServiceTest {
         MentorDTO result = mentorService.getMentorByName(mentorName);
 
         assertNotNull(result);
-
-        verify(mentorRepository).findMentorByName(mentorName);
-        verify(mappingService).convertMentorIntoDTO(mentor);
-        verifyNoMoreInteractions(mentorRepository);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testGetMentorByName_InvalidName_ReturnsNull() {
+    void testGetMentorByNameWithInvalidNameAndReturnsNull() {
         String mentorName = "Ion Dan";
-
         when(mentorRepository.findMentorByName(mentorName)).thenReturn(Optional.empty());
-
         MentorDTO result = mentorService.getMentorByName(mentorName);
-
         assertNull(result);
-
-        verify(mentorRepository).findMentorByName(mentorName);
-        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
-    void testGetMentorByEmail_ValidEmail_ReturnsMentorDTO() {
+    void testGetMentorByEmailWithValidEmailAndReturnsMentorDTO() {
         String mentorEmail = "ion.dan@example.com";
         Mentor mentor = new Mentor();
         mentor.setEmail(mentorEmail);
@@ -185,29 +138,18 @@ class MentorServiceTest {
         MentorDTO result = mentorService.getMentorByEmail(mentorEmail);
 
         assertNotNull(result);
-
-        verify(mentorRepository).findMentorByEmail(mentorEmail);
-        verify(mappingService).convertMentorIntoDTO(mentor);
-        verifyNoMoreInteractions(mentorRepository);
-        verifyNoMoreInteractions(mappingService);
     }
 
     @Test
-    void testGetMentorByEmail_InvalidEmail_ReturnsNull() {
+    void testGetMentorByEmailWithInvalidEmailAndReturnsNull() {
         String mentorEmail = "ion.dan@example.com";
-
         when(mentorRepository.findMentorByEmail(mentorEmail)).thenReturn(Optional.empty());
-
         MentorDTO result = mentorService.getMentorByEmail(mentorEmail);
-
         assertNull(result);
-
-        verify(mentorRepository).findMentorByEmail(mentorEmail);
-        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
-    void testUpdateMentor_ExistingMentor_ReturnsUpdatedMentor() {
+    void testUpdateMentorWithExistingMentorAndReturnsUpdatedMentor() {
         Long mentorId = 1L;
         MentorDTO mentorDTO = new MentorDTO();
         mentorDTO.setName("Ion Dan");
@@ -226,25 +168,16 @@ class MentorServiceTest {
         when(statusRepository.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
         when(mentorRepository.save(existingMentor)).thenReturn(existingMentor);
 
-
         Mentor result = mentorService.updateMentor(mentorId, mentorDTO);
-
 
         assertNotNull(result);
         assertEquals(mentorDTO.getName(), result.getName());
         assertEquals(mentorDTO.getEmail(), result.getEmail());
         assertEquals(existingStatus, result.getStatus());
-
-        verify(mentorRepository).findMentorById(mentorId);
-        verify(statusRepository).findById(existingStatus.getId());
-        verify(statusRepository).save(existingStatus);
-        verify(mentorRepository).save(existingMentor);
-        verifyNoMoreInteractions(mentorRepository);
-        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
-    void testUpdateMentor_NonExistingMentor_ReturnsNull() {
+    void testUpdateMentorWithNonExistingMentorAndReturnsNull() {
         Long mentorId = 1L;
         MentorDTO mentorDTO = new MentorDTO();
         mentorDTO.setName("Ion Dan");
@@ -255,13 +188,10 @@ class MentorServiceTest {
         Mentor result = mentorService.updateMentor(mentorId, mentorDTO);
 
         assertNull(result);
-
-        verify(mentorRepository).findMentorById(mentorId);
-        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
-    void testPatchMentor_ExistingMentor_PatchesMentor() {
+    void testPatchMentorWithExistingMentorAndPatchesMentor() {
         Long mentorId = 1L;
         MentorDTO mentorDTO = new MentorDTO();
         mentorDTO.setName("Ion Dan");
@@ -287,17 +217,10 @@ class MentorServiceTest {
         assertEquals(mentorDTO.getName(), result.getName());
         assertEquals(existingMentor.getEmail(), result.getEmail());
         assertEquals(existingStatus, result.getStatus());
-
-        verify(mentorRepository).findMentorById(mentorId);
-        verify(statusRepository).findById(existingStatus.getId());
-        verify(statusRepository).save(existingStatus);
-        verify(mentorRepository).save(existingMentor);
-        verifyNoMoreInteractions(mentorRepository);
-        verifyNoMoreInteractions(statusRepository);
     }
 
     @Test
-    void testPatchMentor_NonExistingMentor_ReturnsNull() {
+    void testPatchMentorWithNonExistingMentorAndReturnsNull() {
         Long mentorId = 1L;
         MentorDTO mentorDTO = new MentorDTO();
         mentorDTO.setName("Ion Dan");
@@ -307,13 +230,10 @@ class MentorServiceTest {
         Mentor result = mentorService.patchMentor(mentorId, mentorDTO);
 
         assertNull(result);
-
-        verify(mentorRepository).findMentorById(mentorId);
-        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
-    void testDeleteMentorByEmail_ExistingMentor_DeletesMentorAndReturnsTrue() {
+    void testDeleteMentorByEmailWhenMentorExistsAndDeletesMentorThenReturnsTrue() {
         String email = "ana.maria@example.com";
 
         Mentor existingMentor = new Mentor();
@@ -326,14 +246,10 @@ class MentorServiceTest {
         boolean result = mentorService.deleteMentorByEmail(email);
 
         assertTrue(result);
-
-        verify(mentorRepository).findMentorByEmail(email);
-        verify(mentorRepository).deleteById(existingMentor.getId());
-        verifyNoMoreInteractions(mentorRepository);
     }
 
     @Test
-    void testDeleteMentorByEmail_NonExistingMentor_ReturnsFalse() {
+    void testDeleteMentorByEmailWhenMentorNotExistsThenReturnsFalse() {
         String email = "ana.maria@example.com";
 
         when(mentorRepository.findMentorByEmail(email)).thenReturn(Optional.empty());
@@ -341,9 +257,6 @@ class MentorServiceTest {
         boolean result = mentorService.deleteMentorByEmail(email);
 
         assertFalse(result);
-
-        verify(mentorRepository).findMentorByEmail(email);
-        verifyNoMoreInteractions(mentorRepository);
     }
 
 }

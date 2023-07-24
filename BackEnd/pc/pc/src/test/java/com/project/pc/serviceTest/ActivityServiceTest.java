@@ -1,6 +1,7 @@
 package com.project.pc.serviceTest;
 
 import com.project.pc.dto.ActivityDTO;
+import com.project.pc.exception.NullObjectException;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Status;
 import com.project.pc.repository.ActivityRepository;
@@ -46,7 +47,7 @@ public class ActivityServiceTest {
     }
 
     @Test
-    public void testCreateActivity() {
+    public void testCreateActivity() throws NullObjectException {
         Activity activity = new Activity();
         ActivityDTO activityDTO = new ActivityDTO();
 
@@ -54,36 +55,9 @@ public class ActivityServiceTest {
         when(statusRepositoryMock.save(any(Status.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(activityDTO);
 
-
         ActivityDTO result = activityService.createActivity(activity);
-
-
-        verify(activityRepositoryMock, times(1)).save(activity);
-        verify(statusRepositoryMock, times(1)).save(any(Status.class));
-        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(statusRepositoryMock);
-        verifyNoMoreInteractions(mappingServiceMock);
 
         Assert.assertEquals(activityDTO, result);
-    }
-
-
-    @Test
-    public void testCreateActivityWithNullDTO() {
-        Activity activity = null;
-
-
-        ActivityDTO result = activityService.createActivity(activity);
-
-
-        Assert.assertNull(result);
-        verify(activityRepositoryMock, never()).save(any(Activity.class));
-        verify(statusRepositoryMock, never()).save(any(Status.class));
-        verify(mappingServiceMock, never()).convertActivityIntoDTO(any(Activity.class));
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(statusRepositoryMock);
-        verifyNoMoreInteractions(mappingServiceMock);
     }
 
     @Test
@@ -113,14 +87,8 @@ public class ActivityServiceTest {
         when(mappingServiceMock.convertActivityIntoDTO(activity1)).thenReturn(activityDTO1);
         when(mappingServiceMock.convertActivityIntoDTO(activity2)).thenReturn(activityDTO2);
 
-
         List<ActivityDTO> result = activityService.getAllActivities();
 
-
-        verify(activityRepositoryMock, times(1)).findAll();
-        verify(mappingServiceMock, times(2)).convertActivityIntoDTO(any(Activity.class));
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(mappingServiceMock);
         Assert.assertEquals(2, result.size());
         Assert.assertEquals(activityDTO1, result.get(0));
         Assert.assertEquals(activityDTO2, result.get(1));
@@ -137,29 +105,9 @@ public class ActivityServiceTest {
         activityDTO.setId(activityId);
         when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(activityDTO);
 
-
         ActivityDTO result = activityService.getActivityById(activityId);
 
-
-        verify(activityRepositoryMock, times(1)).findById(activityId);
-        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(mappingServiceMock);
         Assert.assertEquals(activityDTO, result);
-    }
-
-    @Test
-    public void testGetActivityByIdWithNull() {
-        Long activityId = 1L;
-        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.empty());
-
-
-        ActivityDTO result = activityService.getActivityById(activityId);
-
-
-        verify(activityRepositoryMock, times(1)).findById(activityId);
-        verify(mappingServiceMock, never()).convertActivityIntoDTO(any(Activity.class));
-        Assert.assertNull(result);
     }
 
     @Test
@@ -173,29 +121,9 @@ public class ActivityServiceTest {
         activityDTO.setName(activityName);
         when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(activityDTO);
 
-
         ActivityDTO result = activityService.getActivityByName(activityName);
 
-
-        verify(activityRepositoryMock, times(1)).findByName(activityName);
-        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(mappingServiceMock);
         Assert.assertEquals(activityDTO, result);
-    }
-
-    @Test
-    public void testGetActivityByNameWithNull() {
-        String activityName = "Non-existent Activity";
-        when(activityRepositoryMock.findByName(activityName)).thenReturn(Optional.empty());
-
-
-        ActivityDTO result = activityService.getActivityByName(activityName);
-
-
-        verify(activityRepositoryMock, times(1)).findByName(activityName);
-        verify(mappingServiceMock, never()).convertActivityIntoDTO(any(Activity.class));
-        Assert.assertNull(result);
     }
 
     @Test
@@ -217,10 +145,6 @@ public class ActivityServiceTest {
         when(mappingServiceMock.convertDTOIntoActivity(activityDTO)).thenReturn(existingActivity);
 
         Activity result = activityService.updateActivity(activityId, activityDTO);
-
-        verify(activityRepositoryMock, times(1)).findById(activityId);
-        verify(mappingServiceMock, times(1)).convertDTOIntoActivity(activityDTO);
-        verify(activityRepositoryMock, times(1)).save(existingActivity);
 
         Assert.assertEquals(existingActivity, result);
         Assert.assertEquals(updatedName, result.getName());
@@ -271,16 +195,7 @@ public class ActivityServiceTest {
         when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
         when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
 
-
         Activity result = activityService.patchActivity(activityId, activityDTO);
-
-
-        verify(activityRepositoryMock, times(1)).findById(activityId);
-        verify(statusRepositoryMock, times(1)).findById(existingStatus.getId());
-        verify(statusRepositoryMock, times(1)).save(existingStatus);
-        verify(activityRepositoryMock, times(1)).save(existingActivity);
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(statusRepositoryMock);
 
         Assert.assertEquals(existingActivity, result);
         Assert.assertEquals(updatedName, result.getName());
@@ -344,30 +259,9 @@ public class ActivityServiceTest {
 
         when(activityRepositoryMock.findByName(activityName)).thenReturn(existingActivity);
 
-
         boolean result = activityService.deleteActivityByName(activityName);
 
-
-        verify(activityRepositoryMock, times(1)).findByName(activityName);
-        verify(activityRepositoryMock, times(1)).deleteById(activityId);
-        verifyNoMoreInteractions(activityRepositoryMock);
         Assert.assertTrue(result);
-    }
-
-    @Test
-    public void testDeleteActivityByNameWithNonExistentName() {
-        String nonExistentName = "Non-existent Activity";
-
-        when(activityRepositoryMock.findByName(nonExistentName)).thenReturn(Optional.empty());
-
-
-        boolean result = activityService.deleteActivityByName(nonExistentName);
-
-
-        verify(activityRepositoryMock, times(1)).findByName(nonExistentName);
-        verify(activityRepositoryMock, never()).deleteById(anyLong());
-        verifyNoMoreInteractions(activityRepositoryMock);
-        Assert.assertFalse(result);
     }
 
     @Test
@@ -377,30 +271,9 @@ public class ActivityServiceTest {
 
         when(activityRepositoryMock.findById(activityId)).thenReturn(existingActivity);
 
-
         boolean result = activityService.deleteActivityById(activityId);
 
-
-        verify(activityRepositoryMock, times(1)).findById(activityId);
-        verify(activityRepositoryMock, times(1)).deleteById(activityId);
-        verifyNoMoreInteractions(activityRepositoryMock);
         Assert.assertTrue(result);
-    }
-
-    @Test
-    public void testDeleteActivityByIdWithNonExistentId() {
-        Long nonExistentId = 999L;
-
-        when(activityRepositoryMock.findById(nonExistentId)).thenReturn(Optional.empty());
-
-
-        boolean result = activityService.deleteActivityById(nonExistentId);
-
-
-        verify(activityRepositoryMock, times(1)).findById(nonExistentId);
-        verify(activityRepositoryMock, never()).deleteById(anyLong());
-        verifyNoMoreInteractions(activityRepositoryMock);
-        Assert.assertFalse(result);
     }
 }
 

@@ -1,6 +1,8 @@
 package com.project.pc.controller;
 
 import com.project.pc.dto.GradeDTO;
+import com.project.pc.exceptions.NoGradesFoundException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Grade;
 import com.project.pc.service.GradeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +19,31 @@ public class GradeController {
     @Autowired
     private GradeService gradeService;
     @PostMapping("from/{mId}/to/{sId}/for/{tId}")
-    public ResponseEntity<GradeDTO> giveGrade(@PathVariable("mId") Long mId, @PathVariable("sId") Long sId, @PathVariable("tId") Long tId, @RequestBody Grade grade){
-        if (gradeService.giveGrade(mId, sId, tId, grade) == null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> giveGrade(@PathVariable("mId") Long mId, @PathVariable("sId") Long sId, @PathVariable("tId") Long tId, @RequestBody Grade grade){
+        try {
+            GradeDTO gradeDTO = gradeService.giveGrade(mId, sId, tId, grade);
+            return new ResponseEntity<>(gradeDTO, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity(gradeService.giveGrade(mId, sId, tId, grade), HttpStatus.OK);
     }
     @GetMapping("mean/{tId}/for/{sId}")
-    public ResponseEntity<Long> getStudentGradesMean(@PathVariable("tId") Long tId, @PathVariable("sId") Long sId){
-        if (gradeService.getStudentGradesMean(tId, sId) == null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getStudentGradesMean(@PathVariable("tId") Long tId, @PathVariable("sId") Long sId){
+        try {
+            Long mean = gradeService.getStudentGradesMean(tId, sId);
+            return new ResponseEntity<>(mean, HttpStatus.OK);
+        } catch (NoGradesFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity(gradeService.getStudentGradesMean(tId, sId), HttpStatus.OK);
     }
     @GetMapping("attendance/{sId}")
-    public ResponseEntity<Integer> getAllStudentAttendances(@PathVariable("sId") Long sId){
-        if (gradeService.getAllStudentAttendances(sId) == null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getAllStudentAttendances(@PathVariable("sId") Long sId){
+        try {
+            Integer att = gradeService.getAllStudentAttendances(sId);
+            return new ResponseEntity<>(att, HttpStatus.OK);
+        } catch (NoGradesFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity(gradeService.getAllStudentAttendances(sId), HttpStatus.OK);
     }
     @GetMapping("grades/{tId}/for/{sId}")
     public ResponseEntity<List<GradeDTO>> getAllStudentGradesFromATask(@PathVariable("tId") Long tId, @PathVariable("sId") Long sId){

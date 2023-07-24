@@ -1,6 +1,8 @@
 package com.project.pc.controller;
 
 import com.project.pc.dto.StudentDTO;
+import com.project.pc.exceptions.IncompleteStudentException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Student;
 import com.project.pc.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +18,22 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
     @PostMapping
-    public ResponseEntity<StudentDTO> createStudent(@RequestBody Student student){
-        StudentDTO createdStudent = studentService.createStudent(student);
-        return new ResponseEntity<>(createdStudent, HttpStatus.CREATED);
+    public ResponseEntity<?> createStudent(@RequestBody Student student){
+        try{
+            StudentDTO studentDTO = studentService.createStudent(student);
+            return new ResponseEntity<>(studentDTO, HttpStatus.OK);
+        } catch (IllegalArgumentException | IncompleteStudentException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
     @PostMapping("{tId}/teams/{id}")
-    public ResponseEntity<Student> addToTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
-        Student student = studentService.addToTeam(id, tId);
-        if (student == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> addToTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){
+        try{
+            Student student = studentService.addToTeam(id, tId);
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch(NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(student, HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<StudentDTO>> getAllStudents(){
@@ -34,12 +41,13 @@ public class StudentController {
         return new ResponseEntity<>(students, HttpStatus.OK);
     }
     @GetMapping("id/{id}")
-    public ResponseEntity<StudentDTO> getStudentById(@PathVariable("id") Long id) {
-        StudentDTO student = studentService.getStudentById(id);
-        if (student == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getStudentById(@PathVariable("id") Long id) {
+        try {
+            StudentDTO student = studentService.getStudentById(id);
+            return new ResponseEntity<>(student, HttpStatus.FOUND);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(student, HttpStatus.FOUND);
     }
     @GetMapping("name/{name}")
     public ResponseEntity<List<StudentDTO>> getStudentByName(@PathVariable("name") String name){
@@ -47,12 +55,13 @@ public class StudentController {
         return new ResponseEntity<>(students, HttpStatus.FOUND);
     }
     @GetMapping("email/{email}")
-    public ResponseEntity<StudentDTO> getStudentByEmail(@PathVariable("email") String email){
-        StudentDTO student = studentService.getStudentByEmail(email);
-        if (student == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getStudentByEmail(@PathVariable("email") String email){
+        try {
+            StudentDTO student = studentService.getStudentByEmail(email);
+            return new ResponseEntity<>(student, HttpStatus.FOUND);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(student, HttpStatus.OK);
     }
     @GetMapping("{tId}")
     public ResponseEntity<List<StudentDTO>> getTeamMembers(@PathVariable("tId") Long tId){
@@ -66,20 +75,22 @@ public class StudentController {
         return new ResponseEntity<>(studentService.getAllStudentsFromAActivity(id), HttpStatus.OK);
     }
     @PutMapping("{id}")
-    public ResponseEntity<Student> updateStudent(@PathVariable("id") Long id, @RequestBody StudentDTO studentDTO){
-        Student update = studentService.updateStudent(id, studentDTO);
-        if (update == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> updateStudent(@PathVariable("id") Long id, @RequestBody StudentDTO studentDTO){
+        try{
+            Student student = studentService.updateStudent(id, studentDTO);
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch(NotFoundException | IncompleteStudentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(update, HttpStatus.OK);
     }
     @PatchMapping("{id}")
-    public ResponseEntity<Student> patchStudent(@PathVariable("id") Long id, @RequestBody StudentDTO studentDTO) {
-        Student updated = studentService.patchStudent(id, studentDTO);
-        if (updated == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> patchStudent(@PathVariable("id") Long id, @RequestBody StudentDTO studentDTO) {
+        try {
+            Student student = studentService.patchStudent(id, studentDTO);
+            return new ResponseEntity<>(student, HttpStatus.OK);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
     @DeleteMapping("{id}/teams/{tId}")
     public ResponseEntity<HttpStatus> deleteFromTeam(@PathVariable("id") Long id, @PathVariable("tId") Long tId){

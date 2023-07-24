@@ -1,6 +1,8 @@
 package com.project.pc.controller;
 
 import com.project.pc.dto.ActivityDTO;
+import com.project.pc.exceptions.IncompleteActivityException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Activity;
 import com.project.pc.service.ActivityService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,16 @@ import java.util.List;
 public class ActivityController {
     @Autowired
     private ActivityService activityService;
-    @PostMapping        // return activitydto
-    public ResponseEntity<ActivityDTO> createActivity(@RequestBody Activity activity) {
-        return new ResponseEntity<>(activityService.createActivity(activity), HttpStatus.CREATED);
+    @PostMapping
+    public ResponseEntity<?> createActivity(@RequestBody Activity activity) {
+        try {
+            ActivityDTO createdActivity = activityService.createActivity(activity);
+            return new ResponseEntity<>(createdActivity, HttpStatus.CREATED);
+        } catch (IncompleteActivityException | IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     @GetMapping
     public ResponseEntity<List<ActivityDTO>> getAllActivities(){
@@ -25,32 +34,44 @@ public class ActivityController {
         return new ResponseEntity<>(activities, HttpStatus.OK);
     }
     @GetMapping("id/{id}")
-    public ResponseEntity<ActivityDTO> getActivityById(@PathVariable("id") Long id) {
-        ActivityDTO activityDTO = activityService.getActivityById(id);
-        if (activityDTO == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getActivityById(@PathVariable("id") Long id) {
+        try {
+            ActivityDTO activityDTO = activityService.getActivityById(id);
+            return new ResponseEntity<>(activityDTO, HttpStatus.FOUND);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
-        return new ResponseEntity<>(activityDTO, HttpStatus.FOUND);
     }
     @GetMapping("name/{name}")
-    public ResponseEntity<ActivityDTO> getActivityByName(@PathVariable("name") String name) {
-        return new ResponseEntity<>(activityService.getActivityByName(name), HttpStatus.FOUND);
+    public ResponseEntity<?> getActivityByName(@PathVariable("name") String name) {
+        try {
+            ActivityDTO activityDTO = activityService.getActivityByName(name);
+            return new ResponseEntity<>(activityDTO, HttpStatus.FOUND);
+        } catch (NotFoundException e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
     }
     @PutMapping("{id}")
-    public ResponseEntity<Activity> updateActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDTO){
-        Activity updated = activityService.updateActivity(id, activityDTO);
-        if (updated == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> updateActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDTO) {
+        try {
+            Activity updated = activityService.updateActivity(id, activityDTO);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (NotFoundException | IncompleteActivityException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
         }
-        return new ResponseEntity<>(updated,  HttpStatus.OK);
     }
     @PatchMapping("{id}")
-    public ResponseEntity<Activity> patchActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDTO) {
-        Activity updated = activityService.patchActivity(id, activityDTO);
-        if (updated == null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> patchActivity(@PathVariable("id") Long id, @RequestBody ActivityDTO activityDTO) {
+        try {
+            Activity updated = activityService.patchActivity(id, activityDTO);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while processing the request.");
         }
-        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
     @DeleteMapping("name/{name}")
     public ResponseEntity<HttpStatus> deleteActivityByName(@PathVariable("name") String name){

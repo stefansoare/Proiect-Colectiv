@@ -1,6 +1,8 @@
 package com.project.pc.service;
 
 import com.project.pc.dto.ActivityDTO;
+import com.project.pc.exceptions.IncompleteActivityException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Status;
 import com.project.pc.repository.ActivityRepository;
@@ -20,9 +22,10 @@ public class ActivityService {
     private StatusRepository statusRepository;
     @Autowired
     private MappingService mappingService;
-    public ActivityDTO createActivity(Activity activity){
-        if (activity == null)
-            return null;
+    public ActivityDTO createActivity(Activity activity) throws IncompleteActivityException, IllegalArgumentException{
+        if (activity.getName() == null || activity.getDescription() == null) {
+            throw new IncompleteActivityException("Activity is missing some required fields");
+        }
         Status status = new Status();
         statusRepository.save(status);
         activity.setStatus(status);
@@ -37,20 +40,17 @@ public class ActivityService {
         }
         return activityDTOS;
     }
-    public ActivityDTO getActivityById (Long id) {
-        return mappingService.convertActivityIntoDTO(activityRepository.findById(id).orElse(null));
+    public ActivityDTO getActivityById (Long id) throws NotFoundException{  // throws
+        return mappingService.convertActivityIntoDTO(activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Activity not found with ID: " + id)));
     }
-    public ActivityDTO getActivityByName(String name){
-        return mappingService.convertActivityIntoDTO(activityRepository.findByName(name).orElse(null));
+    public ActivityDTO getActivityByName(String name) throws NotFoundException{   // throws
+        return mappingService.convertActivityIntoDTO(activityRepository.findByName(name).orElseThrow(() -> new NotFoundException("Activity not found with name: " + name)));
     }
-    public Activity updateActivity (Long id, ActivityDTO activityDTO){
-        Activity update = activityRepository.findById(id).orElse(null);
-        if (update == null){
-            return null;
-        }
-        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
-        if (status == null) {
-            return null;
+    public Activity updateActivity(Long id, ActivityDTO activityDTO) throws NotFoundException, IncompleteActivityException  {
+        Activity update = activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Activity not found with ID: " + id));
+        Status status = statusRepository.findById(update.getStatus().getId()).orElseThrow(() -> new NotFoundException("Status not found with ID: " + update.getStatus().getId()));
+        if (activityDTO.getName() == null || activityDTO.getDescription() == null) {
+            throw new IncompleteActivityException("Activity is missing some required fields");
         }
         status.setModifiedBy();
         status.setModificationDate();
@@ -59,17 +59,12 @@ public class ActivityService {
         update.setDescription(activityDTO.getDescription());
         update.setStatus(status);
         activityRepository.save(update);
+
         return update;
     }
-    public Activity patchActivity(Long id, ActivityDTO activityDTO) {
-        Activity update = activityRepository.findById(id).orElse(null);
-        if (update == null) {
-            return null;
-        }
-        Status status = statusRepository.findById(update.getStatus().getId()).orElse(null);
-        if (status == null) {
-            return null;
-        }
+    public Activity patchActivity(Long id, ActivityDTO activityDTO) throws NotFoundException {
+        Activity update = activityRepository.findById(id).orElseThrow(() -> new NotFoundException("Activity not found with ID: " + id));
+        Status status = statusRepository.findById(update.getStatus().getId()).orElseThrow(() -> new NotFoundException("Status not found with ID: " + update.getStatus().getId()));
         status.setModifiedBy();
         status.setModificationDate();
         statusRepository.save(status);
