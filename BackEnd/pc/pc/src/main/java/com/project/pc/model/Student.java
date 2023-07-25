@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,14 +34,18 @@ public class Student {
     @OneToOne
     @JoinColumn
     private Status status;
-    public Student() {}
+    public Student() {
+        this.grades = new ArrayList<>();
+    }
     public Student(String name, String email) {
         this.name = name;
         this.email = email;
+        this.grades = new ArrayList<>();
     }
 
     public Student(long id) {
         this.id = id;
+        this.grades = new ArrayList<>();
     }
 
     public long getId() {

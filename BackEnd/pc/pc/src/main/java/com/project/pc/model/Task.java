@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,16 +36,19 @@ public class Task {
     public Task(){
         this.description = "";
         this.deadline = "";
+        this.grades = new ArrayList<>();
     }
     public Task(String description, String deadline) {
         this.description = description;
         this.deadline = deadline;
+        this.grades = new ArrayList<>();
     }
 
     public Task(long id, String description, String deadline) {
         this.id = id;
         this.description = description;
         this.deadline = deadline;
+        this.grades = new ArrayList<>();
     }
 
     public Task(long id, Activity activity) {

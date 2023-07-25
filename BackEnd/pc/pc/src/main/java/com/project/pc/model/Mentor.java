@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -22,14 +23,18 @@ public class Mentor {
     @OneToOne
     @JoinColumn
     private Status status;
-    public Mentor(){}
+    public Mentor(){
+        this.grades = new ArrayList<>();
+    }
     public Mentor(String name, String email) {
         this.name = name;
         this.email = email;
+        this.grades = new ArrayList<>();
     }
 
     public Mentor(long id) {
         this.id = id;
+        this.grades = new ArrayList<>();
     }
 
     public long getId() {
