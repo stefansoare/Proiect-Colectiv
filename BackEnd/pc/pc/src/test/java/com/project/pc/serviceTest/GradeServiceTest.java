@@ -104,7 +104,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetStudentGradesMeanAndCalculatesMean() {
+    public void testGetStudentGradesMeanAndCalculatesMean() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
@@ -118,7 +118,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetStudentGradesMeanNoGradesFound() {
+    public void testGetStudentGradesMeanNoGradesFound() {
         Long tId = 1L;
         Long sId = 2L;
         when(gradeRepository.findByTaskIdAndStudentId(tId, sId)).thenReturn(new ArrayList<>());
@@ -126,7 +126,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetAllStudentAttendancesAndCountsAttendances() {
+    public void testGetAllStudentAttendancesAndCountsAttendances() {
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
         Task task1 = new Task(1L);
@@ -143,14 +143,14 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetAllStudentAttendancesNoGradesFound() {
+    public void testGetAllStudentAttendancesNoGradesFound() {
         Long studentId = 2L;
         when(gradeRepository.findByStudentId(studentId)).thenReturn(new ArrayList<>());
         assertThrows(NoGradesFoundException.class, () -> gradeService.getAllStudentAttendances(studentId));
     }
 
     @Test
-    void testGetAllStudentGradesFromATaskAndConvertsToGradeDTO() {
+    public void testGetAllStudentGradesFromATaskAndConvertsToGradeDTO() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
@@ -169,7 +169,7 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGetAllStudentGradesFromATaskEmptyGradesAndReturnsEmptyList() {
+    public void testGetAllStudentGradesFromATaskEmptyGradesAndReturnsEmptyList() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> emptyGrades = new ArrayList<>();

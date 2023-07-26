@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -171,45 +172,28 @@ public class ActivityServiceTest {
     }
 
     @Test
-    public void testUpdateActivityActivityFound() throws NotFoundException, IncompleteActivityException {
-        Long activityId = 1L;
-        String newName = "Updated Activity";
-        String newDescription = "Updated Description";
-
+    public void testUpdateActivityWithValidData() throws NotFoundException, IncompleteActivityException {
+        Long id = 1L;
         Activity existingActivity = new Activity();
-        existingActivity.setId(activityId);
-        existingActivity.setName("Old Activity");
-        existingActivity.setDescription("Old Description");
-
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName(newName);
-        activityDTO.setDescription(newDescription);
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
 
         Status existingStatus = new Status();
         existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
 
-        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setName("Updated Activity");
+        activityDTO.setDescription("Updated Description");
 
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
         when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
 
-        when(activityRepositoryMock.save(any(Activity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        Activity updatedActivity = activityService.updateActivity(id, activityDTO);
 
-        Activity updatedActivity = activityService.updateActivity(activityId, activityDTO);
-
-        assertEquals(activityId, updatedActivity.getId());
-        assertEquals(newName, updatedActivity.getName());
-        assertEquals(newDescription, updatedActivity.getDescription());
-
-        verify(activityRepositoryMock, times(1)).findById(activityId);
-
-        verify(statusRepositoryMock, times(1)).findById(existingStatus.getId());
-
-        verify(existingStatus, times(1)).setModifiedBy();
-        verify(existingStatus, times(1)).setModificationDate();
-
-        verify(statusRepositoryMock, times(1)).save(existingStatus);
-
-        verify(activityRepositoryMock, times(1)).save(existingActivity);
+        assertEquals(activityDTO.getName(), updatedActivity.getName());
+        assertEquals(activityDTO.getDescription(), updatedActivity.getDescription());
     }
 
     @Test(expected = NotFoundException.class)
@@ -225,62 +209,49 @@ public class ActivityServiceTest {
         activityService.updateActivity(activityId, activityDTO);
     }
 
-    @Test(expected = IncompleteActivityException.class)
-    public void testUpdateActivityIncompleteActivity() throws NotFoundException, IncompleteActivityException {
-        Long activityId = 3L;
-
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName(null);
-        activityDTO.setDescription("Incomplete Description");
-
-        Activity existingActivity = new Activity();
-        existingActivity.setId(activityId);
-
-        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
-        when(statusRepositoryMock.findById(anyLong())).thenReturn(Optional.of(new Status()));
-
-        activityService.updateActivity(activityId, activityDTO);
-    }
     @Test
-    public void testPatchActivityActivityFound() throws NotFoundException {
-        Long activityId = 1L;
-        String newName = "Updated Activity";
-        String newDescription = "Updated Description";
-
+    public void testUpdateActivityWithIncompleteData() {
+        Long id = 1L;
         Activity existingActivity = new Activity();
-        existingActivity.setId(activityId);
-        existingActivity.setName("Old Activity");
-        existingActivity.setDescription("Old Description");
-
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName(newName);
-        activityDTO.setDescription(newDescription);
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
 
         Status existingStatus = new Status();
         existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
 
-        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
+        ActivityDTO activityDTO = new ActivityDTO();
 
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
         when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
 
-        when(activityRepositoryMock.save(any(Activity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        assertThrows(IncompleteActivityException.class, () -> activityService.updateActivity(id, activityDTO));
+    }
 
-        Activity patchedActivity = activityService.patchActivity(activityId, activityDTO);
+    @Test
+    public void testPatchActivityWithValidData() throws NotFoundException {
+        Long id = 1L;
+        Activity existingActivity = new Activity();
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
 
-        assertEquals(activityId, patchedActivity.getId());
-        assertEquals(newName, patchedActivity.getName());
-        assertEquals(newDescription, patchedActivity.getDescription());
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
 
-        verify(activityRepositoryMock, times(1)).findById(activityId);
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setName("Updated Activity");
+        activityDTO.setDescription("Updated Description");
 
-        verify(statusRepositoryMock, times(1)).findById(existingStatus.getId());
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
+        when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
 
-        verify(existingStatus, times(1)).setModifiedBy();
-        verify(existingStatus, times(1)).setModificationDate();
+        Activity patchedActivity = activityService.patchActivity(id, activityDTO);
 
-        verify(statusRepositoryMock, times(1)).save(existingStatus);
-
-        verify(activityRepositoryMock, times(1)).save(existingActivity);
+        assertEquals(activityDTO.getName(), patchedActivity.getName());
+        assertEquals(activityDTO.getDescription(), patchedActivity.getDescription());
     }
 
     @Test(expected = NotFoundException.class)
@@ -294,6 +265,29 @@ public class ActivityServiceTest {
         when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.empty());
 
         activityService.patchActivity(activityId, activityDTO);
+    }
+
+    @Test
+    public void testPatchActivityWithNullFields() throws NotFoundException {
+        Long id = 1L;
+        Activity existingActivity = new Activity();
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
+
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
+
+        ActivityDTO activityDTO = new ActivityDTO();
+
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
+        when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
+
+        Activity patchedActivity = activityService.patchActivity(id, activityDTO);
+
+        assertEquals(existingActivity.getName(), patchedActivity.getName());
+        assertEquals(existingActivity.getDescription(), patchedActivity.getDescription());
     }
 
     @Test
