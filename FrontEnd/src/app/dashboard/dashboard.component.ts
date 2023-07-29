@@ -18,7 +18,7 @@ export class DashboardComponent  {
       students => this.students = students
     );
 
-    this.studentService.getStudent(1).subscribe(
+    this.studentService.getStudent(262).subscribe(
       student => this.student = student,
       error => {
         console.error(error);

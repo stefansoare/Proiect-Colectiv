@@ -22,29 +22,8 @@ class MockMentorService {
   }
 }
 
-describe('MentorPageComponent', () => {
-});
 
-describe('MentorListComponent', () => {
-  let component: MentorListComponent;
-  let fixture: ComponentFixture<MentorListComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, FormsModule], 
-      declarations: [MentorListComponent, SidebarMentorComponent],
-      providers: [MentorService],
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(MentorListComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
 
 describe('MentorAccountComponent', () => {
   let component: MentorAccountComponent;

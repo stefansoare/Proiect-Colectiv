@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MentorPageComponent } from './mentor-page.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { StudentService } from '../Services/student.service';
@@ -6,34 +6,36 @@ import { ActivitiesService } from '../Services/activities.service';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
 import { Activity } from '../Classes/Activity';
+import { SidebarMentorComponent } from '../Sidebars/sidebar-mentor/sidebar-mentor.component'; // Import the SidebarMentorComponent
 
 describe('MentorPageComponent', () => {
   let component: MentorPageComponent;
   let fixture: ComponentFixture<MentorPageComponent>;
 
- 
   const studentServiceMock = {
-    getStudents: () => of([]), 
+    getStudents: () => of([]),
   };
 
   const activitiesServiceMock = {
-    getActivities: () => of([]), 
+    getActivities: () => of([]) as any,
   };
 
   const routerMock = {
     navigate: jasmine.createSpy('navigate'),
   };
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [MentorPageComponent],
-      providers: [
-        { provide: StudentService, useValue: studentServiceMock },
-        { provide: ActivitiesService, useValue: activitiesServiceMock },
-        { provide: Router, useValue: routerMock },
-      ],
-    }).compileComponents();
-  });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MentorPageComponent, SidebarMentorComponent], // Add SidebarMentorComponent to the declarations
+        providers: [
+          { provide: StudentService, useValue: studentServiceMock },
+          { provide: ActivitiesService, useValue: activitiesServiceMock },
+          { provide: Router, useValue: routerMock },
+        ],
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MentorPageComponent);
@@ -45,39 +47,34 @@ describe('MentorPageComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize with showTable set to false', () => {
-    expect(component.showTable).toBeFalse();
-  });
-
   it('should toggle showTable value when calling toggleTableVisibility()', () => {
-    expect(component.showTable).toBeFalse();
+    expect(component.showTable).toBe(false);
     component.toggleTableVisibility();
-    expect(component.showTable).toBeTrue();
+    expect(component.showTable).toBe(true);
     component.toggleTableVisibility();
-    expect(component.showTable).toBeFalse();
-  });
-
-  it('should navigate to the specified component name', () => {
-    const componentName = 'example-component';
-    component.navigateToComponent(componentName);
-    expect(routerMock.navigate).toHaveBeenCalledWith([componentName]);
+    expect(component.showTable).toBe(false);
   });
 
   it('should initialize dataSource with empty activities array', () => {
-    expect(component.dataSource).toBeTruthy();
-    expect(component.dataSource.data.length).toBe(0);
+    expect(component.dataSource.data).toEqual([]);
   });
 
   it('should update dataSource when activities are fetched', () => {
-    const activities: Activity[] = [
-      {id: 1, name: 'Activity 1', description: 'Description 1' },
-      {id: 1, name: 'Activity 1', description: 'Description 1'},
+    const activityData: Activity[] = [
+      { id: 1, name: 'Activity 1', description: '' },
+      { id: 2, name: 'Activity 2', description: '' },
     ];
-  
-    spyOn(activitiesServiceMock, 'getActivities').and.returnValue(of(activities as never[]));
-  
-    component.ngOnInit();
-    expect(component.activities).toEqual(activities);
-    expect(component.dataSource.data).toEqual(activities);
+
+    spyOn(activitiesServiceMock, 'getActivities').and.returnValue(of(activityData) as any);
+
+    component.getActivities();
+
+    expect(component.dataSource.data).toEqual(activityData);
+  });
+
+  it('should navigate to the specified component name', () => {
+    const activityId = 1;
+    component.navigateToDetails(activityId);
+    expect(routerMock.navigate).toHaveBeenCalledWith(['activity', activityId]);
   });
 });

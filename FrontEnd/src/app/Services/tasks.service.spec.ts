@@ -102,9 +102,9 @@ describe('TasksService', () => {
       expect(response).toBeUndefined();
     });
 
-    const request = httpMock.expectOne(`http://localhost:8080/api/tasks/1`);
+    const request = httpMock.expectOne(`http://localhost:8080/api/tasks/${taskId}`);
     expect(request.request.method).toBe('DELETE');
-    request.flush({});
+    request.flush(null);
   });
 
   it('should patch task', () => {
@@ -116,7 +116,7 @@ describe('TasksService', () => {
       expect(response).toEqual(mockResponse);
     });
 
-    const request = httpMock.expectOne(`http://localhost:8080/api/tasks/1`);
+    const request = httpMock.expectOne(`http://localhost:8080/api/tasks/${taskId}`);
     expect(request.request.method).toBe('PATCH');
     request.flush(mockResponse);
   });

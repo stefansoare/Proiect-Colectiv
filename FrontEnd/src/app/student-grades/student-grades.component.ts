@@ -11,7 +11,7 @@ import { Observable, forkJoin } from 'rxjs';
 })
 export class StudentGradesComponent implements OnInit {
   tasks: Task[] = [];
-  studentId = 1; // Student ID 
+  studentId = 262; // Student ID 
   grades: number[] = [];
   attendances: boolean[] = [];
 
@@ -22,7 +22,7 @@ export class StudentGradesComponent implements OnInit {
   }
 
   loadTasksAndGrades() {
-    this.tasksService.getTasksByActivity(1).subscribe(
+    this.tasksService.getTasksByActivity(5).subscribe(
       (tasks: Task[]) => {
         this.tasks = tasks;
         this.grades = [];
