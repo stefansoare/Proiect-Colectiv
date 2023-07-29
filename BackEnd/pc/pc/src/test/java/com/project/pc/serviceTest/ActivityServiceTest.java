@@ -1,13 +1,14 @@
 package com.project.pc.serviceTest;
 
 import com.project.pc.dto.ActivityDTO;
-import com.project.pc.exception.NullObjectException;
 import com.project.pc.model.Activity;
 import com.project.pc.model.Status;
 import com.project.pc.repository.ActivityRepository;
 import com.project.pc.repository.StatusRepository;
 import com.project.pc.service.ActivityService;
 import com.project.pc.service.MappingService;
+import com.project.pc.exceptions.IncompleteActivityException;
+import com.project.pc.exceptions.NotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -45,19 +48,37 @@ public class ActivityServiceTest {
     public void setup() {
         MockitoAnnotations.initMocks(this);
     }
-
     @Test
-    public void testCreateActivity() throws NullObjectException {
+    public void testCreateActivityValidActivity() throws IncompleteActivityException, IllegalArgumentException {
         Activity activity = new Activity();
-        ActivityDTO activityDTO = new ActivityDTO();
+        activity.setName("Test Activity");
+        activity.setDescription("Test Description");
 
-        when(activityRepositoryMock.save(activity)).thenReturn(activity);
-        when(statusRepositoryMock.save(any(Status.class))).thenAnswer(invocation -> invocation.getArgument(0));
-        when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(activityDTO);
+        Status savedStatus = new Status();
+        when(statusRepositoryMock.save(any(Status.class))).thenReturn(savedStatus);
 
-        ActivityDTO result = activityService.createActivity(activity);
+        Activity savedActivity = new Activity();
+        when(activityRepositoryMock.save(any(Activity.class))).thenReturn(savedActivity);
 
-        Assert.assertEquals(activityDTO, result);
+        ActivityDTO expectedDto = new ActivityDTO();
+        when(mappingServiceMock.convertActivityIntoDTO(any(Activity.class))).thenReturn(expectedDto);
+
+        ActivityDTO resultDto = activityService.createActivity(activity);
+
+        assertEquals(expectedDto, resultDto);
+
+        verify(statusRepositoryMock, times(1)).save(any(Status.class));
+        verify(activityRepositoryMock, times(1)).save(any(Activity.class));
+
+        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(any(Activity.class));
+    }
+
+    @Test(expected = IncompleteActivityException.class)
+    public void testCreateActivityIncompleteActivity() throws IncompleteActivityException, IllegalArgumentException {
+        Activity incompleteActivity = new Activity();
+        incompleteActivity.setName("Test Activity");
+
+        activityService.createActivity(incompleteActivity);
     }
 
     @Test
@@ -93,163 +114,181 @@ public class ActivityServiceTest {
         Assert.assertEquals(activityDTO1, result.get(0));
         Assert.assertEquals(activityDTO2, result.get(1));
     }
-
     @Test
-    public void testGetActivityById() {
+    public void testGetActivityByIdActivityFound() throws NotFoundException {
         Long activityId = 1L;
         Activity activity = new Activity();
         activity.setId(activityId);
+
         when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(activity));
 
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setId(activityId);
-        when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(activityDTO);
+        ActivityDTO expectedDto = new ActivityDTO();
+        when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(expectedDto);
 
-        ActivityDTO result = activityService.getActivityById(activityId);
+        ActivityDTO resultDto = activityService.getActivityById(activityId);
 
-        Assert.assertEquals(activityDTO, result);
+        assertEquals(expectedDto, resultDto);
+
+        verify(activityRepositoryMock, times(1)).findById(activityId);
+
+        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
     }
 
+    @Test(expected = NotFoundException.class)
+    public void testGetActivityByIdActivityNotFound() throws NotFoundException {
+        Long activityId = 2L;
+
+        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.empty());
+
+        activityService.getActivityById(activityId);
+    }
     @Test
-    public void testGetActivityByName() {
+    public void testGetActivityByNameActivityFound() throws NotFoundException {
         String activityName = "Test Activity";
         Activity activity = new Activity();
         activity.setName(activityName);
+
         when(activityRepositoryMock.findByName(activityName)).thenReturn(Optional.of(activity));
 
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName(activityName);
-        when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(activityDTO);
+        ActivityDTO expectedDto = new ActivityDTO();
+        when(mappingServiceMock.convertActivityIntoDTO(activity)).thenReturn(expectedDto);
 
-        ActivityDTO result = activityService.getActivityByName(activityName);
+        ActivityDTO resultDto = activityService.getActivityByName(activityName);
 
-        Assert.assertEquals(activityDTO, result);
+        assertEquals(expectedDto, resultDto);
+
+        verify(activityRepositoryMock, times(1)).findByName(activityName);
+
+        verify(mappingServiceMock, times(1)).convertActivityIntoDTO(activity);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testGetActivityByNameActivityNotFound() throws NotFoundException {
+        String activityName = "Non-existent Activity";
+
+        when(activityRepositoryMock.findByName(activityName)).thenReturn(Optional.empty());
+
+        activityService.getActivityByName(activityName);
     }
 
     @Test
-    public void testUpdateActivity() {
-        Long activityId = 1L;
-        String updatedName = "Updated Activity";
-        String updatedDescription = "Updated Description";
-
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName(updatedName);
-        activityDTO.setDescription(updatedDescription);
-
+    public void testUpdateActivityWithValidData() throws NotFoundException, IncompleteActivityException {
+        Long id = 1L;
         Activity existingActivity = new Activity();
-        existingActivity.setId(activityId);
-        existingActivity.setName("Existing Activity");
-        existingActivity.setDescription("Existing Description");
-
-        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
-        when(mappingServiceMock.convertDTOIntoActivity(activityDTO)).thenReturn(existingActivity);
-
-        Activity result = activityService.updateActivity(activityId, activityDTO);
-
-        Assert.assertEquals(existingActivity, result);
-        Assert.assertEquals(updatedName, result.getName());
-        Assert.assertEquals(updatedDescription, result.getDescription());
-    }
-
-
-    @Test
-    public void testUpdateActivityWithNonExistentId() {
-        Long nonExistentId = 999L;
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName("Updated Activity");
-        activityDTO.setDescription("Updated Description");
-
-        when(activityRepositoryMock.findById(nonExistentId)).thenReturn(Optional.empty());
-
-
-        Activity result = activityService.updateActivity(nonExistentId, activityDTO);
-
-
-        verify(activityRepositoryMock, times(1)).findById(nonExistentId);
-        verify(mappingServiceMock, never()).convertActivityIntoDTO(any(Activity.class));
-        verify(activityRepositoryMock, never()).save(any(Activity.class));
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(mappingServiceMock);
-        Assert.assertNull(result);
-    }
-
-    @Test
-    public void testPatchActivity() {
-        Long activityId = 1L;
-        String updatedName = "Updated Activity";
-        String updatedDescription = "Updated Description";
-
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName(updatedName);
-        activityDTO.setDescription(updatedDescription);
-
-        Activity existingActivity = new Activity();
-        existingActivity.setId(activityId);
-        existingActivity.setName("Existing Activity");
-        existingActivity.setDescription("Existing Description");
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
 
         Status existingStatus = new Status();
         existingStatus.setId(1L);
         existingActivity.setStatus(existingStatus);
 
-        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setName("Updated Activity");
+        activityDTO.setDescription("Updated Description");
+
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
         when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
 
-        Activity result = activityService.patchActivity(activityId, activityDTO);
+        Activity updatedActivity = activityService.updateActivity(id, activityDTO);
 
-        Assert.assertEquals(existingActivity, result);
-        Assert.assertEquals(updatedName, result.getName());
-        Assert.assertEquals(updatedDescription, result.getDescription());
-        Assert.assertEquals(existingStatus, result.getStatus());
+        assertEquals(activityDTO.getName(), updatedActivity.getName());
+        assertEquals(activityDTO.getDescription(), updatedActivity.getDescription());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testUpdateActivityActivityNotFound() throws NotFoundException, IncompleteActivityException {
+        Long activityId = 2L;
+
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setName("New Activity");
+        activityDTO.setDescription("New Description");
+
+        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.empty());
+
+        activityService.updateActivity(activityId, activityDTO);
     }
 
     @Test
-    public void testPatchActivityWithNonExistentId() {
-        Long nonExistentId = 999L;
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName("Updated Activity");
-        activityDTO.setDescription("Updated Description");
-
-        when(activityRepositoryMock.findById(nonExistentId)).thenReturn(Optional.empty());
-
-
-        Activity result = activityService.patchActivity(nonExistentId, activityDTO);
-
-
-        verify(activityRepositoryMock, times(1)).findById(nonExistentId);
-        verify(activityRepositoryMock, never()).save(any(Activity.class));
-        verifyNoMoreInteractions(activityRepositoryMock);
-        Assert.assertNull(result);
-    }
-
-    public void testPatchActivityWithNonExistentStatus() {
-        Long activityId = 1L;
-        ActivityDTO activityDTO = new ActivityDTO();
-        activityDTO.setName("Updated Activity");
-        activityDTO.setDescription("Updated Description");
-
+    public void testUpdateActivityWithIncompleteData() {
+        Long id = 1L;
         Activity existingActivity = new Activity();
-        existingActivity.setId(activityId);
-        existingActivity.setName("Existing Activity");
-        existingActivity.setDescription("Existing Description");
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
 
-        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.of(existingActivity));
-        when(statusRepositoryMock.findById(existingActivity.getStatus().getId())).thenReturn(Optional.empty());
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
 
+        ActivityDTO activityDTO = new ActivityDTO();
 
-        Activity result = activityService.patchActivity(activityId, activityDTO);
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
+        when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
 
-
-        verify(activityRepositoryMock, times(1)).findById(activityId);
-        verify(statusRepositoryMock, times(1)).findById(existingActivity.getStatus().getId());
-        verify(statusRepositoryMock, never()).save(any(Status.class));
-        verify(activityRepositoryMock, never()).save(any(Activity.class));
-        verifyNoMoreInteractions(activityRepositoryMock);
-        verifyNoMoreInteractions(statusRepositoryMock);
-
-        Assert.assertNull(result);
+        assertThrows(IncompleteActivityException.class, () -> activityService.updateActivity(id, activityDTO));
     }
 
+    @Test
+    public void testPatchActivityWithValidData() throws NotFoundException {
+        Long id = 1L;
+        Activity existingActivity = new Activity();
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
+
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
+
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setName("Updated Activity");
+        activityDTO.setDescription("Updated Description");
+
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
+        when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
+
+        Activity patchedActivity = activityService.patchActivity(id, activityDTO);
+
+        assertEquals(activityDTO.getName(), patchedActivity.getName());
+        assertEquals(activityDTO.getDescription(), patchedActivity.getDescription());
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testPatchActivityActivityNotFound() throws NotFoundException {
+        Long activityId = 2L;
+
+        ActivityDTO activityDTO = new ActivityDTO();
+        activityDTO.setName("New Activity");
+        activityDTO.setDescription("New Description");
+
+        when(activityRepositoryMock.findById(activityId)).thenReturn(Optional.empty());
+
+        activityService.patchActivity(activityId, activityDTO);
+    }
+
+    @Test
+    public void testPatchActivityWithNullFields() throws NotFoundException {
+        Long id = 1L;
+        Activity existingActivity = new Activity();
+        existingActivity.setId(id);
+        existingActivity.setName("Activity 1");
+        existingActivity.setDescription("Description 1");
+
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingActivity.setStatus(existingStatus);
+
+        ActivityDTO activityDTO = new ActivityDTO();
+
+        when(activityRepositoryMock.findById(id)).thenReturn(Optional.of(existingActivity));
+        when(statusRepositoryMock.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
+
+        Activity patchedActivity = activityService.patchActivity(id, activityDTO);
+
+        assertEquals(existingActivity.getName(), patchedActivity.getName());
+        assertEquals(existingActivity.getDescription(), patchedActivity.getDescription());
+    }
 
     @Test
     public void testDeleteActivityByName() {

@@ -65,7 +65,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertDTOIntoActivity() {
+    public void testConvertDTOIntoActivity() {
         String name = "Test Activity";
         String description = "Test Description";
 
@@ -80,7 +80,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertActivityIntoDTO() {
+    public void testConvertActivityIntoDTO() {
         long id = 1;
         String name = "Test Activity";
         String description = "Test Description";
@@ -98,7 +98,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertDTOIntoMentor() {
+    public void testConvertDTOIntoMentor() {
         String name = "Test Mentor";
         String email = "test@example.com";
 
@@ -113,7 +113,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertMentorIntoDTO() {
+    public void testConvertMentorIntoDTO() {
         String name = "Test Mentor";
         String email = "test@example.com";
 
@@ -128,7 +128,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertDTOIntoStudent() {
+    public void testConvertDTOIntoStudent() {
         String name = "Test Student";
         String email = "test@example.com";
 
@@ -143,7 +143,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertStudentIntoDTO() {
+    public void testConvertStudentIntoDTO() {
         long id = 1;
         String name = "Test Student";
         String email = "test@example.com";
@@ -164,7 +164,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertDTOIntoTeam() {
+    public void testConvertDTOIntoTeam() {
         Long teamLeader = 1L;
         String teamName = "Test Team";
 
@@ -179,7 +179,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertTeamIntoDTO() {
+    public void testConvertTeamIntoDTO() {
         long id = 1L;
         long teamLeader = 1L;
         String teamName = "Test Team";
@@ -197,7 +197,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertDTOIntoTask() {
+    public void testConvertDTOIntoTask() {
         long id = 1;
         String description = "Test Task Description";
         String deadline = "2023-07-10";
@@ -215,7 +215,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertTaskIntoDTO() {
+    public void testConvertTaskIntoDTO() {
         long id = 1;
         String description = "Test Task Description";
         String deadline = "2023-07-10";
@@ -233,7 +233,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertDTOIntoGrade() {
+    public void testConvertDTOIntoGrade() {
         long gradeValue = 85;
         boolean attendance = true;
         String comment = "Good job";
@@ -251,7 +251,7 @@ class MappingServiceTest {
     }
 
     @Test
-    void testConvertGradeIntoDTO() {
+    public void testConvertGradeIntoDTO() {
         long gradeValue = 85;
         boolean attendance = true;
         String date = "2023-07-10";

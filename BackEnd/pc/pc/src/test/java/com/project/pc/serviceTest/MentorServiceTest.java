@@ -1,10 +1,13 @@
 package com.project.pc.serviceTest;
 
 import com.project.pc.dto.MentorDTO;
+import com.project.pc.exceptions.IncompleteMentorException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Mentor;
 import com.project.pc.model.Status;
 import com.project.pc.repository.MentorRepository;
 import com.project.pc.repository.StatusRepository;
+import com.project.pc.service.GradeService;
 import com.project.pc.service.MappingService;
 import com.project.pc.service.MentorService;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,27 +43,49 @@ class MentorServiceTest {
     @Mock
     private MappingService mappingService;
 
+    @Mock
+    private GradeService gradeService;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testCreateMentor() {
+    public void testCreateMentorValidMentor() {
         Mentor mentor = new Mentor();
+        mentor.setEmail("mentor@example.com");
+        mentor.setName("Mentor name");
         Status status = new Status();
+        MentorDTO mentorDTO = new MentorDTO();
 
         when(statusRepository.save(any(Status.class))).thenReturn(status);
-        when(mentorRepository.save(any(Mentor.class))).thenReturn(mentor);
-        when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(new MentorDTO());
+        when(mentorRepository.save(any(Mentor.class))).thenAnswer(invocation -> {
+            Mentor savedMentor = invocation.getArgument(0);
+            savedMentor.setId(1L);
+            return savedMentor;
+        });
+        when(mappingService.convertMentorIntoDTO(any(Mentor.class))).thenReturn(mentorDTO);
 
         MentorDTO result = mentorService.createMentor(mentor);
 
-        assertEquals(new MentorDTO(), result);
+        assertEquals(mentorDTO, result);
     }
 
     @Test
-    void testGetAllMentorsAndRepositoryReturnsListWithMentors() {
+    public void testCreateMentorNullMentor() {
+        assertThrows(IllegalArgumentException.class, () -> mentorService.createMentor(null));
+    }
+
+    @Test
+    public void testCreateMentorIncompleteMentor() {
+        Mentor incompleteMentor = new Mentor();
+        assertThrows(IncompleteMentorException.class, () -> mentorService.createMentor(incompleteMentor));
+    }
+
+
+    @Test
+    public void testGetAllMentorsAndRepositoryReturnsListWithMentors() {
         List<Mentor> mentors = new ArrayList<>();
         mentors.add(new Mentor());
         mentors.add(new Mentor());
@@ -73,7 +98,7 @@ class MentorServiceTest {
     }
 
     @Test
-    void testGetAllMentorsAndRepositoryReturnsEmptyList() {
+    public void testGetAllMentorsAndRepositoryReturnsEmptyList() {
         List<Mentor> mentors = new ArrayList<>();
 
         when(mentorRepository.findAll()).thenReturn(mentors);
@@ -84,156 +109,218 @@ class MentorServiceTest {
     }
 
     @Test
-    void testGetMentorByIdWithValidIdThenReturnsMentorDTO() {
-        Mentor mentor = new Mentor(1L);
-        Long mentorId = mentor.getId();
+    public void testGetMentorByIdValidId() throws NotFoundException {
+        Long id = 1L;
+        Mentor mentor = new Mentor();
+        mentor.setId(id);
 
-        when(mentorRepository.findById(mentorId)).thenReturn(Optional.of(mentor));
-        when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(new MentorDTO());
+        when(mentorRepository.findById(id)).thenReturn(Optional.of(mentor));
 
-        MentorDTO result = mentorService.getMentorById(mentorId);
+        MentorDTO expectedDto = new MentorDTO();
+        when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(expectedDto);
 
-        assertNotNull(result);
+        MentorDTO resultDto = mentorService.getMentorById(id);
+        assertEquals(expectedDto, resultDto);
     }
 
     @Test
-    void testGetMentorByIdWithInvalidIdThenReturnsNull() {
-        Long mentorId = 1L;
-        when(mentorRepository.findById(mentorId)).thenReturn(Optional.empty());
-        MentorDTO result = mentorService.getMentorById(mentorId);
-        assertNull(result);
+    public void testGetMentorByIdInvalidId() {
+        Long id = 999L;
+        when(mentorRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> mentorService.getMentorById(id));
     }
 
     @Test
-    void testGetMentorByNameWithValidNameAndReturnsMentorDTO() {
+    public void testGetMentorByNameValidName() throws NotFoundException {
         String mentorName = "Ion Dan";
         Mentor mentor = new Mentor();
+        mentor.setId(1L);
         mentor.setName(mentorName);
+        MentorDTO mentorDTO = new MentorDTO();
 
         when(mentorRepository.findMentorByName(mentorName)).thenReturn(Optional.of(mentor));
-        when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(new MentorDTO());
+        when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(mentorDTO);
 
         MentorDTO result = mentorService.getMentorByName(mentorName);
 
-        assertNotNull(result);
+        assertEquals(mentorDTO, result);
     }
 
     @Test
-    void testGetMentorByNameWithInvalidNameAndReturnsNull() {
-        String mentorName = "Ion Dan";
-        when(mentorRepository.findMentorByName(mentorName)).thenReturn(Optional.empty());
-        MentorDTO result = mentorService.getMentorByName(mentorName);
-        assertNull(result);
+    public void testGetMentorByNameInvalidName() {
+        String name = "Ion Dan";
+        when(mentorRepository.findMentorByName(name)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> mentorService.getMentorByName(name));
     }
 
     @Test
-    void testGetMentorByEmailWithValidEmailAndReturnsMentorDTO() {
+    public void testGetMentorByEmailValidEmail() throws NotFoundException {
         String mentorEmail = "ion.dan@example.com";
         Mentor mentor = new Mentor();
+        mentor.setId(1L);
         mentor.setEmail(mentorEmail);
+        MentorDTO mentorDTO = new MentorDTO();
 
         when(mentorRepository.findMentorByEmail(mentorEmail)).thenReturn(Optional.of(mentor));
-        when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(new MentorDTO());
+        when(mappingService.convertMentorIntoDTO(mentor)).thenReturn(mentorDTO);
 
         MentorDTO result = mentorService.getMentorByEmail(mentorEmail);
 
-        assertNotNull(result);
+        assertEquals(mentorDTO, result);
     }
 
     @Test
-    void testGetMentorByEmailWithInvalidEmailAndReturnsNull() {
+    public void testGetMentorByEmailInvalidEmail() {
         String mentorEmail = "ion.dan@example.com";
         when(mentorRepository.findMentorByEmail(mentorEmail)).thenReturn(Optional.empty());
-        MentorDTO result = mentorService.getMentorByEmail(mentorEmail);
-        assertNull(result);
+        assertThrows(NotFoundException.class, () -> mentorService.getMentorByEmail(mentorEmail));
     }
 
     @Test
-    void testUpdateMentorWithExistingMentorAndReturnsUpdatedMentor() {
-        Long mentorId = 1L;
-        MentorDTO mentorDTO = new MentorDTO();
-        mentorDTO.setName("Ion Dan");
-        mentorDTO.setEmail("ion.dan@example.com");
+    public void testUpdateMentorValidIdAndDTO() throws NotFoundException, IncompleteMentorException {
+        Long id = 1L;
 
         Mentor existingMentor = new Mentor();
-        existingMentor.setId(mentorId);
-        existingMentor.setName("Ana Maria");
-        existingMentor.setEmail("ana.maria@example.com");
+        existingMentor.setId(id);
+        existingMentor.setName("John Doe");
+        existingMentor.setEmail("john.doe@example.com");
+
+        MentorDTO mentorDTO = new MentorDTO();
+        mentorDTO.setName("Jane Doe");
+        mentorDTO.setEmail("jane.doe@example.com");
 
         Status existingStatus = new Status();
         existingStatus.setId(1L);
         existingMentor.setStatus(existingStatus);
 
-        when(mentorRepository.findMentorById(mentorId)).thenReturn(Optional.of(existingMentor));
+        when(mentorRepository.findById(id)).thenReturn(Optional.of(existingMentor));
         when(statusRepository.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
-        when(mentorRepository.save(existingMentor)).thenReturn(existingMentor);
 
-        Mentor result = mentorService.updateMentor(mentorId, mentorDTO);
+        Mentor updatedMentor = mentorService.updateMentor(id, mentorDTO);
 
-        assertNotNull(result);
-        assertEquals(mentorDTO.getName(), result.getName());
-        assertEquals(mentorDTO.getEmail(), result.getEmail());
-        assertEquals(existingStatus, result.getStatus());
+        assertEquals(mentorDTO.getName(), updatedMentor.getName());
+        assertEquals(mentorDTO.getEmail(), updatedMentor.getEmail());
+        assertEquals(existingStatus, updatedMentor.getStatus());
     }
 
     @Test
-    void testUpdateMentorWithNonExistingMentorAndReturnsNull() {
-        Long mentorId = 1L;
+    public void testUpdateMentorInvalidId() {
+        Long id = 999L;
+
+        when(mentorRepository.findById(id)).thenReturn(Optional.empty());
+
         MentorDTO mentorDTO = new MentorDTO();
         mentorDTO.setName("Ion Dan");
         mentorDTO.setEmail("ion.dan@example.com");
 
-        when(mentorRepository.findMentorById(mentorId)).thenReturn(Optional.empty());
-
-        Mentor result = mentorService.updateMentor(mentorId, mentorDTO);
-
-        assertNull(result);
+        assertThrows(NotFoundException.class, () -> mentorService.updateMentor(id, mentorDTO));
     }
 
     @Test
-    void testPatchMentorWithExistingMentorAndPatchesMentor() {
-        Long mentorId = 1L;
-        MentorDTO mentorDTO = new MentorDTO();
-        mentorDTO.setName("Ion Dan");
-
+    public void testUpdateMentorIncompleteMentorDTO() {
+        Long id = 1L;
         Mentor existingMentor = new Mentor();
-        existingMentor.setId(mentorId);
-        existingMentor.setName("Ana Maria");
-        existingMentor.setEmail("ana.maria@example.com");
+        existingMentor.setId(id);
+        existingMentor.setName("Ion Dan");
+        existingMentor.setEmail("ion.dan@example.com");
 
         Status existingStatus = new Status();
         existingStatus.setId(1L);
         existingMentor.setStatus(existingStatus);
 
-        when(mentorRepository.findMentorById(mentorId)).thenReturn(Optional.of(existingMentor));
+        when(mentorRepository.findById(id)).thenReturn(Optional.of(existingMentor));
         when(statusRepository.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
-        when(mentorRepository.save(existingMentor)).thenReturn(existingMentor);
 
-
-        Mentor result = mentorService.patchMentor(mentorId, mentorDTO);
-
-
-        assertNotNull(result);
-        assertEquals(mentorDTO.getName(), result.getName());
-        assertEquals(existingMentor.getEmail(), result.getEmail());
-        assertEquals(existingStatus, result.getStatus());
-    }
-
-    @Test
-    void testPatchMentorWithNonExistingMentorAndReturnsNull() {
-        Long mentorId = 1L;
         MentorDTO mentorDTO = new MentorDTO();
-        mentorDTO.setName("Ion Dan");
+        assertThrows(IncompleteMentorException.class, () -> mentorService.updateMentor(id, mentorDTO));
+    }
 
-        when(mentorRepository.findMentorById(mentorId)).thenReturn(Optional.empty());
 
-        Mentor result = mentorService.patchMentor(mentorId, mentorDTO);
 
-        assertNull(result);
+    @Test
+    public void testPatchMentorExistingMentorPatchName() {
+        Long id = 1L;
+        Mentor existingMentor = new Mentor();
+        existingMentor.setId(id);
+        existingMentor.setName("Ion Dan");
+        existingMentor.setEmail("ion.dan@example.com");
+
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingMentor.setStatus(existingStatus);
+
+        when(mentorRepository.findById(id)).thenReturn(Optional.of(existingMentor));
+        when(statusRepository.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
+
+        MentorDTO mentorDTO = new MentorDTO();
+
+        String updatedName = "Vasile Ioan";
+        mentorDTO.setName(updatedName);
+        mentorDTO.setEmail(null);
+        Mentor patchedMentor = mentorService.patchMentor(id, mentorDTO);
+        assertEquals(updatedName, patchedMentor.getName());
     }
 
     @Test
-    void testDeleteMentorByEmailWhenMentorExistsAndDeletesMentorThenReturnsTrue() {
+    public void testPatchMentorExistingMentorPatchEmail() {
+        Long id = 1L;
+        Mentor existingMentor = new Mentor();
+        existingMentor.setId(id);
+        existingMentor.setName("Ion Dan");
+        existingMentor.setEmail("ion.dan@example.com");
+
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingMentor.setStatus(existingStatus);
+
+        when(mentorRepository.findById(id)).thenReturn(Optional.of(existingMentor));
+        when(statusRepository.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
+
+        MentorDTO mentorDTO = new MentorDTO();
+
+        String updatedEmail = "vasi.le@example.com";
+        mentorDTO.setName(null);
+        mentorDTO.setEmail(updatedEmail);
+        Mentor patchedMentor = mentorService.patchMentor(id, mentorDTO);
+        assertEquals(updatedEmail, patchedMentor.getEmail());
+    }
+
+    @Test
+    public void testPatchMentorExistingMentorPatchNameAndEmail() {
+        Long id = 1L;
+        Mentor existingMentor = new Mentor();
+        existingMentor.setId(id);
+        existingMentor.setName("Ion Dan");
+        existingMentor.setEmail("ion.dan@example.com");
+
+        Status existingStatus = new Status();
+        existingStatus.setId(1L);
+        existingMentor.setStatus(existingStatus);
+
+        when(mentorRepository.findById(id)).thenReturn(Optional.of(existingMentor));
+        when(statusRepository.findById(existingStatus.getId())).thenReturn(Optional.of(existingStatus));
+
+        MentorDTO mentorDTO = new MentorDTO();
+
+        String updatedName = "Jake Johnson";
+        String updatedEmail = "vasi.le@example.com";
+        mentorDTO.setName(updatedName);
+        mentorDTO.setEmail(updatedEmail);
+        Mentor patchedMentor = mentorService.patchMentor(id, mentorDTO);
+        assertEquals(updatedName, patchedMentor.getName());
+        assertEquals(updatedEmail, patchedMentor.getEmail());
+    }
+
+    @Test
+    public void testPatchMentorNotFoundException() {
+        Long id = 1L;
+        MentorDTO mentorDTO = new MentorDTO();
+        when(mentorRepository.findById(id)).thenReturn(Optional.empty());
+        assertThrows(NotFoundException.class, () -> mentorService.patchMentor(id, mentorDTO));
+    }
+
+    @Test
+    void testDeleteMentorByEmailMentorExists() {
         String email = "ana.maria@example.com";
 
         Mentor existingMentor = new Mentor();
@@ -249,14 +336,32 @@ class MentorServiceTest {
     }
 
     @Test
-    void testDeleteMentorByEmailWhenMentorNotExistsThenReturnsFalse() {
+    void testDeleteMentorByEmailMentorNotExists() {
         String email = "ana.maria@example.com";
-
         when(mentorRepository.findMentorByEmail(email)).thenReturn(Optional.empty());
-
         boolean result = mentorService.deleteMentorByEmail(email);
-
         assertFalse(result);
     }
 
+    @Test
+    void testDeleteMentorByIdMentorExists() {
+        Long id = 1L;
+
+        Mentor existingMentor = new Mentor();
+        existingMentor.setId(id);
+        existingMentor.setName("Ana Maria");
+        existingMentor.setEmail("ana.maria@example.com");
+
+        when(mentorRepository.findMentorById(id)).thenReturn(Optional.of(existingMentor));
+        boolean result = mentorService.deleteMentorById(id);
+        assertTrue(result);
+    }
+
+    @Test
+    void testDeleteMentorByIdMentorNotExists() {
+        Long id = 1L;
+        when(mentorRepository.findMentorById(id)).thenReturn(Optional.empty());
+        boolean result = mentorService.deleteMentorById(id);
+        assertFalse(result);
+    }
 }

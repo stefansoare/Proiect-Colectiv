@@ -57,7 +57,7 @@ public class MentorService {
         Mentor update = mentorRepository.findById(id).orElseThrow(() -> new NotFoundException("Mentor not found with ID: " + id));
         Status status = statusRepository.findById(update.getStatus().getId()).orElseThrow(() -> new NotFoundException("Status not found with ID: " + update.getStatus().getId()));
         if (mentorDTO.getName() == null || mentorDTO.getEmail() == null) {
-            throw new IncompleteActivityException("Mentor is missing some required fields");
+            throw new IncompleteMentorException("Mentor is missing some required fields");
         }
         status.setModifiedBy();
         status.setModificationDate();

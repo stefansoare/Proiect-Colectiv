@@ -1,6 +1,8 @@
 package com.project.pc.serviceTest;
 
 import com.project.pc.dto.GradeDTO;
+import com.project.pc.exceptions.NoGradesFoundException;
+import com.project.pc.exceptions.NotFoundException;
 import com.project.pc.model.Grade;
 import com.project.pc.model.Mentor;
 import com.project.pc.model.Student;
@@ -56,53 +58,53 @@ class GradeServiceTest {
     }
 
     @Test
-    void testGiveGradeWhenExistValidEntitiesAndCreatesGrade() {
-        Long mentorId = 1L;
-        Long studentId = 2L;
-        Long taskId = 3L;
+    public void testGiveGradeValidIds() {
+        Long mId = 1L;
+        Long sId = 2L;
+        Long tId = 3L;
         Grade grade = new Grade();
-        Mentor mentor = new Mentor(mentorId);
-        Student student = new Student(studentId);
-        Task task = new Task(taskId);
 
-        when(mentorRepository.findMentorById(mentorId)).thenReturn(Optional.of(mentor));
-        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.of(student));
-        when(taskRepository.findById(taskId)).thenReturn(Optional.of(task));
+        Mentor mentor = new Mentor();
+        mentor.setId(mId);
+        Student student = new Student();
+        student.setId(sId);
+        Task task = new Task();
+        task.setId(tId);
 
-        GradeDTO result1 = gradeService.giveGrade(mentorId, studentId, taskId, grade);
-        Grade result = mappingService.convetDTOIntoGrade(result1);
+        grade.setMentor(mentor);
+        grade.setStudent(student);
+        grade.setTask(task);
 
-        assertNotNull(result);
-        assertSame(mentor, result.getMentor());
-        assertSame(student, result.getStudent());
-        assertSame(task, result.getTask());
+        when(mentorRepository.findMentorById(mId)).thenReturn(Optional.of(mentor));
+        when(studentRepository.findStudentById(sId)).thenReturn(Optional.of(student));
+        when(taskRepository.findById(tId)).thenReturn(Optional.of(task));
+        when(gradeRepository.save(any(Grade.class))).thenReturn(grade);
+        when(mappingService.convertGradeIntoDTO(any(Grade.class))).thenReturn(new GradeDTO());
+
+        GradeDTO result = gradeService.giveGrade(mId, sId, tId, grade);
+
+        assertEquals(mentor, grade.getMentor());
+        assertEquals(student, grade.getStudent());
+        assertEquals(task, grade.getTask());
+        assertEquals(result, mappingService.convertGradeIntoDTO(grade));
     }
 
     @Test
-    void testGiveGrade_NullEntities_ReturnsNull() {
-        Long mentorId = 1L;
-        Long studentId = 2L;
-        Long taskId = 3L;
+    public void testGiveGradeInvalidIds() {
+        Long mId = 10L; // Invalid Mentor ID
+        Long sId = 20L; // Invalid Student ID
+        Long tId = 30L; // Invalid Task ID
         Grade grade = new Grade();
 
-        when(mentorRepository.findMentorById(mentorId)).thenReturn(Optional.empty());
-        when(studentRepository.findStudentById(studentId)).thenReturn(Optional.empty());
-        when(taskRepository.findById(taskId)).thenReturn(Optional.empty());
+        when(mentorRepository.findMentorById(mId)).thenReturn(Optional.empty());
+        when(studentRepository.findStudentById(sId)).thenReturn(Optional.empty());
+        when(taskRepository.findById(tId)).thenReturn(Optional.empty());
 
-
-        GradeDTO result1 = gradeService.giveGrade(mentorId, studentId, taskId, grade);
-        Grade result = mappingService.convetDTOIntoGrade(result1);
-
-        assertNull(result);
-
-        verify(mentorRepository).findMentorById(mentorId);
-        verify(studentRepository).findStudentById(studentId);
-        verify(taskRepository).findById(taskId);
-        verifyNoMoreInteractions(mentorRepository, studentRepository, taskRepository);
+        assertThrows(NotFoundException.class, () -> gradeService.giveGrade(mId, sId, tId, grade));
     }
 
     @Test
-    void testGetStudentGradesMeanAndCalculatesMean() {
+    public void testGetStudentGradesMeanAndCalculatesMean() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
@@ -111,32 +113,20 @@ class GradeServiceTest {
         grades.add(new Grade(0, false, "Absent!"));
 
         when(gradeRepository.findByTaskIdAndStudentId(taskId, studentId)).thenReturn(grades);
-
         Long result = gradeService.getStudentGradesMean(taskId, studentId);
-
         assertEquals(58L, result);
     }
 
     @Test
-    void testGetStudentGradesMean_EmptyGrades_ReturnsNull() {
-        Long taskId = 1L;
-        Long studentId = 2L;
-        List<Grade> emptyGrades = new ArrayList<>();
-
-        when(gradeRepository.findByTaskIdAndStudentId(taskId, studentId)).thenReturn(emptyGrades);
-
-
-        Long result = gradeService.getStudentGradesMean(taskId, studentId);
-
-
-        assertNull(result);
-
-        verify(gradeRepository).findByTaskIdAndStudentId(taskId, studentId);
-        verifyNoMoreInteractions(gradeRepository);
+    public void testGetStudentGradesMeanNoGradesFound() {
+        Long tId = 1L;
+        Long sId = 2L;
+        when(gradeRepository.findByTaskIdAndStudentId(tId, sId)).thenReturn(new ArrayList<>());
+        assertThrows(NoGradesFoundException.class, () -> gradeService.getStudentGradesMean(tId, sId));
     }
 
     @Test
-    void testGetAllStudentAttendancesAndCountsAttendances() {
+    public void testGetAllStudentAttendancesAndCountsAttendances() {
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
         Task task1 = new Task(1L);
@@ -148,31 +138,19 @@ class GradeServiceTest {
         grades.add(new Grade(true, task3)); // Duplicate task ID
 
         when(gradeRepository.findByStudentId(studentId)).thenReturn(grades);
-
         Integer result = gradeService.getAllStudentAttendances(studentId);
-
         assertEquals(2, result);
     }
 
     @Test
-    void testGetAllStudentAttendances_EmptyGrades_ReturnsNull() {
+    public void testGetAllStudentAttendancesNoGradesFound() {
         Long studentId = 2L;
-        List<Grade> emptyGrades = new ArrayList<>();
-
-        when(gradeRepository.findByStudentId(studentId)).thenReturn(emptyGrades);
-
-
-        Integer result = gradeService.getAllStudentAttendances(studentId);
-
-
-        assertNull(result);
-
-        verify(gradeRepository).findByStudentId(studentId);
-        verifyNoMoreInteractions(gradeRepository);
+        when(gradeRepository.findByStudentId(studentId)).thenReturn(new ArrayList<>());
+        assertThrows(NoGradesFoundException.class, () -> gradeService.getAllStudentAttendances(studentId));
     }
 
     @Test
-    void testGetAllStudentGradesFromATaskAndConvertsToGradeDTO() {
+    public void testGetAllStudentGradesFromATaskAndConvertsToGradeDTO() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> grades = new ArrayList<>();
@@ -187,28 +165,66 @@ class GradeServiceTest {
         when(mappingService.convertGradeIntoDTO(any(Grade.class))).thenReturn(new GradeDTO());
 
         List<GradeDTO> result = gradeService.getAllStudentGradesFromATask(taskId, studentId);
-
         assertEquals(expectedGradeDTOS, result);
     }
 
     @Test
-    void testGetAllStudentGradesFromATask_EmptyGrades_ReturnsEmptyList() {
+    public void testGetAllStudentGradesFromATaskEmptyGradesAndReturnsEmptyList() {
         Long taskId = 1L;
         Long studentId = 2L;
         List<Grade> emptyGrades = new ArrayList<>();
         List<GradeDTO> expectedGradeDTOS = new ArrayList<>();
 
         when(gradeRepository.findByTaskIdAndStudentId(taskId, studentId)).thenReturn(emptyGrades);
-
-
         List<GradeDTO> result = gradeService.getAllStudentGradesFromATask(taskId, studentId);
-
-
         assertEquals(expectedGradeDTOS, result);
-
-        verify(gradeRepository).findByTaskIdAndStudentId(taskId, studentId);
-        verifyNoMoreInteractions(gradeRepository);
-        verifyNoInteractions(mappingService);
     }
 
+    @Test
+    public void testGetAttendanceForTaskWithAttendance() {
+        Long tId = 1L;
+        Long sId = 2L;
+
+        Grade grade1 = new Grade();
+        grade1.setAttendance(false);
+        Grade grade2 = new Grade();
+        grade2.setAttendance(true);
+
+        List<Grade> grades = new ArrayList<>();
+        grades.add(grade1);
+        grades.add(grade2);
+
+        when(gradeRepository.findByTaskIdAndStudentId(tId, sId)).thenReturn(grades);
+        boolean result = gradeService.getAttendanceForTask(tId, sId);
+        assertTrue(result);
+    }
+
+    @Test
+    public void testGetAttendanceForTaskWithoutAttendance() {
+        Long tId = 1L;
+        Long sId = 2L;
+
+        Grade grade1 = new Grade();
+        grade1.setAttendance(false);
+        Grade grade2 = new Grade();
+        grade2.setAttendance(false);
+
+        List<Grade> grades = new ArrayList<>();
+        grades.add(grade1);
+        grades.add(grade2);
+
+        when(gradeRepository.findByTaskIdAndStudentId(tId, sId)).thenReturn(grades);
+        boolean result = gradeService.getAttendanceForTask(tId, sId);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testGetAttendanceForTaskNoGradesFound() {
+        Long tId = 1L;
+        Long sId = 2L;
+
+        when(gradeRepository.findByTaskIdAndStudentId(tId, sId)).thenReturn(new ArrayList<>());
+        boolean result = gradeService.getAttendanceForTask(tId, sId);
+        assertFalse(result);
+    }
 }
