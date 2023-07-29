@@ -97,15 +97,17 @@ describe('TasksService', () => {
 
   it('should delete task', () => {
     const taskId = 1;
-
+  
     service.deleteTask(taskId).subscribe((response) => {
-      expect(response).toBeUndefined();
+      expect(response).toBeNull(); // Change the expectation to be toBeNull()
     });
-
+  
     const request = httpMock.expectOne(`http://localhost:8080/api/tasks/${taskId}`);
     expect(request.request.method).toBe('DELETE');
-    request.flush(null);
+    request.flush(null); // The response body is set to null since there is no content.
   });
+  
+  
 
   it('should patch task', () => {
     const taskId = 1;

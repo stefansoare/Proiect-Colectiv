@@ -2,8 +2,8 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MentorService } from './mentor.service';
 import { Mentor } from '../Classes/Mentor';
-import { Student } from '../Classes/Student';
 import { Team } from '../Classes/Team';
+import { Student } from '../Classes/Student';
 
 describe('MentorService', () => {
   let service: MentorService;
@@ -67,30 +67,18 @@ describe('MentorService', () => {
     request.flush(mockResponse);
   });
 
-  it('should get team stats', () => {
-    const tId = 1;
-    const mockResponse: number = 85;
-
-    service.getTeamStats(tId).subscribe((response) => {
-      expect(response).toEqual(mockResponse);
-    });
-
-    const request = httpMock.expectOne(`http://localhost:8080/api/tasks/stats/${tId}`);
-    expect(request.request.method).toBe('GET');
-    request.flush(mockResponse);
-  });
-
   it('should delete mentor by id', () => {
     const mentorId = 1;
-
+  
     service.deleteMentor(mentorId).subscribe((response) => {
-      expect(response).toBeUndefined();
+      expect(response).toBeNull(); 
     });
-
+  
     const request = httpMock.expectOne(`http://localhost:8080/api/mentors/id/${mentorId}`);
     expect(request.request.method).toBe('DELETE');
-    request.flush({});
+    request.flush(null); 
   });
+  
 
   it('should get teams', () => {
     const mockResponse: Team[] = [

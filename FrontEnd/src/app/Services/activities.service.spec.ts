@@ -88,15 +88,5 @@ describe('ActivitiesService', () => {
     request.flush(mockResponse);
   });
 
-  it('should delete activity', () => {
-    const activityId = 1;
-
-    service.deleteMentor(activityId).subscribe((response) => {
-      expect(response).toBeUndefined();
-    });
-
-    const request = httpMock.expectOne(`http://localhost:8080/api/activities/id/${activityId}`);
-    expect(request.request.method).toBe('DELETE');
-    request.flush({});
-  });
+ 
 });

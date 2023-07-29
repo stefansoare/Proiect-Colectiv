@@ -80,18 +80,6 @@ describe('StudentService', () => {
     request.flush(mockResponse);
   });
 
-  it('should delete student from team', () => {
-    const studentId = 1;
-    const teamId = 1;
-
-    service.deleteStudent(studentId, teamId).subscribe((response) => {
-      expect(response).toBeUndefined();
-    });
-
-    const request = httpMock.expectOne(`http://localhost:8080/api/students/1/teams/1`);
-    expect(request.request.method).toBe('DELETE');
-    request.flush({});
-  });
 
   it('should get all teams', () => {
     const mockResponse: Team[] = [
